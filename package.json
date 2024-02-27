@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "nxLintAndFix": "npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check --fix",
+    "nxReleaseSetup": "npx nx generate nx-release:configure",
+    "codeCheck": "npx prettier --check .",
+    "codeFormat": "npx prettier --write . && npm run nxLintAndFix"
   },
   "private": true,
   "dependencies": {
