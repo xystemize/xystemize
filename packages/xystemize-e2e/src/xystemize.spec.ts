@@ -51,14 +51,11 @@ function createTestProject() {
     recursive: true,
   });
 
-  execSync(
-    `npx --yes create-nx-workspace@latest ${projectName} --preset apps --no-nxCloud --no-interactive`,
-    {
-      cwd: dirname(projectDirectory),
-      stdio: 'inherit',
-      env: process.env,
-    }
-  );
+  execSync(`npx --yes create-nx-workspace@latest ${projectName} --preset apps --no-nxCloud --no-interactive`, {
+    cwd: dirname(projectDirectory),
+    stdio: 'inherit',
+    env: process.env,
+  });
   console.log(`Created test project in "${projectDirectory}"`);
 
   return projectDirectory;
