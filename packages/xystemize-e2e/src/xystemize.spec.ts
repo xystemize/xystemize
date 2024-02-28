@@ -6,7 +6,16 @@ describe('xystemize', () => {
   let projectDirectory: string;
 
   beforeAll(() => {
-    projectDirectory = createTestProject();
+    const projectName = 'test-project';
+    const projectDirectory = join(process.cwd(), 'tmp', projectName);
+
+    // Cleanup the test project
+    rmSync(projectDirectory, {
+      recursive: true,
+      force: true,
+    });
+
+    createTestProject();
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
@@ -17,13 +26,13 @@ describe('xystemize', () => {
     });
   });
 
-  afterAll(() => {
-    // Cleanup the test project
-    rmSync(projectDirectory, {
-      recursive: true,
-      force: true,
-    });
-  });
+  // afterAll(() => {
+  //   // Cleanup the test project
+  //   rmSync(projectDirectory, {
+  //     recursive: true,
+  //     force: true,
+  //   });
+  // });
 
   it('should be installed', () => {
     // npm ls will fail if the package is not installed properly
@@ -51,12 +60,12 @@ function createTestProject() {
     recursive: true,
   });
 
-  execSync(`npx --yes create-nx-workspace@latest ${projectName} --preset apps --nxCloud=skip --no-interactive`, {
+  execSync(`npx --yes create-nx-workspace@latest ${projectName} --preset xystemize --nxCloud=skip --no-interactive`, {
     cwd: dirname(projectDirectory),
     stdio: 'inherit',
     env: process.env,
   });
-  console.log(`Created test project in "${projectDirectory}"`);
+  console.info(`Created test project in "${projectDirectory}"`);
 
   return projectDirectory;
 }
