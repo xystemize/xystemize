@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 import { execSync } from 'child_process';
-import { join, dirname } from 'path';
 import { mkdirSync, rmSync } from 'fs';
+import { dirname, join } from 'path';
 
 describe('xystemize', () => {
   let projectDirectory: string;

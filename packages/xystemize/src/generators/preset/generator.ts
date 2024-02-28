@@ -1,8 +1,23 @@
 import { addProjectConfiguration, formatFiles, generateFiles, Tree } from '@nx/devkit';
+import { Linter } from '@nx/eslint';
 import * as path from 'path';
+
+import mobileAppGenerator from '../mobile-app/generator';
+
 import { PresetGeneratorSchema } from './schema';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
+  // generate mobile app
+  mobileAppGenerator(tree, {
+    name: 'mobile',
+    directory: 'apps',
+    unitTestRunner: 'jest',
+    linter: Linter.EsLint,
+    e2eTestRunner: 'none',
+    bundler: 'webpack',
+    install: true,
+  });
+
   const projectRoot = `libs/${options.name}`;
   addProjectConfiguration(tree, options.name, {
     root: projectRoot,
