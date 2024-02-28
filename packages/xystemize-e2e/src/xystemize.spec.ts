@@ -20,7 +20,7 @@ describe('xystemize', () => {
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install xystemize@e2e`, {
+    execSync(`pnpm install xystemize@e2e`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
@@ -61,7 +61,7 @@ function createTestProject() {
     recursive: true,
   });
 
-  execSync(`npx --yes create-nx-workspace@latest ${projectName} --preset xystemize --nxCloud=skip --no-interactive`, {
+  execSync(`pnpm dlx create-nx-workspace@latest ${projectName} --preset xystemize --nxCloud=skip --no-interactive`, {
     cwd: dirname(projectDirectory),
     stdio: 'inherit',
     env: process.env,
