@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
+  "plugins": ["@nx", "unused-imports", "simple-import-sort"],
   "overrides": [
     {
       "files": "*.json",
@@ -43,18 +43,12 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {
-        "@typescript-eslint/prefer-optional-chain": "error",
         "@typescript-eslint/no-unused-vars": "error",
         "no-undef": "error",
         "unused-imports/no-unused-imports": "error",
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error"
       }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],
@@ -68,5 +62,8 @@
       },
       "rules": {}
     }
-  ]
+  ],
+  "globals": {
+    "__dirname": "readonly"
+  }
 }
