@@ -2,19 +2,25 @@ import { addProjectConfiguration, formatFiles, generateFiles, Tree } from '@nx/d
 import { Linter } from '@nx/eslint';
 import * as path from 'path';
 
+import backendAppGenerator from '../backend-app/generator';
 import mobileAppGenerator from '../mobile-app/generator';
 
 import { PresetGeneratorSchema } from './schema';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
+  const appDirectory = 'apps';
+
   if (options.includeBackend) {
-    // generate backend app
+    backendAppGenerator(tree, {
+      name: 'backend',
+      directory: appDirectory,
+    });
   }
 
   if (options.includeMobile) {
     mobileAppGenerator(tree, {
       name: 'mobile',
-      directory: 'apps',
+      directory: appDirectory,
       unitTestRunner: 'jest',
       linter: Linter.EsLint,
       e2eTestRunner: 'none',

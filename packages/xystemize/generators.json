@@ -10,6 +10,11 @@
       "factory": "./src/generators/mobile-app/generator",
       "schema": "./src/generators/mobile-app/schema.json",
       "description": "mobile-app generator"
+    },
+    "backend-app": {
+      "factory": "./src/generators/backend-app/generator",
+      "schema": "./src/generators/backend-app/schema.json",
+      "description": "backend-app generator"
     }
   }
 }
