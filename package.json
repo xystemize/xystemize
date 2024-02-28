@@ -52,7 +52,7 @@
     "includedScripts": []
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --cache --fix",
-    "*.{js,ts,tsx,css,md}": "prettier --write"
+    "*.{js,json,ts,tsx}": "eslint --cache --fix",
+    "*.{js,json,ts,tsx,css,md}": "prettier --write"
   }
 }
