@@ -15,6 +15,16 @@
       "factory": "./src/generators/backend-app/generator",
       "schema": "./src/generators/backend-app/schema.json",
       "description": "backend-app generator"
+    },
+    "marketing-app": {
+      "factory": "./src/generators/marketing-app/generator",
+      "schema": "./src/generators/marketing-app/schema.json",
+      "description": "marketing-app generator"
+    },
+    "web-app": {
+      "factory": "./src/generators/web-app/generator",
+      "schema": "./src/generators/web-app/schema.json",
+      "description": "web-app generator"
     }
   }
 }

@@ -3,7 +3,9 @@ import { Linter } from '@nx/eslint';
 import * as path from 'path';
 
 import backendAppGenerator from '../backend-app/generator';
+import marketingAppGenerator from '../marketing-app/generator';
 import mobileAppGenerator from '../mobile-app/generator';
+import webAppGenerator from '../web-app/generator';
 
 import { PresetGeneratorSchema } from './schema';
 
@@ -30,11 +32,17 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   }
 
   if (options.includeMarketing) {
-    // generate marketing app
+    marketingAppGenerator(tree, {
+      name: 'marketing',
+      directory: appDirectory,
+    });
   }
 
   if (options.includeWeb) {
-    // generate web app
+    webAppGenerator(tree, {
+      name: 'web',
+      directory: appDirectory,
+    });
   }
 
   const projectRoot = `libs/${options.name}`;
