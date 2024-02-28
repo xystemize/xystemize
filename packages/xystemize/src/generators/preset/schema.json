@@ -12,6 +12,46 @@
         "index": 0
       },
       "x-prompt": "What name would you like to use?"
+    },
+    "includeBackend": {
+      "type": "boolean",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "Do you want to generate backend app?",
+      "default": true
+    },
+    "includeMobile": {
+      "type": "boolean",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "Do you want to generate mobile app?",
+      "default": true
+    },
+    "includeMarketing": {
+      "type": "boolean",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "Do you want to generate marketing app?",
+      "default": true
+    },
+    "includeWeb": {
+      "type": "boolean",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "Do you want to generate web app?",
+      "default": true
     }
   },
   "required": ["name"]

@@ -7,16 +7,29 @@ import mobileAppGenerator from '../mobile-app/generator';
 import { PresetGeneratorSchema } from './schema';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
-  // generate mobile app
-  mobileAppGenerator(tree, {
-    name: 'mobile',
-    directory: 'apps',
-    unitTestRunner: 'jest',
-    linter: Linter.EsLint,
-    e2eTestRunner: 'none',
-    bundler: 'webpack',
-    install: true,
-  });
+  if (options.includeBackend) {
+    // generate backend app
+  }
+
+  if (options.includeMobile) {
+    mobileAppGenerator(tree, {
+      name: 'mobile',
+      directory: 'apps',
+      unitTestRunner: 'jest',
+      linter: Linter.EsLint,
+      e2eTestRunner: 'none',
+      bundler: 'webpack',
+      install: true,
+    });
+  }
+
+  if (options.includeMarketing) {
+    // generate marketing app
+  }
+
+  if (options.includeWeb) {
+    // generate web app
+  }
 
   const projectRoot = `libs/${options.name}`;
   addProjectConfiguration(tree, options.name, {
