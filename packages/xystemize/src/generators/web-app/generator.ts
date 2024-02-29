@@ -4,7 +4,7 @@ import { applicationGenerator } from '@nx/next';
 import { WebAppGeneratorSchema } from './schema';
 
 export async function webAppGenerator(tree: Tree, options: WebAppGeneratorSchema) {
-  applicationGenerator(tree, options);
+  await applicationGenerator(tree, options);
 }
 
 export default webAppGenerator;
