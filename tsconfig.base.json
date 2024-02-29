@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@xystemize/utility": ["packages/utility/src/index.ts"],
       "xystemize": ["packages/xystemize/src/index.ts"]
     }
   },

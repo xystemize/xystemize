@@ -1,7 +1,6 @@
 {
-  "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx", "unused-imports", "simple-import-sort"],
+  "plugins": [],
   "overrides": [
     {
       "files": "*.json",
@@ -23,36 +22,15 @@
               }
             ]
           }
-        ],
-        "simple-import-sort/imports": [
-          "error",
-          {
-            "groups": [
-              ["^react", "^@?\\w"],
-              ["^(@|components)(/.*|$)"],
-              ["^\\u0000"],
-              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
-              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
-              ["^.+\\.?(css)$"]
-            ]
-          }
         ]
       }
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {
-        "@typescript-eslint/no-unused-vars": "error",
-        "no-undef": "error",
-        "unused-imports/no-unused-imports": "error",
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error"
-      }
+      "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
       "rules": {}
     },
     {
@@ -63,7 +41,5 @@
       "rules": {}
     }
   ],
-  "globals": {
-    "__dirname": "readonly"
-  }
+  "extends": ["./.eslintrc.base.json"]
 }
