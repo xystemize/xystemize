@@ -35,6 +35,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
     marketingAppGenerator(tree, {
       name: 'marketing',
       directory: appDirectory,
+      style: 'css',
     });
   }
 
@@ -42,6 +43,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
     webAppGenerator(tree, {
       name: 'web',
       directory: appDirectory,
+      style: 'css',
     });
   }
 
