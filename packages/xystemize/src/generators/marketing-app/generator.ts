@@ -4,7 +4,7 @@ import { applicationGenerator } from '@nx/next';
 import { MarketingAppGeneratorSchema } from './schema';
 
 export async function marketingAppGenerator(tree: Tree, options: MarketingAppGeneratorSchema) {
-  applicationGenerator(tree, options);
+  await applicationGenerator(tree, options);
 }
 
 export default marketingAppGenerator;

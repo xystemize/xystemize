@@ -1,5 +1,6 @@
 import { formatFiles, generateFiles, installPackagesTask, names, readJson, Tree } from '@nx/devkit';
 import { libraryGenerator } from '@nx/js';
+import { LibraryGeneratorSchema } from '@nx/js/src/utils/schema';
 import { appendNxGeneratedJsonFile } from '@xystemize/utility';
 import * as path from 'path';
 
@@ -24,7 +25,7 @@ export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) 
     projectRoot = `libs/${directory}/${libName}`;
   }
 
-  await libraryGenerator(tree, resolvedOptions);
+  await libraryGenerator(tree, resolvedOptions as LibraryGeneratorSchema);
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
 
   appendNxGeneratedJsonFile({

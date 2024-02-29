@@ -13,14 +13,14 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   const appDirectory = 'apps';
 
   if (options.includeBackend) {
-    backendAppGenerator(tree, {
+    await backendAppGenerator(tree, {
       name: 'backend',
       directory: appDirectory,
     });
   }
 
   if (options.includeMobile) {
-    mobileAppGenerator(tree, {
+    await mobileAppGenerator(tree, {
       name: 'mobile',
       directory: appDirectory,
       unitTestRunner: 'jest',
@@ -32,7 +32,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   }
 
   if (options.includeMarketing) {
-    marketingAppGenerator(tree, {
+    await marketingAppGenerator(tree, {
       name: 'marketing',
       directory: appDirectory,
       style: 'css',
@@ -40,7 +40,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   }
 
   if (options.includeWeb) {
-    webAppGenerator(tree, {
+    await webAppGenerator(tree, {
       name: 'web',
       directory: appDirectory,
       style: 'css',
