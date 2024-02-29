@@ -8,7 +8,7 @@ describe('xystemize', () => {
 
   beforeAll(() => {
     const projectName = 'test-project';
-    const projectDirectory = join(process.cwd(), 'tmp', projectName);
+    projectDirectory = join(process.cwd(), 'tmp', projectName);
 
     // Cleanup the test project
     rmSync(projectDirectory, {
@@ -26,14 +26,6 @@ describe('xystemize', () => {
       env: process.env,
     });
   });
-
-  // afterAll(() => {
-  //   // Cleanup the test project
-  //   rmSync(projectDirectory, {
-  //     recursive: true,
-  //     force: true,
-  //   });
-  // });
 
   it('should be installed', () => {
     // npm ls will fail if the package is not installed properly

@@ -4,10 +4,10 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "nxLintAndFix": "pnpm dlx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check --fix",
-    "nxReleaseSetup": "pnpm dlx nx generate nx-release:configure",
-    "codeCheck": "pnpm dlx prettier --check .",
-    "codeFormat": "pnpm dlx prettier --write . && pnpm run nxLintAndFix"
+    "nxLintAndFix": "npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check --fix",
+    "nxReleaseSetup": "npx nx generate nx-release:configure",
+    "codeCheck": "npx prettier --check .",
+    "codeFormat": "npx prettier --write . && npm run nxLintAndFix"
   },
   "private": true,
   "dependencies": {
