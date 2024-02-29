@@ -6,7 +6,7 @@ import { MarketingAppGeneratorSchema } from './schema';
 
 describe('marketing-app generator', () => {
   let tree: Tree;
-  const options: MarketingAppGeneratorSchema = { name: 'test' };
+  const options: MarketingAppGeneratorSchema = { name: 'test', style: 'css' };
 
   beforeEach(() => {
     tree = createTreeWithEmptyWorkspace();
