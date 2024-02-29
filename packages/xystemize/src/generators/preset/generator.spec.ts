@@ -6,7 +6,13 @@ import { PresetGeneratorSchema } from './schema';
 
 describe('preset generator', () => {
   let tree: Tree;
-  const options: PresetGeneratorSchema = { name: 'test' };
+  const options: PresetGeneratorSchema = {
+    name: 'test',
+    includeBackend: true,
+    includeMarketing: true,
+    includeMobile: true,
+    includeWeb: true,
+  };
 
   beforeEach(() => {
     tree = createTreeWithEmptyWorkspace();
