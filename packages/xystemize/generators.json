@@ -25,6 +25,11 @@
       "factory": "./src/generators/web-app/generator",
       "schema": "./src/generators/web-app/schema.json",
       "description": "web-app generator"
+    },
+    "js-lib": {
+      "factory": "./src/generators/js-lib/generator",
+      "schema": "./src/generators/js-lib/schema.json",
+      "description": "js-lib generator"
     }
   }
 }
