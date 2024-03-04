@@ -2,10 +2,14 @@
   "name": "xystemize",
   "version": "0.0.1",
   "dependencies": {
-    "@nx/devkit": "18.0.5",
+    "@nx/devkit": "18.0.6",
     "tslib": "^2.3.0",
-    "@nx/react-native": "18.0.5",
-    "@nx/eslint": "18.0.5"
+    "@nx/react-native": "18.0.6",
+    "@nx/eslint": "18.0.6",
+    "@nx/nest": "18.0.6",
+    "@nx/js": "18.0.6",
+    "@xystemize/utility": "0.0.1",
+    "@nx/next": "18.0.6"
   },
   "type": "commonjs",
   "main": "./src/index.js",
