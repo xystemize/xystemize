@@ -49,6 +49,12 @@
       "options": {
         "jestConfig": "packages/xystemize/jest.config.ts"
       }
+    },
+    "release": {
+      "executor": "nx-release:build-update-publish",
+      "options": {
+        "libName": "xystemize"
+      }
     }
   },
   "tags": []

@@ -5,10 +5,17 @@
     "@nx/devkit": "18.0.5",
     "tslib": "^2.3.0",
     "@nx/react-native": "18.0.5",
-    "@nx/eslint": "18.0.5"
+    "@nx/eslint": "18.0.5",
+    "@nx/nest": "18.0.5",
+    "@nx/js": "18.0.5",
+    "@xystemize/utility": "0.0.1",
+    "@nx/next": "18.0.5"
   },
   "type": "commonjs",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
-  "generators": "./generators.json"
+  "generators": "./generators.json",
+  "publishConfig": {
+    "access": "public"
+  }
 }
