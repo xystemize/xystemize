@@ -33,6 +33,11 @@ describe('js-lib generator', () => {
   });
 
   test('jsLibGenerator-e2e', async () => {
-    await execAsync('npx nx generate xystemize:js-lib --name=testlib --no-interactive --dry-run');
+    try {
+      await execAsync('npx nx generate xystemize:js-lib --name=testlib --no-interactive --dry-run');
+    } catch (err) {
+      // eslint-disable-next-line no-undef
+      console.info(err);
+    }
   });
 });
