@@ -11,4 +11,5 @@ export default {
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
   coverageDirectory: '../../coverage/packages/xystemize',
+  testEnvironment: 'node',
 };
