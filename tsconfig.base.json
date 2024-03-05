@@ -16,6 +16,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
