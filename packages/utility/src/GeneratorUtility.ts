@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Tree } from '@nx/devkit';
+import { isArray, isPlainObject } from 'lodash';
 
 export const readNxGeneratedJsonFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
   const content = tree.read(filePath);
@@ -26,10 +28,12 @@ export const appendNxGeneratedJsonFile = ({
   tree,
   filePath,
   fileContent,
+  overwrite = false,
 }: {
   tree: Tree;
   filePath: string;
-  fileContent: object;
+  fileContent: { [key: string]: any };
+  overwrite?: boolean;
 }) => {
   const json = readNxGeneratedJsonFile({ tree, filePath });
 
@@ -37,6 +41,33 @@ export const appendNxGeneratedJsonFile = ({
     return;
   }
 
-  Object.assign(json, fileContent);
+  if (overwrite) {
+    Object.assign(json, fileContent);
+  } else {
+    const keys = Object.keys(fileContent);
+
+    keys.forEach((key) => {
+      const existingValue = json[key];
+      const fileContentValue = fileContent?.[key];
+
+      if (isPlainObject(fileContentValue)) {
+        Object.assign(json, {
+          [key]: {
+            ...existingValue,
+            ...fileContentValue,
+          },
+        });
+      } else if (isArray(fileContentValue)) {
+        Object.assign(json, {
+          [key]: [...existingValue, ...fileContentValue],
+        });
+      } else {
+        Object.assign(json, {
+          [key]: fileContentValue,
+        });
+      }
+    });
+  }
+
   writeNxGeneratedJsonFile({ tree, filePath, fileContent: json });
 };
