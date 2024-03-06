@@ -2,14 +2,36 @@
 import { Tree } from '@nx/devkit';
 import { isArray, isPlainObject } from 'lodash';
 
-export const readNxGeneratedJsonFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
+export const readNxGeneratedFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
   const content = tree.read(filePath);
 
   if (!content) {
     return null;
   }
 
-  return JSON.parse(content.toString('utf8'));
+  return content.toString('utf8');
+};
+
+export const writeNxGeneratedFile = ({
+  tree,
+  filePath,
+  fileContent,
+}: {
+  tree: Tree;
+  filePath: string;
+  fileContent: any;
+}) => {
+  return tree.write(filePath, fileContent);
+};
+
+export const readNxGeneratedJsonFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
+  const content = readNxGeneratedFile({ tree, filePath });
+
+  if (!content) {
+    return null;
+  }
+
+  return JSON.parse(content);
 };
 
 export const writeNxGeneratedJsonFile = ({
@@ -21,7 +43,7 @@ export const writeNxGeneratedJsonFile = ({
   filePath: string;
   fileContent: object;
 }) => {
-  return tree.write(filePath, JSON.stringify(fileContent));
+  return writeNxGeneratedFile({ tree, filePath, fileContent: JSON.stringify(fileContent) });
 };
 
 export const appendNxGeneratedJsonFile = ({
