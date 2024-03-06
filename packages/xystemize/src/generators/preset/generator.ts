@@ -1,5 +1,6 @@
-import { formatFiles, Tree } from '@nx/devkit';
+import { formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { Linter } from '@nx/eslint';
+import * as path from 'path';
 
 import backendAppGenerator from '../backend-app/generator';
 import marketingAppGenerator from '../marketing-app/generator';
@@ -47,6 +48,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
     });
   }
 
+  generateFiles(tree, path.join(__dirname, 'files'), '.', options);
   await setUpPreset({ tree });
   await formatFiles(tree);
 }
