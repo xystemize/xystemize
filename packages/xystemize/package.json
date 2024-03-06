@@ -8,9 +8,7 @@
     "@nx/eslint": "18.0.6",
     "@nx/nest": "18.0.6",
     "@nx/js": "18.0.6",
-    "@nx/next": "18.0.6"
-  },
-  "peerDependencies": {
+    "@nx/next": "18.0.6",
     "@xystemize/utility": "^0.0.0-e2e || ^0.0.1"
   },
   "type": "commonjs",
