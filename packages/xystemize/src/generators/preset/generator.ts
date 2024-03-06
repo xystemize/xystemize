@@ -1,4 +1,4 @@
-import { addProjectConfiguration, formatFiles, generateFiles, Tree } from '@nx/devkit';
+import { formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { Linter } from '@nx/eslint';
 import * as path from 'path';
 
@@ -8,6 +8,7 @@ import mobileAppGenerator from '../mobile-app/generator';
 import webAppGenerator from '../web-app/generator';
 
 import { PresetGeneratorSchema } from './schema';
+import { setUpPreset } from './setUpPreset';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
   const appDirectory = 'apps';
@@ -47,14 +48,8 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
     });
   }
 
-  const projectRoot = `libs/${options.name}`;
-  addProjectConfiguration(tree, options.name, {
-    root: projectRoot,
-    projectType: 'library',
-    sourceRoot: `${projectRoot}/src`,
-    targets: {},
-  });
-  generateFiles(tree, path.join(__dirname, 'files'), projectRoot, options);
+  generateFiles(tree, path.join(__dirname, 'files'), '.', options);
+  await setUpPreset({ tree });
   await formatFiles(tree);
 }
 
