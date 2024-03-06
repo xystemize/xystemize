@@ -21,10 +21,12 @@ export const setUpPreset = async ({ tree }: { tree: Tree }) => {
     tree,
     filePath: 'tsconfig.base.json',
     fileContent: {
-      strictPropertyInitialization: false,
-      allowSyntheticDefaultImports: true,
-      esModuleInterop: true,
-      allowJs: true,
+      compilerOptions: {
+        strictPropertyInitialization: false,
+        allowSyntheticDefaultImports: true,
+        esModuleInterop: true,
+        allowJs: true,
+      },
     },
   });
 
