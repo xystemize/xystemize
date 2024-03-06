@@ -81,7 +81,7 @@ export const appendNxGeneratedJsonFile = ({
         });
       } else if (isArray(fileContentValue)) {
         Object.assign(json, {
-          [key]: [...existingValue, ...fileContentValue],
+          [key]: [...(existingValue ?? []), ...fileContentValue],
         });
       } else {
         Object.assign(json, {

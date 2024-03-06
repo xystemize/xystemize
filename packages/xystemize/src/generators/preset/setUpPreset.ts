@@ -3,13 +3,12 @@ import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '@xystemize/util
 
 export const setUpPreset = async ({ tree }: { tree: Tree }) => {
   // add dependencies
-  const packageDefaultVersion = 'latest';
   const dependencies = {};
   const devDependencies = {
-    husky: packageDefaultVersion,
-    'lint-staged': packageDefaultVersion,
-    'eslint-plugin-simple-import-sort': packageDefaultVersion,
-    'eslint-plugin-unused-imports': packageDefaultVersion,
+    husky: '^9.0.11',
+    'lint-staged': '^15.2.2',
+    'eslint-plugin-simple-import-sort': '^12.0.0',
+    'eslint-plugin-unused-imports': '^3.1.0',
   };
   addDependenciesToPackageJson(tree, dependencies, devDependencies);
 
@@ -62,5 +61,14 @@ export const setUpPreset = async ({ tree }: { tree: Tree }) => {
     tree,
     filePath: '.nvmrc',
     fileContent: 'v20.11.1',
+  });
+
+  // update .eslintrc.json
+  appendNxGeneratedJsonFile({
+    tree,
+    filePath: '.eslintrc.json',
+    fileContent: {
+      extends: ['./.eslintrc.base.json'],
+    },
   });
 };
