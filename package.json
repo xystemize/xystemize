@@ -13,6 +13,7 @@
   "dependencies": {
     "@nx/devkit": "18.0.6",
     "create-nx-workspace": "18.0.5",
+    "lodash": "^4.17.21",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
