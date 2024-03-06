@@ -1,6 +1,6 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { readNxGeneratedJsonFile } from '@xystemize/utility';
+import { readNxGeneratedFile, readNxGeneratedJsonFile } from '@xystemize/utility';
 
 import { presetGenerator } from './generator';
 import { PresetGeneratorSchema } from './schema';
@@ -35,7 +35,18 @@ describe('preset generator', () => {
     expect(web).toBeDefined();
 
     const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
+    const devDependencies = packageJson.devDependencies;
+    const scripts = packageJson.scripts;
+
     expect(packageJson.scripts).toBeDefined();
+    expect(scripts.prepare).toBeDefined();
+
+    expect(devDependencies.husky).toBeDefined();
+    expect(devDependencies['lint-staged']).toBeDefined();
+    expect(devDependencies['eslint-plugin-simple-import-sort']).toBeDefined();
+    expect(devDependencies['eslint-plugin-unused-imports']).toBeDefined();
+
+    expect(packageJson['lint-staged']).toBeDefined();
 
     const prettier = readNxGeneratedJsonFile({ tree, filePath: '.prettierrc' });
     expect(prettier).toStrictEqual({
@@ -43,5 +54,11 @@ describe('preset generator', () => {
       printWidth: 120,
       tabWidth: 2,
     });
+
+    const nvmrc = readNxGeneratedFile({ tree, filePath: '.nvmrc' });
+    expect(nvmrc).toBe('v20.11.1');
+
+    const eslintBase = readNxGeneratedJsonFile({ tree, filePath: '.eslintrc.base.json' });
+    expect(eslintBase).toBeDefined();
   });
 });
