@@ -58,7 +58,12 @@ describe('preset generator', () => {
     const nvmrc = readNxGeneratedFile({ tree, filePath: '.nvmrc' });
     expect(nvmrc).toBe('v20.11.1');
 
+    const jestPreset = readNxGeneratedFile({ tree, filePath: 'jest.preset.js' });
+    expect(jestPreset).toBeDefined();
+
+    const eslint = readNxGeneratedJsonFile({ tree, filePath: '.eslintrc.json' });
     const eslintBase = readNxGeneratedJsonFile({ tree, filePath: '.eslintrc.base.json' });
+    expect(eslint.extends).toStrictEqual(['./.eslintrc.base.json']);
     expect(eslintBase).toBeDefined();
   });
 });
