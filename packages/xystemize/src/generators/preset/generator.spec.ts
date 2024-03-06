@@ -1,5 +1,6 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { readNxGeneratedJsonFile } from '@xystemize/utility';
 
 import { presetGenerator } from './generator';
 import { PresetGeneratorSchema } from './schema';
@@ -18,9 +19,29 @@ describe('preset generator', () => {
     tree = createTreeWithEmptyWorkspace();
   });
 
-  it('should run successfully', async () => {
+  test('presetGenerator()', async () => {
     await presetGenerator(tree, options);
-    const config = readProjectConfiguration(tree, 'test');
-    expect(config).toBeDefined();
+
+    const backend = readProjectConfiguration(tree, 'backend');
+    expect(backend).toBeDefined();
+
+    const mobile = readProjectConfiguration(tree, 'mobile');
+    expect(mobile).toBeDefined();
+
+    const marketing = readProjectConfiguration(tree, 'marketing');
+    expect(marketing).toBeDefined();
+
+    const web = readProjectConfiguration(tree, 'web');
+    expect(web).toBeDefined();
+
+    const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
+    expect(packageJson.scripts).toBeDefined();
+
+    const prettier = readNxGeneratedJsonFile({ tree, filePath: '.prettierrc' });
+    expect(prettier).toStrictEqual({
+      singleQuote: true,
+      printWidth: 120,
+      tabWidth: 2,
+    });
   });
 });
