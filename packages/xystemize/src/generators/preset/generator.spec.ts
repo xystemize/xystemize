@@ -61,9 +61,10 @@ describe('preset generator', () => {
     const jestPreset = readNxGeneratedFile({ tree, filePath: 'jest.preset.js' });
     expect(jestPreset).toBeDefined();
 
-    const eslint = readNxGeneratedJsonFile({ tree, filePath: '.eslintrc.json' });
     const eslintBase = readNxGeneratedJsonFile({ tree, filePath: '.eslintrc.base.json' });
-    expect(eslint.extends).toStrictEqual(['./.eslintrc.base.json']);
+    const eslint = readNxGeneratedJsonFile({ tree, filePath: '.eslintrc.json' });
     expect(eslintBase).toBeDefined();
+    expect(eslint.extends).toStrictEqual(['./.eslintrc.base.json']);
+    expect(eslint.plugins).toStrictEqual(['@nx', 'unused-imports', 'simple-import-sort']);
   });
 });
