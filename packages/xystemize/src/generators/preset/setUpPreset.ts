@@ -74,4 +74,13 @@ export const setUpPreset = async ({ tree }: { tree: Tree }) => {
       extends: ['./.eslintrc.base.json'],
     },
   });
+
+  // overwrite plugins in .eslintrc.json
+  appendNxGeneratedJsonFile({
+    tree,
+    filePath: '.eslintrc.json',
+    fileContent: {
+      plugins: [],
+    },
+  });
 };
