@@ -1,7 +1,7 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
 import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '@xystemize/utility';
 
-export const setUpPreset = async ({ tree }: { tree: Tree }) => {
+export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
   // add dependencies
   const dependencies = {};
   const devDependencies = {
@@ -10,6 +10,7 @@ export const setUpPreset = async ({ tree }: { tree: Tree }) => {
     'eslint-plugin-simple-import-sort': '^12.0.0',
     'eslint-plugin-unused-imports': '^3.1.0',
   };
+
   addDependenciesToPackageJson(tree, dependencies, devDependencies);
 
   // add script
@@ -30,7 +31,9 @@ export const setUpPreset = async ({ tree }: { tree: Tree }) => {
       },
     },
   });
+};
 
+export const setUpPreset = async ({ tree }: { tree: Tree }) => {
   // update tsconfig.base.json
   appendNxGeneratedJsonFile({
     tree,

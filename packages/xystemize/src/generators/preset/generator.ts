@@ -8,10 +8,12 @@ import mobileAppGenerator from '../mobile-app/generator';
 import webAppGenerator from '../web-app/generator';
 
 import { PresetGeneratorSchema } from './schema';
-import { setUpPreset } from './setUpPreset';
+import { setUpDependencies, setUpPreset } from './setUpPreset';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
   const appDirectory = 'apps';
+
+  await setUpDependencies({ tree });
 
   if (options.includeBackend) {
     await backendAppGenerator(tree, {
