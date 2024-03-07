@@ -1,17 +1,11 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
 import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '@xystemize/utility';
 
+import { generalDependencies, generalDevDependencies } from './dependencies';
+
 export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
   // add dependencies
-  const dependencies = {};
-  const devDependencies = {
-    husky: '^9.0.11',
-    'lint-staged': '^15.2.2',
-    'eslint-plugin-simple-import-sort': '^12.0.0',
-    'eslint-plugin-unused-imports': '^3.1.0',
-  };
-
-  addDependenciesToPackageJson(tree, dependencies, devDependencies);
+  addDependenciesToPackageJson(tree, generalDependencies, generalDevDependencies);
 
   // add script
   appendNxGeneratedJsonFile({
@@ -21,7 +15,6 @@ export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
       scripts: {
         prepare: 'husky install',
         nxLintAndFix: 'npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check --fix',
-        nxReleaseSetup: 'npx nx generate nx-release:configure',
         codeCheck: 'npx prettier --check .',
         codeFormat: 'npx prettier --write . && npm run nxLintAndFix',
       },
