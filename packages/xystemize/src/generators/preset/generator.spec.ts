@@ -1,8 +1,9 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
-import { readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
+import { checkIfDependenciesExist, readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
 
+import { allDependencies, allDevDependencies } from './dependencies';
 import { presetGenerator } from './generator';
 import { PresetGeneratorSchema } from './schema';
 
@@ -36,18 +37,18 @@ describe('preset generator', () => {
     expect(web).toBeDefined();
 
     const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
-    const devDependencies = packageJson.devDependencies;
     const scripts = packageJson.scripts;
 
     expect(packageJson.scripts).toBeDefined();
+    expect(packageJson['lint-staged']).toBeDefined();
     expect(scripts.prepare).toBeDefined();
 
-    expect(devDependencies.husky).toBeDefined();
-    expect(devDependencies['lint-staged']).toBeDefined();
-    expect(devDependencies['eslint-plugin-simple-import-sort']).toBeDefined();
-    expect(devDependencies['eslint-plugin-unused-imports']).toBeDefined();
-
-    expect(packageJson['lint-staged']).toBeDefined();
+    checkIfDependenciesExist({
+      tree,
+      filePath: 'package.json',
+      dependencies: allDependencies,
+      devDependencies: allDevDependencies,
+    });
 
     const prettier = readNxGeneratedJsonFile({ tree, filePath: '.prettierrc' });
     expect(prettier).toStrictEqual({

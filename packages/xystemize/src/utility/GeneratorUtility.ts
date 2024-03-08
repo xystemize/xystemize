@@ -93,3 +93,42 @@ export const appendNxGeneratedJsonFile = ({
 
   writeNxGeneratedJsonFile({ tree, filePath, fileContent: json });
 };
+
+export const checkIfDependenciesExist = ({
+  tree,
+  filePath,
+  dependencies,
+  devDependencies,
+}: {
+  filePath: string;
+  tree: Tree;
+  dependencies: { [key: string]: any };
+  devDependencies: { [key: string]: any };
+}) => {
+  const json = readNxGeneratedJsonFile({ tree, filePath });
+
+  if (!json) {
+    return;
+  }
+
+  const jsonDependencyKeys = Object.keys(json.dependencies);
+  const jsonDevDependencyKeys = Object.keys(json.devDependencies);
+  const dependencyKeys = Object.keys(dependencies);
+  const devDependencyKeys = Object.keys(devDependencies);
+
+  dependencyKeys.forEach((key) => {
+    const exists = jsonDependencyKeys.includes(key);
+
+    if (!exists) {
+      throw new Error('DEPENDENCY_DOESNT_EXIST');
+    }
+  });
+
+  devDependencyKeys.forEach((key) => {
+    const exists = jsonDevDependencyKeys.includes(key);
+
+    if (!exists) {
+      throw new Error('DEPENDENCY_DOESNT_EXIST');
+    }
+  });
+};
