@@ -1,8 +1,7 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
 
 import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '../../utility/GeneratorUtility';
-
-import { generalDependencies, generalDevDependencies } from './dependencies';
+import { generalDependencies, generalDevDependencies } from '../dependency/dependencies';
 
 export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
   // add dependencies

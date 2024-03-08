@@ -2,8 +2,8 @@ import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
 import { checkIfDependenciesExist, readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
+import { allDependencies, allDevDependencies } from '../dependency/dependencies';
 
-import { allDependencies, allDevDependencies } from './dependencies';
 import { presetGenerator } from './generator';
 import { PresetGeneratorSchema } from './schema';
 

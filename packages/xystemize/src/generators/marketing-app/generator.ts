@@ -1,7 +1,7 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
 import { applicationGenerator } from '@nx/next';
 
-import { webDependencies, webDevDependencies } from '../preset/dependencies';
+import { webDependencies, webDevDependencies } from '../dependency/dependencies';
 
 import { MarketingAppGeneratorSchema } from './schema';
 

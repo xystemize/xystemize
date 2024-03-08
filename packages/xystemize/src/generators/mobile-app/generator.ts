@@ -1,7 +1,7 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
 import { reactNativeApplicationGenerator } from '@nx/react-native';
 
-import { mobileDependencies, mobileDevDependencies } from '../preset/dependencies';
+import { mobileDependencies, mobileDevDependencies } from '../dependency/dependencies';
 
 import { MobileAppGeneratorSchema } from './schema';
 

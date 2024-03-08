@@ -19,7 +19,7 @@ export const backendDependencies = {
   'firebase-functions': '^4.7.0',
 };
 
-export const backedDevDependencies = {
+export const backendDevDependencies = {
   'firebase-tools': '^13.4.0',
 };
 
@@ -55,7 +55,7 @@ export const allDependencies = {
 
 export const allDevDependencies = {
   ...generalDevDependencies,
-  ...backedDevDependencies,
+  ...backendDevDependencies,
   ...frontendDevDependencies,
   ...mobileDevDependencies,
   ...webDevDependencies,
