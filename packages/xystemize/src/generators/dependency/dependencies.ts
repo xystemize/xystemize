@@ -17,6 +17,7 @@ export const generalDevDependencies = {
 export const backendDependencies = {
   'firebase-admin': '^12.0.0',
   'firebase-functions': '^4.7.0',
+  tsyringe: '^4.8.0',
 };
 
 export const backendDevDependencies = {
