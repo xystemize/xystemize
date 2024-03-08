@@ -44,3 +44,19 @@ export const webDependencies = {
 export const webDevDependencies = {
   ...frontendDevDependencies,
 };
+
+export const allDependencies = {
+  ...generalDependencies,
+  ...backendDependencies,
+  ...frontendDependencies,
+  ...mobileDependencies,
+  ...webDependencies,
+};
+
+export const allDevDependencies = {
+  ...generalDevDependencies,
+  ...backedDevDependencies,
+  ...frontendDevDependencies,
+  ...mobileDevDependencies,
+  ...webDevDependencies,
+};

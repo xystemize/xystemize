@@ -1,9 +1,14 @@
-import { Tree } from '@nx/devkit';
+import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
 import { reactNativeApplicationGenerator } from '@nx/react-native';
+
+import { mobileDependencies, mobileDevDependencies } from '../preset/dependencies';
 
 import { MobileAppGeneratorSchema } from './schema';
 
 export async function mobileAppGenerator(tree: Tree, options: MobileAppGeneratorSchema) {
+  // add dependencies
+  addDependenciesToPackageJson(tree, mobileDependencies, mobileDevDependencies);
+
   await reactNativeApplicationGenerator(tree, options);
 }
 
