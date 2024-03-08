@@ -1,11 +1,12 @@
 export const generalDependencies = {
-  mobx: '^6.12.0',
-  'mobx-react-lite': '^4.0.5',
   dayjs: '^1.11.10',
   dotenv: '^16.4.5',
   'env-var': '^7.4.1',
+  mobx: '^6.12.0',
+  'mobx-react-lite': '^4.0.5',
   lodash: '^4.17.21',
 };
+
 export const generalDevDependencies = {
   husky: '^9.0.11',
   'lint-staged': '^15.2.2',

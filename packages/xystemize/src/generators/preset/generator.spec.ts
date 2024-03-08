@@ -1,6 +1,7 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { readNxGeneratedFile, readNxGeneratedJsonFile } from '@xystemize/utility';
+
+import { readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
 
 import { presetGenerator } from './generator';
 import { PresetGeneratorSchema } from './schema';

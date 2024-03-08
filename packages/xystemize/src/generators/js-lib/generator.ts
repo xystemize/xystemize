@@ -1,8 +1,9 @@
 import { formatFiles, generateFiles, installPackagesTask, names, readJson, Tree } from '@nx/devkit';
 import { libraryGenerator } from '@nx/js';
 import { LibraryGeneratorSchema } from '@nx/js/src/utils/schema';
-import { appendNxGeneratedJsonFile } from '@xystemize/utility';
 import * as path from 'path';
+
+import { appendNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
 
 import { JsLibGeneratorSchema } from './schema';
 

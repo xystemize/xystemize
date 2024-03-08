@@ -1,6 +1,8 @@
 import { names, readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { execAsync, readNxGeneratedJsonFile } from '@xystemize/utility';
+import { execAsync } from '@xystemize/utility';
+
+import { readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
 
 import { jsLibGenerator } from './generator';
 import { JsLibGeneratorSchema } from './schema';

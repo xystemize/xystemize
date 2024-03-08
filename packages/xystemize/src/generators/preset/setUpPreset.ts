@@ -1,5 +1,6 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
-import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '@xystemize/utility';
+
+import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '../../utility/GeneratorUtility';
 
 import { generalDependencies, generalDevDependencies } from './dependencies';
 
