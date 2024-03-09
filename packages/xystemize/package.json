@@ -9,7 +9,7 @@
     "@nx/nest": "18.0.7",
     "@nx/js": "18.0.7",
     "@nx/next": "18.0.7",
-    "@xystemize/utility": "^0.0.0-e2e || ^0.0.1 || ^1.0.0-alpha.1"
+    "lodash": "^4.17.21"
   },
   "type": "commonjs",
   "main": "./src/index.js",
