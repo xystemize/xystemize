@@ -1,0 +1,30 @@
+{
+  "name": "app-core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/app-core/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/app-core",
+        "main": "packages/app-core/src/index.ts",
+        "tsConfig": "packages/app-core/tsconfig.lib.json",
+        "assets": ["packages/app-core/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs app-core {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/app-core/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
