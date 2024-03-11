@@ -2,7 +2,7 @@ import { Buffer } from 'buffer';
 import { instanceToPlain } from 'class-transformer';
 import { omitBy } from 'lodash';
 
-import { Name } from '../contant/Name';
+import { Name } from '../constant/Name';
 
 import { AppBaseModel } from './AppBaseModel';
 

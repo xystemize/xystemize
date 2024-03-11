@@ -1,4 +1,4 @@
-import { Name } from '../contant/Name';
+import { Name } from '../constant/Name';
 
 export interface AppBaseDataInterface {
   [Name.id]?: string | null;

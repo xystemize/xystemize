@@ -1,4 +1,6 @@
 export * from './base-model';
-export * from './contant';
+export * from './constant';
 export * from './data-transformer';
+export * from './firebase';
+export * from './string';
 export * from './utility';

@@ -21,4 +21,8 @@ export enum Name {
   updatedTimestamp = 'updatedTimestamp',
   visibilityId = 'visibilityId',
   customClaim = 'customClaim',
+
+  en = 'en',
+  es = 'es',
+  zh = 'zh',
 }
