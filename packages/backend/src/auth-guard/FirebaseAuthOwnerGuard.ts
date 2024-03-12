@@ -36,31 +36,3 @@ export class FirebaseAuthOwnerGuard implements CanActivate {
     return isOwner;
   }
 }
-
-// This allows unverified email account
-@Injectable()
-export class FirebaseUnverifiedEmailOwnerGuard implements CanActivate {
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    let isOwner = false;
-
-    try {
-      const req = context.switchToHttp().getRequest() || {};
-      const { body, headers, params } = req;
-      const { authorization } = headers || {};
-      const token = String(authorization).replace('Bearer ', '').trim();
-
-      const decodedIdToken = await auth().verifyIdToken(token);
-      const ownership = new OwnershipDataModel(body);
-      ownership.decodedIdToken = decodedIdToken;
-      ownership.reqParams = params;
-
-      req.decodedIdToken = decodedIdToken;
-
-      isOwner = ownership.isDocumentOwner && ownership.isReqParamsValid;
-    } catch (error) {
-      isOwner = false;
-    }
-
-    return isOwner;
-  }
-}

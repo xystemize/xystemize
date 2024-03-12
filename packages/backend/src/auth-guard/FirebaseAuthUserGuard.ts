@@ -23,25 +23,3 @@ export class FirebaseAuthUserGuard implements CanActivate {
     return isAuthenticatedUser;
   }
 }
-
-// Purpose of OptionalFirebaseAuthUserGuard
-// is to be able to obtain customClaim
-// It should always return true
-@Injectable()
-export class OptionalFirebaseAuthUserGuard implements CanActivate {
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isAuthenticatedUser = true; // should always be true
-
-    try {
-      const req = context.switchToHttp().getRequest() || {};
-      const { headers } = req;
-      const { authorization } = headers || {};
-      const token = String(authorization).replace('Bearer ', '').trim();
-      await auth().verifyIdToken(token);
-    } catch (error) {
-      // ignore
-    }
-
-    return isAuthenticatedUser;
-  }
-}
