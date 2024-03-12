@@ -1,5 +1,6 @@
-import { ErrorString } from '@docuslice/app-string';
 import { registerDecorator, ValidationOptions } from 'class-validator';
+
+import { ErrorString } from '../string';
 
 export function IsNotBlank(
   property?: string,

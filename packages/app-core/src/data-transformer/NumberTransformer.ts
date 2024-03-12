@@ -1,6 +1,7 @@
-import { convertToZeroIfNegative } from '@docuslice/app-util';
 import { isNumber } from 'class-validator';
 import { isNaN, trim } from 'lodash';
+
+import { convertToZeroIfNegative } from '../utility/Number';
 
 export const NumberTransformer = ({ value }: { value: unknown }): number => {
   if (isNumber(value)) {
@@ -62,7 +63,7 @@ export const PositiveNumberWithDefaultTransformer = (obj: { default: number }) =
 };
 
 export const NumberDateWithDefaultTransformer = ({ value }: { value: unknown }): number => {
-  if (value === '') {
+  if (value === '' || value === null || value === undefined) {
     return Date.now();
   }
 

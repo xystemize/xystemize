@@ -25,4 +25,8 @@ export enum Name {
   en = 'en',
   es = 'es',
   zh = 'zh',
+
+  NODE_ENV = 'NODE_ENV',
+  FIREBASE_AUTH_EMULATOR_URL = 'FIREBASE_AUTH_EMULATOR_URL',
+  FBASE_EMULATOR_SUITE_URL = 'FBASE_EMULATOR_SUITE_URL',
 }

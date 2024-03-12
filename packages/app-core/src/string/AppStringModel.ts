@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import { capitalize } from 'lodash';
 
 import { AppBaseModel } from '../base-model';
@@ -8,8 +9,13 @@ import { AppStringInterface } from './AppStringInterface';
 export class AppStringModel extends AppBaseModel implements AppStringInterface {
   static DefaultLanguageKey: string = Name.en;
 
+  @Expose()
   en: string;
+
+  @Expose()
   es?: string | null;
+
+  @Expose()
   zh?: string | null;
 
   constructor(params: AppStringInterface) {

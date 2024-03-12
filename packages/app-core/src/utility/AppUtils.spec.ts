@@ -97,8 +97,8 @@ describe('appUtils', () => {
     expect(text).toBe('hello world');
 
     // success: should mask the first part of the email
-    text = maskEmail('hello@docuslice.com');
-    expect(text).toBe('*****@docuslice.com');
+    text = maskEmail('hello@example.com');
+    expect(text).toBe('*****@example.com');
   });
 
   test('extractFirstAndLastName', () => {
