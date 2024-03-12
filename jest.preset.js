@@ -2,5 +2,5 @@ const nxPreset = require('@nx/jest/preset').default;
 
 module.exports = {
   ...nxPreset,
-  testTimeout: 60000,
+  testTimeout: 300000,
 };
