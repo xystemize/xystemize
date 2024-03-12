@@ -25,7 +25,7 @@ const serviceChecker = async () => {
     return;
   }
 
-  const [isFirebaseEmulatorRunning] = await Promise.all([checkIfEmulatorRunning(Name.FBASE_EMULATOR_SUITE_URL)]);
+  const [isFirebaseEmulatorRunning] = await Promise.all([checkIfEmulatorRunning(Name.FIREBASE_AUTH_EMULATOR_URL)]);
 
   if (isFirebaseEmulatorRunning) {
     return;
@@ -85,7 +85,7 @@ const checkIfEmulatorRunning = async (envKey: string) => {
 const initializeFirebaseEmulators = async () => {
   checkEnvironment();
 
-  const isEmulatorRunning = await checkIfEmulatorRunning(Name.FBASE_EMULATOR_SUITE_URL);
+  const isEmulatorRunning = await checkIfEmulatorRunning(Name.FIREBASE_AUTH_EMULATOR_URL);
 
   if (isEmulatorRunning) {
     return;
