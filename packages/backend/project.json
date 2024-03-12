@@ -24,6 +24,12 @@
       "options": {
         "jestConfig": "packages/backend/jest.config.ts"
       }
+    },
+    "release": {
+      "executor": "nx-release:build-update-publish",
+      "options": {
+        "libName": "backend"
+      }
     }
   },
   "tags": []
