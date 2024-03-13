@@ -6,9 +6,7 @@ import * as appInterface from '../interface';
 import { AxiosHttpResponse, HttpRequestInterface, HttpRequestParams, HttpResponse } from '../interface';
 import { AppStringModel, ErrorString } from '../string';
 
-export class FirebaseNetworkClient {
-  static instance = new FirebaseNetworkClient();
-
+class Client {
   currentUser?: appInterface.FirebaseUser | null = null;
 
   supertestApi?: Supertest.SuperTest<Supertest.Test> | null = null;
@@ -269,3 +267,5 @@ export class FirebaseNetworkClient {
     return response;
   };
 }
+
+export const FirebaseApiClient = new Client();

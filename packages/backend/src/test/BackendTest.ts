@@ -2,7 +2,7 @@
 import { UserCredential } from '@firebase/auth';
 import { DynamicModule, ForwardReference, INestApplication, Type } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { FirebaseNetworkClient } from '@xystemize/app-core';
+import { FirebaseApiClient } from '@xystemize/app-core';
 import Supertest from 'supertest';
 
 export class BackendTest {
@@ -24,7 +24,7 @@ export class BackendTest {
     this.app = await this.app.init();
     this.api = Supertest(this.app.getHttpServer());
 
-    FirebaseNetworkClient.instance.supertestApi = this.api;
+    FirebaseApiClient.supertestApi = this.api;
 
     return this.app;
   };

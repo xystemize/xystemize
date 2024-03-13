@@ -1,1 +1,1 @@
-export * from './FirebaseNetworkClient';
+export * from './FirebaseApiClient';

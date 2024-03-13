@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Body, Controller, Get, Injectable, Module, Param, Post, UseGuards } from '@nestjs/common';
-import { FirebaseNetworkClient, generateUuid, Name } from '@xystemize/app-core';
+import { FirebaseApiClient, generateUuid, Name } from '@xystemize/app-core';
 import axios from 'axios';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { autoInjectable } from 'tsyringe';
@@ -29,6 +29,7 @@ class AccountsService {
 }
 
 const accounts = 'accounts';
+const baseUrl = (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts;
 
 @Controller(accounts)
 class AccountsController {
@@ -68,16 +69,16 @@ export class ApiV1Module {}
 
 class AccountsApi {
   async getAccount(params?: { id?: string; username?: string; email?: string }) {
-    return FirebaseNetworkClient.instance.get({
-      baseUrl: (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts,
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
       endpoint: params?.id ?? '',
       params: params,
     });
   }
 
   async addAccount(params?: { id?: string; username?: string; email?: string }) {
-    return FirebaseNetworkClient.instance.post<typeof params>({
-      baseUrl: (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts,
+    return FirebaseApiClient.post<typeof params>({
+      baseUrl: baseUrl,
       endpoint: '',
       params: params,
     });
@@ -97,7 +98,7 @@ describe('FirebaseAuthGuard', () => {
     const emailVerifyLink = await accountService.generateVerificationLink(account.email);
     await axios.get(emailVerifyLink ?? '');
 
-    const { data } = await FirebaseNetworkClient.instance.handleFirebaseResponse(
+    const { data } = await FirebaseApiClient.handleFirebaseResponse(
       signInWithEmailAndPassword(FirebaseClient.instance.auth, account.email, account.password)
     );
     account.id = data?.user.uid ?? '';
@@ -117,11 +118,11 @@ describe('FirebaseAuthGuard', () => {
       createVerifiedAccountAndSignUserIn(),
     ]);
 
-    FirebaseNetworkClient.instance.currentUser = null;
+    FirebaseApiClient.currentUser = null;
     let res = await api.addAccount({ username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
 
-    FirebaseNetworkClient.instance.currentUser = verifiedUser1.userCredential?.user;
+    FirebaseApiClient.currentUser = verifiedUser1.userCredential?.user;
     res = await api.addAccount({ username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
 
@@ -129,11 +130,11 @@ describe('FirebaseAuthGuard', () => {
     expect(res.statusCode).toBe(403);
 
     // should not allow non-owner
-    FirebaseNetworkClient.instance.currentUser = verifiedUser2.userCredential?.user;
+    FirebaseApiClient.currentUser = verifiedUser2.userCredential?.user;
     res = await api.addAccount({ id: verifiedUser1.id, username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
 
-    FirebaseNetworkClient.instance.currentUser = verifiedUser1.userCredential?.user;
+    FirebaseApiClient.currentUser = verifiedUser1.userCredential?.user;
     res = await api.addAccount({ id: verifiedUser1.id, username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(201);
   });
@@ -144,7 +145,7 @@ describe('FirebaseAuthGuard', () => {
       createVerifiedAccountAndSignUserIn(),
     ]);
 
-    FirebaseNetworkClient.instance.currentUser = null;
+    FirebaseApiClient.currentUser = null;
 
     let res = await api.getAccount({ id: 'InvalidId', username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
@@ -153,12 +154,12 @@ describe('FirebaseAuthGuard', () => {
     expect(res.statusCode).toBe(403);
 
     // should allow owner
-    FirebaseNetworkClient.instance.currentUser = verifiedUser1.userCredential?.user;
+    FirebaseApiClient.currentUser = verifiedUser1.userCredential?.user;
     res = await api.getAccount({ id: verifiedUser1.id, username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(200);
 
     // should allow non-owner valid user
-    FirebaseNetworkClient.instance.currentUser = verifiedUser2.userCredential?.user;
+    FirebaseApiClient.currentUser = verifiedUser2.userCredential?.user;
     res = await api.getAccount({ id: verifiedUser1.id, username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(200);
   });
