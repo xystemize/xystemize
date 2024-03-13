@@ -20,7 +20,7 @@ export class OptionalStringDataPipe implements PipeTransform {
     value = String(trim(value));
 
     if (value.length === 0) {
-      return value;
+      return null;
     }
 
     return value;
