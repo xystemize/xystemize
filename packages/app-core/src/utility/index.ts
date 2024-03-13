@@ -1,6 +1,5 @@
 export * from './Array';
 export * from './Delay';
-export * from './Enum';
 export * from './Number';
 export * from './Object';
 export * from './React';
