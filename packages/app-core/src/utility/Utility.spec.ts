@@ -4,6 +4,7 @@ import { range } from 'lodash';
 import { mapArrayWithConcurrency } from './Array';
 import { delayByMilliseconds, delayBySeconds } from './Delay';
 import { camelizeKeys } from './Object';
+import { createRef } from './React';
 import { extractFirstAndLastName, extractUsernameFromEmail, mask, maskBirthday, maskEmail } from './String';
 import { toCapitalCase, toClassName, toPropertyName } from './StringFormat';
 import { getExtension, getExtensionFromFileType, removeProtocol } from './Url';
@@ -150,5 +151,12 @@ describe('appUtils', () => {
       addressN1: 'Address 1',
       addressN2: 'Address 2',
     });
+  });
+
+  test('createRef', () => {
+    expect(createRef(null)).toStrictEqual({ current: null });
+    expect(createRef(1)).toStrictEqual({ current: 1 });
+    expect(createRef(true)).toStrictEqual({ current: true });
+    expect(createRef('value')).toStrictEqual({ current: 'value' });
   });
 });
