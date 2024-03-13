@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
-import { Controller, Get, Module, Query } from '@nestjs/common';
+import { Body, Controller, Get, Module, Post, Query } from '@nestjs/common';
 import { FirebaseApiClient, Name } from '@xystemize/app-core';
 
 import { AppBackendModule } from '../module';
@@ -63,6 +63,14 @@ class AccountsController {
   @Get('notblankdata')
   async getNotBlankData(
     @Query(Name.value, NotBlankDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Post('notblankdata')
+  async postNotBlankData(
+    @Body(Name.value, NotBlankDataPipe)
     value: any
   ) {
     return { value };
@@ -140,7 +148,7 @@ export class ApiV1Module {}
 
 class AccountsApi {
   async getAlphanumeric(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'alphanumeric',
       params: params,
@@ -148,7 +156,7 @@ class AccountsApi {
   }
 
   async getRequiredDateString(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'requireddatestring',
       params: params,
@@ -156,7 +164,7 @@ class AccountsApi {
   }
 
   async getOptionalDateString(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'optionaldatestring',
       params: params,
@@ -164,7 +172,7 @@ class AccountsApi {
   }
 
   async getRequiredEmail(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'requiredemail',
       params: params,
@@ -172,7 +180,7 @@ class AccountsApi {
   }
 
   async getOptionalEmail(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'optionalemail',
       params: params,
@@ -180,7 +188,15 @@ class AccountsApi {
   }
 
   async getNotBlankData(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
+      baseUrl: baseUrl,
+      endpoint: 'notblankdata',
+      params: params,
+    });
+  }
+
+  async postNotBlankData(params?: { value?: any }) {
+    return FirebaseApiClient.post<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'notblankdata',
       params: params,
@@ -188,7 +204,7 @@ class AccountsApi {
   }
 
   async getNumberWithDefault(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'numberwithdefault',
       params: params,
@@ -196,7 +212,7 @@ class AccountsApi {
   }
 
   async getRequiredNumber(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'requirednumber',
       params: params,
@@ -204,7 +220,7 @@ class AccountsApi {
   }
 
   async getRequiredStringArray(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'requiredstringarray',
       params: params,
@@ -212,7 +228,7 @@ class AccountsApi {
   }
 
   async getOptionalStringArray(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'optionalstringarray',
       params: params,
@@ -220,7 +236,7 @@ class AccountsApi {
   }
 
   async getRequiredString(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'requiredstring',
       params: params,
@@ -228,7 +244,7 @@ class AccountsApi {
   }
 
   async getOptionalString(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'optionalstring',
       params: params,
@@ -236,7 +252,7 @@ class AccountsApi {
   }
 
   async getTrimData(params?: { value?: any }) {
-    return FirebaseApiClient.get({
+    return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'trimdata',
       params: params,
@@ -395,34 +411,48 @@ describe('DataPipe', () => {
   });
 
   test('NotBlankDataPipe', async () => {
-    let res = await api.getOptionalEmail({ value: '' });
-    expect(res.statusCode).toBe(200);
-
-    res = await api.getOptionalEmail({ value: undefined });
-    expect(res.statusCode).toBe(200);
-
-    res = await api.getOptionalEmail({ value: null });
-    expect(res.statusCode).toBe(200);
-
-    res = await api.getOptionalEmail({ value: 'ABCDE12345!##$5q' });
+    let res = await api.getNotBlankData({ value: '' });
     expect(res.statusCode).toBe(400);
 
-    res = await api.getOptionalEmail({ value: '你好' });
+    res = await api.getNotBlankData({ value: '      ' });
     expect(res.statusCode).toBe(400);
 
-    res = await api.getOptionalEmail({ value: '🎉🎉🎉' });
+    res = await api.getNotBlankData({ value: undefined });
     expect(res.statusCode).toBe(400);
 
-    res = await api.getOptionalEmail({ value: 'user@example.com' });
-    expect(res.statusCode).toBe(200);
+    res = await api.getNotBlankData({ value: null });
+    expect(res.statusCode).toBe(400);
 
-    res = await api.getOptionalEmail({ value: 'user+1@example.com' });
+    res = await api.getNotBlankData({ value: 'ABCDE12345!##$5q' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('ABCDE12345!##$5q');
 
-    res = await api.getOptionalEmail({ value: 'user_1@example.com' });
+    res = await api.getNotBlankData({ value: '你好' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('你好');
 
-    res = await api.getOptionalEmail({ value: 'user.1@example.com' });
+    res = await api.getNotBlankData({ value: '🎉🎉🎉' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('🎉🎉🎉');
+
+    res = await api.getNotBlankData({ value: 'user@example.com' });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user@example.com');
+
+    res = await api.getNotBlankData({ value: 1 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('1');
+
+    res = await api.getNotBlankData({ value: true });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('true');
+
+    res = await api.postNotBlankData({ value: 1 });
+    expect(res.statusCode).toBe(201);
+    expect(res.data?.value).toBe(1);
+
+    res = await api.postNotBlankData({ value: true });
+    expect(res.statusCode).toBe(201);
+    expect(res.data?.value).toBe(true);
   });
 });
