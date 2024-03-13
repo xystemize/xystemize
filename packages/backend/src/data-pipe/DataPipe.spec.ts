@@ -9,6 +9,11 @@ import { BackendTest } from '../test';
 import { AlphanumericDataPipe } from './AlphanumericDataPipe';
 import { OptionalDateStringDataPipe, RequiredDateStringDataPipe } from './DateStringDataPipe';
 import { OptionalEmailDataPipe, RequiredEmailDataPipe } from './EmailDataPipe';
+import { NotBlankDataPipe } from './NotBlankDataPipe';
+import { NumberWithDefaultDataPipe, RequiredNumberDataPipe } from './NumberDataPipe';
+import { OptionalStringArrayDataPipe, RequiredStringArrayDataPipe } from './StringArrayDataPipe';
+import { OptionalStringDataPipe, RequiredStringDataPipe } from './StringDataPipe';
+import { TrimDataPipe } from './TrimDataPipe';
 
 const accounts = 'accounts';
 const baseUrl = (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts;
@@ -50,6 +55,70 @@ class AccountsController {
   @Get('optionalemail')
   async getOptionalEmail(
     @Query(Name.value, OptionalEmailDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('notblankdata')
+  async getNotBlankData(
+    @Query(Name.value, NotBlankDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('numberwithdefault')
+  async getNumberWithDefault(
+    @Query(Name.value, NumberWithDefaultDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('requirednumber')
+  async getRequiredNumber(
+    @Query(Name.value, RequiredNumberDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('requiredstringarray')
+  async getRequiredStringArray(
+    @Query(Name.value, RequiredStringArrayDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('optionalstringarray')
+  async getOptionalStringArray(
+    @Query(Name.value, OptionalStringArrayDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('requiredstring')
+  async getRequiredString(
+    @Query(Name.value, RequiredStringDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('optionalstring')
+  async getOptionalString(
+    @Query(Name.value, OptionalStringDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('trimdata')
+  async getTrimData(
+    @Query(Name.value, TrimDataPipe)
     value: any
   ) {
     return { value };
@@ -106,6 +175,70 @@ class AccountsApi {
     return FirebaseApiClient.get({
       baseUrl: baseUrl,
       endpoint: 'optionalemail',
+      params: params,
+    });
+  }
+
+  async getNotBlankData(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'notblankdata',
+      params: params,
+    });
+  }
+
+  async getNumberWithDefault(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'numberwithdefault',
+      params: params,
+    });
+  }
+
+  async getRequiredNumber(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'requirednumber',
+      params: params,
+    });
+  }
+
+  async getRequiredStringArray(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'requiredstringarray',
+      params: params,
+    });
+  }
+
+  async getOptionalStringArray(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'optionalstringarray',
+      params: params,
+    });
+  }
+
+  async getRequiredString(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'requiredstring',
+      params: params,
+    });
+  }
+
+  async getOptionalString(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'optionalstring',
+      params: params,
+    });
+  }
+
+  async getTrimData(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'trimdata',
       params: params,
     });
   }
@@ -230,6 +363,38 @@ describe('DataPipe', () => {
   });
 
   test('OptionalEmailDataPipe', async () => {
+    let res = await api.getOptionalEmail({ value: '' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalEmail({ value: undefined });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalEmail({ value: null });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalEmail({ value: 'ABCDE12345!##$5q' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalEmail({ value: '你好' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalEmail({ value: '🎉🎉🎉' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalEmail({ value: 'user@example.com' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalEmail({ value: 'user+1@example.com' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalEmail({ value: 'user_1@example.com' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalEmail({ value: 'user.1@example.com' });
+    expect(res.statusCode).toBe(200);
+  });
+
+  test('NotBlankDataPipe', async () => {
     let res = await api.getOptionalEmail({ value: '' });
     expect(res.statusCode).toBe(200);
 
