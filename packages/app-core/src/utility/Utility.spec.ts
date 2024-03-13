@@ -21,11 +21,21 @@ describe('appUtils', () => {
     expect(toPropertyName('propertyName')).toBe('propertyName');
     expect(toPropertyName('property-name')).toBe('propertyName');
     expect(toPropertyName('Property-Name')).toBe('propertyName');
+  });
 
+  test('toClassName', () => {
     expect(toClassName('PropertyName')).toBe('PropertyName');
     expect(toClassName('propertyName')).toBe('PropertyName');
     expect(toClassName('property-name')).toBe('PropertyName');
     expect(toClassName('Property-Name')).toBe('PropertyName');
+  });
+
+  test('toCapitalCase', () => {
+    let name = 'john';
+    expect(toCapitalCase(name)).toBe('John');
+
+    name = 'john trevor';
+    expect(toCapitalCase(name)).toBe('John trevor');
   });
 
   test('Generate UUID', async () => {
@@ -130,14 +140,6 @@ describe('appUtils', () => {
 
     res = extractUsernameFromEmail('jeremiah@example.com');
     expect(res.username).toBe('jeremiah');
-  });
-
-  test('toCapitalCase', () => {
-    let name = 'john';
-    expect(toCapitalCase(name)).toBe('John');
-
-    name = 'john trevor';
-    expect(toCapitalCase(name)).toBe('John trevor');
   });
 
   test('camelizeKeys', () => {
