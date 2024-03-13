@@ -7,6 +7,7 @@ import { AppBackendModule } from '../module';
 import { BackendTest } from '../test';
 
 import { AlphanumericDataPipe } from './AlphanumericDataPipe';
+import { OptionalDateStringDataPipe, RequiredDateStringDataPipe } from './DateStringDataPipe';
 
 const accounts = 'accounts';
 const baseUrl = (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts;
@@ -16,6 +17,22 @@ class AccountsController {
   @Get('alphanumeric')
   async getAlphanumeric(
     @Query(Name.value, AlphanumericDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('requireddatestring')
+  async getRequiredDateString(
+    @Query(Name.value, RequiredDateStringDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('optionaldatestring')
+  async getOptionalDateString(
+    @Query(Name.value, OptionalDateStringDataPipe)
     value: any
   ) {
     return { value };
@@ -40,6 +57,22 @@ class AccountsApi {
     return FirebaseApiClient.get({
       baseUrl: baseUrl,
       endpoint: 'alphanumeric',
+      params: params,
+    });
+  }
+
+  async getRequiredDateString(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'requireddatestring',
+      params: params,
+    });
+  }
+
+  async getOptionalDateString(params?: { value?: any }) {
+    return FirebaseApiClient.get({
+      baseUrl: baseUrl,
+      endpoint: 'optionaldatestring',
       params: params,
     });
   }
@@ -76,6 +109,32 @@ describe('DataPipe', () => {
     expect(res.statusCode).toBe(200);
 
     res = await api.getAlphanumeric({ value: 'ABCDE12345' });
+    expect(res.statusCode).toBe(200);
+  });
+
+  test('requireddatestring', async () => {
+    let res = await api.getRequiredDateString({ value: '' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredDateString({ value: undefined });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredDateString({ value: null });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredDateString({ value: 'ABCDE12345!##$5q' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredDateString({ value: '你好' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredDateString({ value: '🎉🎉🎉' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredDateString({ value: '2024-01-01' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getRequiredDateString({ value: new Date().toISOString() });
     expect(res.statusCode).toBe(200);
   });
 });
