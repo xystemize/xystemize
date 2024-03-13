@@ -1,0 +1,17 @@
+import { Module } from '@nestjs/common';
+import express from 'express';
+
+import { initializeApiServer } from '@xystemize/backend';
+
+export const <%= name %> = express();
+
+@Module({
+  imports: [],
+})
+export class <%= name %>Module {}
+
+initializeApiServer({
+  apiInstance: <%= name %>,
+  functionName: '<%= nameLowerCase %>',
+  module: <%= name %>Module,
+});

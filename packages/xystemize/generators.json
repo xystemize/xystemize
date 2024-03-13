@@ -30,6 +30,11 @@
       "factory": "./src/generators/js-lib/generator",
       "schema": "./src/generators/js-lib/schema.json",
       "description": "js-lib generator"
+    },
+    "backend-api": {
+      "factory": "./src/generators/backend-api/generator",
+      "schema": "./src/generators/backend-api/schema.json",
+      "description": "backend-api generator"
     }
   }
 }
