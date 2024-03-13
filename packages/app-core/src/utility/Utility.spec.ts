@@ -3,6 +3,7 @@ import { range } from 'lodash';
 
 import { mapArrayWithConcurrency } from './Array';
 import { delayByMilliseconds, delayBySeconds } from './Delay';
+import { camelizeKeys } from './Object';
 import { extractFirstAndLastName, extractUsernameFromEmail, mask, maskBirthday, maskEmail } from './String';
 import { toCapitalCase, toClassName, toPropertyName } from './StringFormat';
 import { getExtension, getExtensionFromFileType, removeProtocol } from './Url';
@@ -137,5 +138,15 @@ describe('appUtils', () => {
 
     name = 'john trevor';
     expect(toCapitalCase(name)).toBe('John trevor');
+  });
+
+  test('camelizeKeys', () => {
+    const obj = { 'first-name': 'FirstName', LastName: 'LastName', address_n1: 'Address 1', Address_N2: 'Address 2' };
+    expect(camelizeKeys(obj)).toStrictEqual({
+      firstName: 'FirstName',
+      lastName: 'LastName',
+      addressN1: 'Address 1',
+      addressN2: 'Address 2',
+    });
   });
 });
