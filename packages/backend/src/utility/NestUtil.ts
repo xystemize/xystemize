@@ -3,25 +3,25 @@
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 
+import { Environment } from './Environment';
+
 interface NestServerInterface {
   apiInstance: any;
   module: any;
   functionName: string;
 }
 
-export const logError = (err) => {
+export const logError = (err: any) => {
   // eslint-disable-next-line no-undef
   console.error('Nest broken', err);
 };
 
 export const createNestServer = async (params: NestServerInterface) => {
-  const env = process.env;
-
-  if (env.NODE_ENV === 'test') {
+  if (Environment.isTestEnv) {
     return;
   }
 
-  if (env.FUNCTION_TARGET !== params.functionName) {
+  if (Environment.firebaseFunctionTarget !== params.functionName) {
     return;
   }
 
@@ -29,7 +29,7 @@ export const createNestServer = async (params: NestServerInterface) => {
   const app = await NestFactory.create(params.module, expressAdapter);
 
   app.enableCors({
-    origin: env.FBASE_CORS_WHITE_LIST,
+    origin: Environment.firebaseCORSWhiteList,
   });
 
   return app.init().catch(logError);

@@ -11,6 +11,7 @@ import { RequiredStringDataPipe } from '../data-pipe';
 import { FirebaseClient } from '../firebase';
 import { AppBackendModule, FirebaseAuthService } from '../module';
 import { BackendTest, generateUserData, TestAccountInterface } from '../test';
+import { Environment } from '../utility/Environment';
 
 @Injectable()
 @autoInjectable()
@@ -29,7 +30,7 @@ class AccountsService {
 }
 
 const accounts = 'accounts';
-const baseUrl = (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts;
+const baseUrl = Environment.firebaseApiBaseUrl + '/' + accounts;
 
 @Controller(accounts)
 class AccountsController {
@@ -99,7 +100,7 @@ describe('FirebaseAuthGuard', () => {
     await axios.get(emailVerifyLink ?? '');
 
     const { data } = await FirebaseApiClient.handleFirebaseResponse(
-      signInWithEmailAndPassword(FirebaseClient.instance.auth, account.email, account.password)
+      signInWithEmailAndPassword(FirebaseClient.auth, account.email, account.password)
     );
     account.id = data?.user.uid ?? '';
     account.userCredential = data;

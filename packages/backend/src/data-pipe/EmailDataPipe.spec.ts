@@ -5,11 +5,12 @@ import { FirebaseApiClient, Name } from '@xystemize/app-core';
 
 import { AppBackendModule } from '../module';
 import { BackendTest } from '../test';
+import { Environment } from '../utility/Environment';
 
 import { OptionalEmailDataPipe, RequiredEmailDataPipe } from './EmailDataPipe';
 
 const accounts = 'accounts';
-const baseUrl = (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts;
+const baseUrl = Environment.firebaseApiBaseUrl + '/' + accounts;
 
 @Controller(accounts)
 class AccountsController {

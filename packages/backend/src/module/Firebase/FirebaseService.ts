@@ -4,17 +4,17 @@ import { PubSub } from '@google-cloud/pubsub';
 import { auth, firestore, messaging, storage } from 'firebase-admin';
 import { App, initializeApp } from 'firebase-admin/app';
 
+import { Environment } from '../../utility';
+
 class Firebase {
   static app: App;
 
   pubsub = new PubSub();
 
   constructor() {
-    const env = process.env;
-
-    if (!Firebase.app && env.NODE_ENV === 'test') {
+    if (!Firebase.app && Environment.isTestEnv) {
       Firebase.app = initializeApp({
-        projectId: env.FBASE_PROJECT_ID,
+        projectId: Environment.firebaseProjectId,
       });
 
       return;
