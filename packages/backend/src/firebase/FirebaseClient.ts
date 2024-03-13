@@ -3,28 +3,31 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-export class FirebaseClient {
-  static instance = new FirebaseClient();
+import { Environment } from '../utility';
+
+class Client {
+  static instance = new Client();
   static app: FirebaseApp;
-  static emulatorInitialized = false;
+  private static emulatorInitialized = false;
 
   constructor() {
-    const options = JSON.parse(process.env.FBASE_CLIENT_CREDENTIAL ?? '{}');
-    FirebaseClient.app = initializeApp(options);
+    Client.app = initializeApp(Environment.firebaseClientCredential);
   }
 
   get auth() {
-    const auth = getAuth(FirebaseClient.app);
+    const auth = getAuth(Client.app);
 
-    if (process.env.NODE_ENV === 'test' && !FirebaseClient.emulatorInitialized) {
-      connectAuthEmulator(auth, process.env.FIREBASE_AUTH_EMULATOR_URL ?? '');
-      FirebaseClient.emulatorInitialized = true;
+    if (Environment.isTestEnv && !Client.emulatorInitialized) {
+      connectAuthEmulator(auth, Environment.firebaseAuthEmulatorUrl);
+      Client.emulatorInitialized = true;
     }
 
     return auth;
   }
 
   get firestore() {
-    return getFirestore(FirebaseClient.app);
+    return getFirestore(Client.app);
   }
 }
+
+export const FirebaseClient = new Client();
