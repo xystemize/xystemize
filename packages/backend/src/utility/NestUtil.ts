@@ -16,7 +16,7 @@ export const logError = (err: any) => {
   console.error('Nest broken', err);
 };
 
-export const createNestServer = async (params: NestServerInterface) => {
+export const initializeApiServer = async (params: NestServerInterface) => {
   if (Environment.isTestEnv) {
     return;
   }
