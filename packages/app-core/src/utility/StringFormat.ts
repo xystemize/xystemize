@@ -6,7 +6,7 @@ export const toPropertyName = (str: string): string => {
 };
 
 export const toCapitalCase = (str: string): string => {
-  return str.charAt(0).toUpperCase() + str.substr(1);
+  return str.charAt(0).toUpperCase() + str.substring(1);
 };
 
 export const toClassName = (str: string): string => {
