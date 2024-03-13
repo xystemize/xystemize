@@ -137,4 +137,30 @@ describe('DataPipe', () => {
     res = await api.getRequiredDateString({ value: new Date().toISOString() });
     expect(res.statusCode).toBe(200);
   });
+
+  test('optionaldatestring', async () => {
+    let res = await api.getOptionalDateString({ value: '' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalDateString({ value: undefined });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalDateString({ value: null });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalDateString({ value: 'ABCDE12345!##$5q' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalDateString({ value: '你好' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalDateString({ value: '🎉🎉🎉' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalDateString({ value: '2024-01-01' });
+    expect(res.statusCode).toBe(200);
+
+    res = await api.getOptionalDateString({ value: new Date().toISOString() });
+    expect(res.statusCode).toBe(200);
+  });
 });
