@@ -3,7 +3,7 @@
 import { PubSub } from '@google-cloud/pubsub';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
-import { FirebaseService } from '../Firebase/FirebaseService';
+import { FirebaseService } from '../firebase/FirebaseService';
 
 // const env = Environment.instance;
 

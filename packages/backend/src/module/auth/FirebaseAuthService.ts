@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { auth } from 'firebase-admin';
 
-import { FirebaseService } from '../Firebase/FirebaseService';
+import { FirebaseService } from '../firebase/FirebaseService';
 
 @Injectable()
 export class FirebaseAuthService implements OnModuleInit {

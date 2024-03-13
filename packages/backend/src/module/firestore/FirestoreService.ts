@@ -4,7 +4,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { firestore } from 'firebase-admin'; // TODO: Update to v10 for optimization
 
-import { FirebaseService } from '../Firebase/FirebaseService';
+import { FirebaseService } from '../firebase/FirebaseService';
 
 @Injectable()
 export class FirestoreService implements OnModuleInit {

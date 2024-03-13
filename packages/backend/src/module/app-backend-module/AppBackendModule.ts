@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { FirebaseAuthService } from '../Auth/FirebaseAuthService';
-import { FirestoreService } from '../Firestore/FirestoreService';
-import { PubSubService } from '../PubSub/PubSubService';
-import { StorageService } from '../Storage/StorageService';
+import { FirebaseAuthService } from '../auth/FirebaseAuthService';
+import { FirestoreService } from '../firestore/FirestoreService';
+import { PubSubService } from '../pubsub/PubSubService';
+import { StorageService } from '../storage/StorageService';
 
 @Module({
   providers: [FirebaseAuthService, FirestoreService, PubSubService, StorageService],
