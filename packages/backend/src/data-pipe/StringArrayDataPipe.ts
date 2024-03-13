@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { isArray, isString, map, trim } from 'lodash';
 
 @Injectable()
 export class RequiredStringArrayDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform(values: any) {
     if (isString(values) && !!values) {
       return [trim(values)];
@@ -33,7 +33,6 @@ export class RequiredStringArrayDataPipe implements PipeTransform {
 
 @Injectable()
 export class OptionalStringArrayDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform(values: any) {
     if (values === undefined || values === null) {
       return null;

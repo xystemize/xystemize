@@ -3,7 +3,6 @@ import { trim } from 'lodash';
 
 @Injectable()
 export class RequiredStringDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform(value: string) {
     value = String(trim(value));
 
@@ -17,7 +16,6 @@ export class RequiredStringDataPipe implements PipeTransform {
 
 @Injectable()
 export class OptionalStringDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform(value: string) {
     value = String(trim(value));
 

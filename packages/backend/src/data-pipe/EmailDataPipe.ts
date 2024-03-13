@@ -4,7 +4,6 @@ import { trim } from 'lodash';
 
 @Injectable()
 export class RequiredEmailDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform(value: string) {
     value = String(trim(value)).toLowerCase();
 
@@ -18,7 +17,6 @@ export class RequiredEmailDataPipe implements PipeTransform {
 
 @Injectable()
 export class OptionalEmailDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform(value: string) {
     value = String(trim(value)).toLowerCase();
 

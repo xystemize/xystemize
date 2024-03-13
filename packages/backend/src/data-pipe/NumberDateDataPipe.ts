@@ -3,8 +3,7 @@ import { isNumber } from 'class-validator';
 
 @Injectable()
 export class OptionalNumberDateDataPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  transform(value: any) {
+  transform(value: number | null) {
     if (!value) {
       return null;
     }
