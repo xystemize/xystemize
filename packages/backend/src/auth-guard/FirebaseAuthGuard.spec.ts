@@ -116,9 +116,13 @@ describe('FirebaseAuthGuard', () => {
       createVerifiedAccountAndSignUserIn(),
       createVerifiedAccountAndSignUserIn(),
     ]);
-    FirebaseNetworkClient.instance.currentUser = verifiedUser1.userCredential?.user;
 
+    FirebaseNetworkClient.instance.currentUser = null;
     let res = await api.addAccount({ username: verifiedUser1.username, email: verifiedUser1.email });
+    expect(res.statusCode).toBe(403);
+
+    FirebaseNetworkClient.instance.currentUser = verifiedUser1.userCredential?.user;
+    res = await api.addAccount({ username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
 
     res = await api.addAccount({ id: 'invalidid', username: verifiedUser1.username, email: verifiedUser1.email });
