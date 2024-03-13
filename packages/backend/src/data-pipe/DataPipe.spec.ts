@@ -10,7 +10,7 @@ import { AlphanumericDataPipe } from './AlphanumericDataPipe';
 import { OptionalDateStringDataPipe, RequiredDateStringDataPipe } from './DateStringDataPipe';
 import { OptionalEmailDataPipe, RequiredEmailDataPipe } from './EmailDataPipe';
 import { NotBlankDataPipe } from './NotBlankDataPipe';
-import { NumberWithDefaultDataPipe, RequiredNumberDataPipe } from './NumberDataPipe';
+import { NumberWithDefaultDataPipe, OptionalNumberDataPipe, RequiredNumberDataPipe } from './NumberDataPipe';
 import { OptionalStringArrayDataPipe, RequiredStringArrayDataPipe } from './StringArrayDataPipe';
 import { OptionalStringDataPipe, RequiredStringDataPipe } from './StringDataPipe';
 import { TrimDataPipe } from './TrimDataPipe';
@@ -87,6 +87,14 @@ class AccountsController {
   @Get('requirednumber')
   async getRequiredNumber(
     @Query(Name.value, RequiredNumberDataPipe)
+    value: any
+  ) {
+    return { value };
+  }
+
+  @Get('optionalnumber')
+  async getOptionalNumber(
+    @Query(Name.value, OptionalNumberDataPipe)
     value: any
   ) {
     return { value };
@@ -215,6 +223,14 @@ class AccountsApi {
     return FirebaseApiClient.get<{ value: any }>({
       baseUrl: baseUrl,
       endpoint: 'requirednumber',
+      params: params,
+    });
+  }
+
+  async getOptionalNumber(params?: { value?: any }) {
+    return FirebaseApiClient.get<{ value: any }>({
+      baseUrl: baseUrl,
+      endpoint: 'optionalnumber',
       params: params,
     });
   }
@@ -454,5 +470,104 @@ describe('DataPipe', () => {
     res = await api.postNotBlankData({ value: true });
     expect(res.statusCode).toBe(201);
     expect(res.data?.value).toBe(true);
+  });
+
+  test('NumberWithDefaultDataPipe', async () => {
+    let res = await api.getNumberWithDefault({ value: '' });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: undefined });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: null });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: 'ABCDE12345!##$5q' });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: '你好' });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: '🎉🎉🎉' });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: 0 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getNumberWithDefault({ value: 1 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(1);
+  });
+
+  test('RequiredNumberDataPipe', async () => {
+    let res = await api.getRequiredNumber({ value: '' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: undefined });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: null });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: NaN });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: 'ABCDE12345!##$5q' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: '你好' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: '🎉🎉🎉' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getRequiredNumber({ value: 0 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getRequiredNumber({ value: 1 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(1);
+  });
+
+  test('OptionalNumberDataPipe', async () => {
+    let res = await api.getOptionalNumber({ value: '' });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
+
+    res = await api.getOptionalNumber({ value: undefined });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
+
+    res = await api.getOptionalNumber({ value: null });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
+
+    res = await api.getRequiredNumber({ value: NaN });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalNumber({ value: 'ABCDE12345!##$5q' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalNumber({ value: '你好' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalNumber({ value: '🎉🎉🎉' });
+    expect(res.statusCode).toBe(400);
+
+    res = await api.getOptionalNumber({ value: 0 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(0);
+
+    res = await api.getOptionalNumber({ value: 1 });
+    expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(1);
   });
 });
