@@ -21,7 +21,7 @@ export class OptionalDateStringDataPipe implements PipeTransform {
     value = String(trim(value));
 
     if (value.length === 0) {
-      return value;
+      return null;
     }
 
     if (!isDateString(value)) {

@@ -21,7 +21,7 @@ export class OptionalEmailDataPipe implements PipeTransform {
     value = String(trim(value)).toLowerCase();
 
     if (value.length === 0) {
-      return value;
+      return null;
     }
 
     if (!isEmail(value)) {
