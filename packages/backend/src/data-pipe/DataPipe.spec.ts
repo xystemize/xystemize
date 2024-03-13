@@ -305,9 +305,11 @@ describe('DataPipe', () => {
 
     res = await api.getAlphanumeric({ value: 'ABCDE' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('ABCDE');
 
     res = await api.getAlphanumeric({ value: 'ABCDE12345' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('ABCDE12345');
   });
 
   test('RequiredDateStringDataPipe', async () => {
@@ -331,20 +333,25 @@ describe('DataPipe', () => {
 
     res = await api.getRequiredDateString({ value: '2024-01-01' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('2024-01-01');
 
-    res = await api.getRequiredDateString({ value: new Date().toISOString() });
+    res = await api.getRequiredDateString({ value: '2024-03-13T08:14:01.043Z' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('2024-03-13T08:14:01.043Z');
   });
 
   test('OptionalDateStringDataPipe', async () => {
     let res = await api.getOptionalDateString({ value: '' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
 
     res = await api.getOptionalDateString({ value: undefined });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
 
     res = await api.getOptionalDateString({ value: null });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
 
     res = await api.getOptionalDateString({ value: 'ABCDE12345!##$5q' });
     expect(res.statusCode).toBe(400);
@@ -357,9 +364,11 @@ describe('DataPipe', () => {
 
     res = await api.getOptionalDateString({ value: '2024-01-01' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('2024-01-01');
 
-    res = await api.getOptionalDateString({ value: new Date().toISOString() });
+    res = await api.getOptionalDateString({ value: '2024-03-13T08:14:01.043Z' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('2024-03-13T08:14:01.043Z');
   });
 
   test('RequiredEmailDataPipe', async () => {
@@ -383,26 +392,33 @@ describe('DataPipe', () => {
 
     res = await api.getRequiredEmail({ value: 'user@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user@example.com');
 
     res = await api.getRequiredEmail({ value: 'user+1@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user+1@example.com');
 
     res = await api.getRequiredEmail({ value: 'user_1@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user_1@example.com');
 
     res = await api.getRequiredEmail({ value: 'user.1@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user.1@example.com');
   });
 
   test('OptionalEmailDataPipe', async () => {
     let res = await api.getOptionalEmail({ value: '' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
 
     res = await api.getOptionalEmail({ value: undefined });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
 
     res = await api.getOptionalEmail({ value: null });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe(null);
 
     res = await api.getOptionalEmail({ value: 'ABCDE12345!##$5q' });
     expect(res.statusCode).toBe(400);
@@ -415,15 +431,19 @@ describe('DataPipe', () => {
 
     res = await api.getOptionalEmail({ value: 'user@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user@example.com');
 
     res = await api.getOptionalEmail({ value: 'user+1@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user+1@example.com');
 
     res = await api.getOptionalEmail({ value: 'user_1@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user_1@example.com');
 
     res = await api.getOptionalEmail({ value: 'user.1@example.com' });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.value).toBe('user.1@example.com');
   });
 
   test('NotBlankDataPipe', async () => {
