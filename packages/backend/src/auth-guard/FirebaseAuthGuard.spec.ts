@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Body, Controller, Get, Injectable, Module, Param, Post, UseGuards } from '@nestjs/common';
-import { FirebaseNetworkClient, Name } from '@xystemize/app-core';
+import { FirebaseNetworkClient, generateUuid, Name } from '@xystemize/app-core';
 import axios from 'axios';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { autoInjectable } from 'tsyringe';
@@ -68,9 +68,9 @@ export class ApiV1Module {}
 
 class AccountsApi {
   async getAccount(params?: { id?: string; username?: string; email?: string }) {
-    return FirebaseNetworkClient.instance.get<{ isAvailable: boolean }>({
+    return FirebaseNetworkClient.instance.get({
       baseUrl: (process.env.FBASE_API_BASE_URL ?? '') + '/' + accounts,
-      endpoint: accounts,
+      endpoint: params?.id ?? '',
       params: params,
     });
   }
@@ -146,10 +146,10 @@ describe('FirebaseAuthGuard', () => {
 
     FirebaseNetworkClient.instance.currentUser = null;
 
-    let res = await api.getAccount({ username: verifiedUser1.username, email: verifiedUser1.email });
+    let res = await api.getAccount({ id: 'InvalidId', username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
 
-    res = await api.getAccount({ id: 'invalidid', username: verifiedUser1.username, email: verifiedUser1.email });
+    res = await api.getAccount({ id: generateUuid(), username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(403);
 
     // should allow owner
