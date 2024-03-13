@@ -17,7 +17,7 @@ export class NumberWithDefaultDataPipe implements PipeTransform {
 @Injectable()
 export class OptionalNumberDataPipe implements PipeTransform {
   transform(value: unknown) {
-    if (!value) {
+    if (value === null || value === undefined || value === '') {
       return null;
     }
 
@@ -34,7 +34,7 @@ export class OptionalNumberDataPipe implements PipeTransform {
 @Injectable()
 export class RequiredNumberDataPipe implements PipeTransform {
   transform(value: unknown) {
-    if (value === null || value === undefined || value === '') {
+    if (value === null || value === undefined || value === '' || isNaN(value as number)) {
       throw new BadRequestException();
     }
 
