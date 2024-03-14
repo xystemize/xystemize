@@ -7,8 +7,8 @@ import marketingAppGenerator from '../marketing-app/generator';
 import mobileAppGenerator from '../mobile-app/generator';
 import webAppGenerator from '../web-app/generator';
 
+import { setUpDependencies, setUpPreset } from './lib';
 import { PresetGeneratorSchema } from './schema';
-import { setUpDependencies, setUpPreset } from './setUpPreset';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
   const appDirectory = 'apps';
