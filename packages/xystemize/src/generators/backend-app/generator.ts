@@ -1,6 +1,7 @@
-import { addDependenciesToPackageJson, formatFiles, Tree } from '@nx/devkit';
+import { addDependenciesToPackageJson, formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { applicationGenerator } from '@nx/nest';
 import { kebabCase } from 'lodash';
+import * as path from 'path';
 
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
 
@@ -21,6 +22,8 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   addDependenciesToPackageJson(tree, backendDependencies, backendDevDependencies);
 
   await applicationGenerator(tree, resolvedOptions);
+
+  generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
 
   updateProjectJson({ tree, projectRoot, options: resolvedOptions });
 
