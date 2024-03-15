@@ -6,12 +6,13 @@ import { BackendAppGeneratorSchema } from '../schema';
 export const updateProjectJson = ({
   tree,
   options,
+  projectRoot,
 }: {
   tree: Tree;
   options: BackendAppGeneratorSchema;
   projectRoot: string;
 }) => {
-  const projectJsonFilePath = `${options.name}/project.json`;
+  const projectJsonFilePath = `${projectRoot}/project.json`;
   const projectJson = readNxGeneratedJsonFile({ tree, filePath: projectJsonFilePath });
 
   projectJson.targets.build.options.generatePackageJson = true;
