@@ -19,7 +19,7 @@ describe('backend-app generator', () => {
     const config = readProjectConfiguration(tree, 'test');
     expect(config).toBeDefined();
 
-    const projectJson = readNxGeneratedJsonFile({ tree, filePath: `${options.name}/project.json` });
+    const projectJson = readNxGeneratedJsonFile({ tree, filePath: `apps/${options.name}/project.json` });
     expect(projectJson.targets.build.options.generatePackageJson).toBe(true);
     expect(projectJson.targets.killports).toBeDefined();
     expect(projectJson.targets.deploy).toBeDefined();
