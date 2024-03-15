@@ -1,7 +1,7 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
-import { readNxGeneratedJsonFile } from '../../utility';
+import { readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility';
 
 import { backendAppGenerator } from './generator';
 import { BackendAppGeneratorSchema } from './schema';
@@ -23,5 +23,8 @@ describe('backend-app generator', () => {
     expect(projectJson.targets.build.options.generatePackageJson).toBe(true);
     expect(projectJson.targets.killports).toBeDefined();
     expect(projectJson.targets.deploy).toBeDefined();
+
+    const index = readNxGeneratedFile({ tree, filePath: `apps/${options.name}/src/index.ts` });
+    expect(index).toBeDefined();
   });
 });
