@@ -2,7 +2,13 @@ import { names, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { libraryGenerator } from '@nx/js';
 
-import { appendNxGeneratedJsonFile, readNxGeneratedJsonFile } from './GeneratorUtility';
+import {
+  appendNxGeneratedFile,
+  appendNxGeneratedJsonFile,
+  readNxGeneratedFile,
+  readNxGeneratedJsonFile,
+  writeNxGeneratedFile,
+} from './GeneratorUtility';
 
 describe('Generator Utility', () => {
   let tree: Tree;
@@ -123,6 +129,23 @@ describe('Generator Utility', () => {
 
       const packageJson = readNxGeneratedJsonFile({ tree, filePath: `${libName}/package.json` });
       expect(packageJson.value).toStrictEqual(2);
+    });
+
+    test('appendNxGeneratedFile', () => {
+      const filePath = 'index.ts';
+      writeNxGeneratedFile({
+        tree,
+        filePath,
+        fileContent: `
+        // Start
+        // End
+      `,
+      });
+
+      appendNxGeneratedFile({ tree, pattern: '// End', filePath, fileContent: `export const api = new Api();` });
+
+      const fileContent = readNxGeneratedFile({ tree, filePath });
+      expect(fileContent.search('export const api = new Api();')).toBeDefined();
     });
   });
 });
