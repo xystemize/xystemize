@@ -9,7 +9,8 @@
     "@nx/nest": "18.0.7",
     "@nx/js": "18.0.7",
     "@nx/next": "18.0.7",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "@xystemize/app-core": "^0.0.0-e2e || ^0.0.1 || ^1.0.0-alpha.1"
   },
   "type": "commonjs",
   "main": "./src/index.js",
