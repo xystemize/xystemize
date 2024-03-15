@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Tree } from '@nx/devkit';
-import { isArray, isPlainObject } from 'lodash';
+import { first, isArray, isPlainObject } from 'lodash';
 
 export const readNxGeneratedFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
   const content = tree.read(filePath);
@@ -22,6 +22,35 @@ export const writeNxGeneratedFile = ({
   fileContent: any;
 }) => {
   return tree.write(filePath, fileContent);
+};
+
+export const appendNxGeneratedFile = ({
+  tree,
+  filePath,
+  fileContent,
+  pattern,
+}: {
+  tree: Tree;
+  filePath: string;
+  fileContent: any;
+  pattern?: string | RegExp;
+}) => {
+  let currentFileContent = readNxGeneratedFile({ tree, filePath }) ?? '';
+
+  const actualStringUsingPattern = pattern ? first(currentFileContent.match(pattern)) : null;
+
+  if (pattern && actualStringUsingPattern) {
+    let additionalContent = fileContent;
+    additionalContent += '\n';
+    additionalContent += actualStringUsingPattern;
+    currentFileContent = currentFileContent.replace(pattern, additionalContent);
+  } else {
+    let additionalContent = '\n';
+    additionalContent += fileContent;
+    currentFileContent += additionalContent;
+  }
+
+  return tree.write(filePath, currentFileContent);
 };
 
 export const readNxGeneratedJsonFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
