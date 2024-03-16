@@ -3,6 +3,7 @@ import { applicationGenerator } from '@nx/nest';
 import { kebabCase } from 'lodash';
 import * as path from 'path';
 
+import { deleteNxGeneratedFile, writeNxGeneratedFile } from '../../utility';
 import backendApiGenerator from '../backend-api/generator';
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
 
@@ -32,6 +33,13 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
     folderName: '@api-v1',
     directory: `${projectRoot}/src`,
   });
+
+  writeNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep`, fileContent: '' });
+
+  // delete files
+  deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/app` });
+  deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/assets` });
+  deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/main.ts` });
 
   await formatFiles(tree);
 }

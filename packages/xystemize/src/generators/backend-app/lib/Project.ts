@@ -16,6 +16,8 @@ export const updateProjectJson = ({
   const projectJson = readNxGeneratedJsonFile({ tree, filePath: projectJsonFilePath });
 
   projectJson.targets.build.options.generatePackageJson = true;
+  projectJson.targets.build.options.main = `${projectRoot}/src/index.ts`;
+  projectJson.targets.build.options.assets = [`${projectRoot}/src/@assets`];
 
   projectJson.targets = {
     ...projectJson.targets,
