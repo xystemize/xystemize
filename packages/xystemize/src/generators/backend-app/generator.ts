@@ -3,6 +3,7 @@ import { applicationGenerator } from '@nx/nest';
 import { kebabCase } from 'lodash';
 import * as path from 'path';
 
+import backendApiGenerator from '../backend-api/generator';
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
 
 import { updateProjectJson } from './lib/Project';
@@ -22,10 +23,15 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   addDependenciesToPackageJson(tree, backendDependencies, backendDevDependencies);
 
   await applicationGenerator(tree, resolvedOptions);
-
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
-
   updateProjectJson({ tree, projectRoot, options: resolvedOptions });
+
+  // add backend-api
+  await backendApiGenerator(tree, {
+    name: 'apiv1',
+    folderName: '@api-v1',
+    directory: `${projectRoot}/src`,
+  });
 
   await formatFiles(tree);
 }

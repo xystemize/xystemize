@@ -5,7 +5,7 @@ import { region } from 'firebase-functions/v1';
 // ### Configs:Start ###
 const functionsRegion = 'us-central1';
 const regularFunction = region(functionsRegion).https;
-// ### Configs:Start ###
+// ### Configs:End ###
 
 // ### APIs:Start ###
 // ### APIs:End ###

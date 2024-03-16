@@ -8,9 +8,10 @@ import { appendNxGeneratedFile } from '../../utility';
 import { BackendApiGeneratorSchema } from './schema';
 
 export async function backendApiGenerator(tree: Tree, options: BackendApiGeneratorSchema) {
-  const defaultDirectory = 'apps/backend/src';
+  const defaultRootDirectory = 'apps/backend';
+  const defaultDirectory = `${defaultRootDirectory}/src`;
   const formatedName = toClassName(trim(options.name));
-  const folderName = kebabCase(formatedName);
+  const folderName = options.folderName ?? kebabCase(formatedName);
   const resolvedOptions = {
     ...options,
     name: formatedName,
@@ -25,13 +26,13 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
 
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
 
-  const indexFilePath = `${defaultDirectory}/index.ts`;
+  const indexFilePath = `${resolvedOptions.directory}/index.ts`;
 
   appendNxGeneratedFile({
     tree,
     filePath: indexFilePath,
     pattern: '// ### Imports:End ###',
-    fileContent: `import { ${resolvedOptions.name} } from './${folderName}/${resolvedOptions.name}';`,
+    fileContent: `import { ${resolvedOptions.name} } from './${resolvedOptions.folderName}/${resolvedOptions.name}';`,
   });
 
   appendNxGeneratedFile({
