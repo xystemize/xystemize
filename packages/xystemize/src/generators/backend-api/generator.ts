@@ -1,5 +1,5 @@
 import { formatFiles, generateFiles, Tree } from '@nx/devkit';
-import { toClassName, toPropertyName } from '@xystemize/app-core';
+import { removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app-core';
 import { kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
@@ -12,13 +12,18 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
   const defaultDirectory = `${defaultRootDirectory}/src`;
   const formatedName = toClassName(trim(options.name));
   const folderName = options.folderName ?? kebabCase(formatedName);
+
+  const directory = removeTrailingSlash(options.directory ?? defaultDirectory);
+  const hasSourceFolder = (directory?.search('src') ?? -1) >= 0;
+  const normalizedDirectory = hasSourceFolder ? directory : `${directory}/src`;
+
   const resolvedOptions = {
     ...options,
     name: formatedName,
     nameLowerCase: formatedName.toLowerCase(),
     nameLowerCamelCase: toPropertyName(formatedName),
     folderName: folderName,
-    directory: options.directory ?? defaultDirectory,
+    directory: normalizedDirectory ?? defaultDirectory,
     pascalCaseFiles: true,
     tpl: '',
   };
