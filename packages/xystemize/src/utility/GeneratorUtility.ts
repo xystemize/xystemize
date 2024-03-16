@@ -165,3 +165,23 @@ export const checkIfDependenciesExist = ({
     }
   });
 };
+
+export const fileShouldExists = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
+  const file = readNxGeneratedFile({ tree, filePath });
+
+  if (file === null || file === undefined) {
+    throw new Error('FILE_DOESNT_EXIST');
+  }
+
+  return true;
+};
+
+export const fileShouldNotExists = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
+  const file = readNxGeneratedFile({ tree, filePath });
+
+  if (file !== null) {
+    throw new Error('FILE_EXIST');
+  }
+
+  return true;
+};
