@@ -53,7 +53,7 @@ function createTestProject() {
     recursive: true,
   });
 
-  execSync(`npx create-nx-workspace@latest ${projectName} --preset xystemize --nxCloud=skip --no-interactive`, {
+  execSync(`npx --yes create-nx-workspace@latest ${projectName} --preset xystemize --nxCloud=skip --no-interactive`, {
     cwd: dirname(projectDirectory),
     stdio: 'inherit',
     env: process.env,
