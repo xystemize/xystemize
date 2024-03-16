@@ -53,6 +53,10 @@ export const appendNxGeneratedFile = ({
   return tree.write(filePath, currentFileContent);
 };
 
+export const deleteNxGeneratedFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
+  return tree.delete(filePath);
+};
+
 export const readNxGeneratedJsonFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
   const content = readNxGeneratedFile({ tree, filePath });
 
