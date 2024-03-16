@@ -17,6 +17,24 @@ export const readNxGeneratedFile = ({ tree, filePath }: { tree: Tree; filePath: 
   return content.toString('utf8');
 };
 
+export const readNxGenerateFileContent = ({
+  tree,
+  filePath,
+  pattern,
+}: {
+  tree: Tree;
+  filePath: string;
+  pattern: string | RegExp;
+}) => {
+  const content = readNxGeneratedFile({ tree, filePath });
+
+  if (!content) {
+    return null;
+  }
+
+  return first(content.match(pattern)) || '';
+};
+
 export const writeNxGeneratedFile = ({
   tree,
   filePath,
