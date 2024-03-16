@@ -8,6 +8,7 @@ import {
   AppendStategy,
   readNxGeneratedFile,
   readNxGeneratedJsonFile,
+  readNxGenerateFileContent,
   writeNxGeneratedFile,
 } from './GeneratorUtility';
 
@@ -153,6 +154,47 @@ describe('Generator Utility', () => {
 
       const fileContent = readNxGeneratedFile({ tree, filePath });
       expect(fileContent.includes('export const api = new Api();')).toBeDefined();
+    });
+
+    test('readNxGenerateFileContent', () => {
+      const filePath = 'ApiV1.ts';
+
+      writeNxGeneratedFile({
+        tree,
+        filePath,
+        fileContent: `
+          @Module({
+            imports: [
+              Value,
+            Value2,
+            ],
+          })
+          export class Apiv1Module {}
+
+          initializeApiServer({
+            apiInstance: Apiv1,
+            functionName: 'apiv1',
+            module: Apiv1Module,
+          });
+        `,
+      });
+
+      const content = readNxGenerateFileContent({
+        tree,
+        filePath,
+        pattern: new RegExp(/@Module\((\{[^]*?\})\)/),
+      });
+
+      expect(content.replace(/\s+/g, '')).toBe(
+        `
+        @Module({
+          imports: [
+            Value,
+          Value2,
+          ],
+        })
+      `.replace(/\s+/g, '')
+      );
     });
   });
 });
