@@ -52,3 +52,7 @@ export const limitCharacter = ({ max, text }: { text: string | null | undefined;
 
   return text.substring(0, max) + '...';
 };
+
+export const removeTrailingSlash = (path: string): string => {
+  return path.replace(/\/+$/, '');
+};
