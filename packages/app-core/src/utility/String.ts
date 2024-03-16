@@ -58,5 +58,5 @@ export const removeTrailingSlash = (path: string): string => {
 };
 
 export const isCharExistsInString = ({ string, char }: { string?: string | null; char: string }) => {
-  return (string?.search(char) ?? -1) >= 0;
+  return string?.includes(char);
 };

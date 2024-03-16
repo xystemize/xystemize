@@ -14,7 +14,7 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
   const folderName = options.folderName ?? kebabCase(formatedName);
 
   const directory = removeTrailingSlash(options.directory ?? defaultDirectory);
-  const hasSourceFolder = (directory?.search('src') ?? -1) >= 0;
+  const hasSourceFolder = directory?.includes('src');
   const normalizedDirectory = hasSourceFolder ? directory : `${directory}/src`;
 
   const resolvedOptions = {

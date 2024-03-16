@@ -145,7 +145,7 @@ describe('Generator Utility', () => {
       appendNxGeneratedFile({ tree, pattern: '// End', filePath, fileContent: `export const api = new Api();` });
 
       const fileContent = readNxGeneratedFile({ tree, filePath });
-      expect(fileContent.search('export const api = new Api();')).toBeDefined();
+      expect(fileContent.includes('export const api = new Api();')).toBeDefined();
     });
   });
 });
