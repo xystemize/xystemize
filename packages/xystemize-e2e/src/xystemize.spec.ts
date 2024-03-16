@@ -20,7 +20,7 @@ describe('xystemize', () => {
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install xystemize@e2e`, {
+    execSync(`npm install xystemize@e2e @xystemize/app-core@e2e @xystemize/backend@e2e`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
@@ -32,6 +32,61 @@ describe('xystemize', () => {
     execSync('npm ls xystemize', {
       cwd: projectDirectory,
       stdio: 'inherit',
+    });
+  });
+
+  it('remove and regenerate backend', () => {
+    const command = [
+      'npx nx generate @nx/workspace:remove --projectName=backend-e2e --no-interactive',
+      'npx nx generate @nx/workspace:remove --projectName=backend --no-interactive',
+      'npx nx generate xystemize:backend-app --name=backend --no-interactive',
+    ].join(' && ');
+
+    execSync(command, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('remove and regenerate marketing', () => {
+    const command = [
+      'npx nx generate @nx/workspace:remove --projectName=marketing-e2e --no-interactive',
+      'npx nx generate @nx/workspace:remove --projectName=marketing --no-interactive',
+      'npx nx generate xystemize:backend-app --name=marketing --no-interactive',
+    ].join(' && ');
+
+    execSync(command, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('remove and regenerate mobile', () => {
+    const command = [
+      'npx nx generate @nx/workspace:remove --projectName=mobile --no-interactive',
+      'npx nx generate xystemize:backend-app --name=mobile --no-interactive',
+    ].join(' && ');
+
+    execSync(command, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('remove and regenerate web', () => {
+    const command = [
+      'npx nx generate @nx/workspace:remove --projectName=web-e2e --no-interactive',
+      'npx nx generate @nx/workspace:remove --projectName=web --no-interactive',
+      'npx nx generate xystemize:backend-app --name=web --no-interactive',
+    ].join(' && ');
+
+    execSync(command, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
     });
   });
 });
