@@ -56,3 +56,7 @@ export const limitCharacter = ({ max, text }: { text: string | null | undefined;
 export const removeTrailingSlash = (path: string): string => {
   return path.replace(/\/+$/, '');
 };
+
+export const isCharExistsInString = ({ string, char }: { string?: string | null; char: string }) => {
+  return (string?.search(char) ?? -1) >= 0;
+};
