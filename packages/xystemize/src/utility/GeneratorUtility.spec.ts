@@ -5,6 +5,7 @@ import { libraryGenerator } from '@nx/js';
 import {
   appendNxGeneratedFile,
   appendNxGeneratedJsonFile,
+  AppendStategy,
   readNxGeneratedFile,
   readNxGeneratedJsonFile,
   writeNxGeneratedFile,
@@ -142,7 +143,13 @@ describe('Generator Utility', () => {
       `,
       });
 
-      appendNxGeneratedFile({ tree, pattern: '// End', filePath, fileContent: `export const api = new Api();` });
+      appendNxGeneratedFile({
+        tree,
+        filePath,
+        fileContent: `export const api = new Api();`,
+        pattern: '// End',
+        stategy: AppendStategy.AddAbovePattern,
+      });
 
       const fileContent = readNxGeneratedFile({ tree, filePath });
       expect(fileContent.includes('export const api = new Api();')).toBeDefined();

@@ -2,6 +2,11 @@
 import { Tree } from '@nx/devkit';
 import { first, isArray, isPlainObject } from 'lodash';
 
+export enum AppendStategy {
+  AddAbovePattern,
+  Replace,
+}
+
 export const readNxGeneratedFile = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
   const content = tree.read(filePath);
 
@@ -29,25 +34,41 @@ export const appendNxGeneratedFile = ({
   filePath,
   fileContent,
   pattern,
+  stategy,
 }: {
   tree: Tree;
   filePath: string;
   fileContent: any;
   pattern?: string | RegExp;
+  stategy: AppendStategy;
 }) => {
   let currentFileContent = readNxGeneratedFile({ tree, filePath }) ?? '';
 
-  const actualStringUsingPattern = pattern ? first(currentFileContent.match(pattern)) : null;
+  if (stategy === AppendStategy.AddAbovePattern) {
+    const actualStringUsingPattern = pattern ? first(currentFileContent.match(pattern)) : null;
 
-  if (pattern && actualStringUsingPattern) {
-    let additionalContent = fileContent;
-    additionalContent += '\n';
-    additionalContent += actualStringUsingPattern;
-    currentFileContent = currentFileContent.replace(pattern, additionalContent);
-  } else {
-    let additionalContent = '\n';
-    additionalContent += fileContent;
-    currentFileContent += additionalContent;
+    if (pattern && actualStringUsingPattern) {
+      let additionalContent = fileContent;
+      additionalContent += '\n';
+      additionalContent += actualStringUsingPattern;
+      currentFileContent = currentFileContent.replace(pattern, additionalContent);
+    } else {
+      let additionalContent = '\n';
+      additionalContent += fileContent;
+      currentFileContent += additionalContent;
+    }
+  }
+
+  if (stategy === AppendStategy.Replace) {
+    const actualStringUsingPattern = pattern ? first(currentFileContent.match(pattern)) : null;
+
+    if (pattern && actualStringUsingPattern) {
+      currentFileContent = currentFileContent.replace(pattern, fileContent);
+    } else {
+      let additionalContent = '\n';
+      additionalContent += fileContent;
+      currentFileContent += additionalContent;
+    }
   }
 
   return tree.write(filePath, currentFileContent);

@@ -3,7 +3,7 @@ import { removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app
 import { kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
-import { appendNxGeneratedFile } from '../../utility';
+import { appendNxGeneratedFile, AppendStategy } from '../../utility';
 
 import { BackendApiGeneratorSchema } from './schema';
 
@@ -36,15 +36,17 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
   appendNxGeneratedFile({
     tree,
     filePath: indexFilePath,
-    pattern: '// ### Imports:End ###',
     fileContent: `import { ${resolvedOptions.name} } from './${resolvedOptions.folderName}/${resolvedOptions.name}';`,
+    pattern: '// ### Imports:End ###',
+    stategy: AppendStategy.AddAbovePattern,
   });
 
   appendNxGeneratedFile({
     tree,
     filePath: indexFilePath,
-    pattern: '// ### APIs:End ###',
     fileContent: `export const ${resolvedOptions.nameLowerCase} = regularFunction.onRequest(${resolvedOptions.name});`,
+    pattern: '// ### APIs:End ###',
+    stategy: AppendStategy.AddAbovePattern,
   });
 
   await formatFiles(tree);
