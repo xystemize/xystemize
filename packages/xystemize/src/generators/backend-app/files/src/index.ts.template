@@ -1,4 +1,5 @@
 // ### Imports:Start ###
+import 'reflect-metadata';
 import { region } from 'firebase-functions/v1';
 // ### Imports:End ###
 

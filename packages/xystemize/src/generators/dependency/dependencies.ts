@@ -5,6 +5,7 @@ export const generalDependencies = {
   mobx: '^6.12.0',
   'mobx-react-lite': '^4.0.5',
   lodash: '^4.17.21',
+  'reflect-metadata': '^0.2.1',
 };
 
 export const generalDevDependencies = {
@@ -22,6 +23,8 @@ export const backendDependencies = {
 
 export const backendDevDependencies = {
   'firebase-tools': '^13.4.0',
+  'kill-port': '^2.0.1',
+  ttab: '^0.8.0',
 };
 
 export const frontendDependencies = {
