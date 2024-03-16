@@ -1,6 +1,5 @@
 import { names, readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { execAsync } from '@xystemize/utility';
 
 import { readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
 
@@ -32,14 +31,5 @@ describe('js-lib generator', () => {
         libName: 'app-core',
       },
     });
-  });
-
-  test('jsLibGenerator-e2e', async () => {
-    try {
-      await execAsync('npx nx generate xystemize:js-lib --name=testlib --no-interactive --dry-run');
-    } catch (err) {
-      // eslint-disable-next-line no-undef
-      console.info(err);
-    }
   });
 });

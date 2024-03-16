@@ -22,7 +22,6 @@
     "paths": {
       "@xystemize/app-core": ["packages/app-core/src/index.ts"],
       "@xystemize/backend": ["packages/backend/src/index.ts"],
-      "@xystemize/utility": ["packages/utility/src/index.ts"],
       "xystemize": ["packages/xystemize/src/index.ts"]
     }
   },
