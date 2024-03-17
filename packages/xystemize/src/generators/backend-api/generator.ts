@@ -25,7 +25,6 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
     folderName: folderName,
     directory: normalizedDirectory ?? defaultDirectory,
     pascalCaseFiles: true,
-    tpl: '',
   };
   const projectRoot = `${resolvedOptions.directory}/${resolvedOptions.folderName}`;
 
