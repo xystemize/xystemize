@@ -35,6 +35,11 @@
       "factory": "./src/generators/backend-api/generator",
       "schema": "./src/generators/backend-api/schema.json",
       "description": "backend-api generator"
+    },
+    "backend-component": {
+      "factory": "./src/generators/backend-component/generator",
+      "schema": "./src/generators/backend-component/schema.json",
+      "description": "backend-component generator"
     }
   }
 }

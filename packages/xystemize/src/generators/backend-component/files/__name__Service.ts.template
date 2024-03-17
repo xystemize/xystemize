@@ -1,0 +1,9 @@
+import { FirestoreService } from '@xystemize/backend';
+import { Injectable } from '@nestjs/common';
+import { autoInjectable } from 'tsyringe';
+
+@autoInjectable()
+@Injectable()
+export class <%= name %>Service {
+  constructor(private readonly firestoreService: FirestoreService) {}
+}

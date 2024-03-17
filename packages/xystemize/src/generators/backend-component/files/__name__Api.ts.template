@@ -1,0 +1,14 @@
+import { AppBackendModule } from '@xystemize/backend';
+import { Module } from '@nestjs/common';
+
+import { <%= name %>Controller } from './<%= name %>Controller';
+import { <%= name %>Service } from './<%= name %>Service';
+
+@Module({
+  imports: [AppBackendModule],
+  controllers: [<%= name %>Controller],
+  providers: [<%= name %>Service],
+  exports: [<%= name %>Service],
+})
+export class <%= name %>Module {}
+

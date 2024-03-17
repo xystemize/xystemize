@@ -1,0 +1,9 @@
+import { Name } from '@xystemize/app-core';
+import { Controller } from '@nestjs/common';
+
+import { <%= name %>Service } from './<%= name %>Service';
+
+@Controller(Name.<%= nameCamelCase %>)
+export class <%= name %>Controller {
+  constructor(private readonly <%= nameCamelCase %>Service: <%= name %>Service) {}
+}
