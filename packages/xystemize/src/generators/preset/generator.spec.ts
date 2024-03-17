@@ -1,7 +1,12 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
-import { checkIfDependenciesExist, readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
+import {
+  checkIfDependenciesExist,
+  fileShouldExists,
+  readNxGeneratedFile,
+  readNxGeneratedJsonFile,
+} from '../../utility/GeneratorUtility';
 import { allDependencies, allDevDependencies } from '../dependency/dependencies';
 
 import { presetGenerator } from './generator';
@@ -69,5 +74,14 @@ describe('preset generator', () => {
     expect(eslintBase).toBeDefined();
     expect(eslint.extends).toStrictEqual(['./.eslintrc.base.json']);
     expect(eslint.plugins).toStrictEqual(['@nx', 'unused-imports', 'simple-import-sort']);
+
+    const appCoreRoot = 'libs/app-core';
+    const appCoreProjectJson = readNxGeneratedJsonFile({ tree, filePath: `${appCoreRoot}/project.json` });
+    expect(appCoreProjectJson.name).toBe('app-core');
+
+    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/index.ts` });
+    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/constants/Name.ts` });
+    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/string/@GeneralString.ts` });
+    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/string/ErrorString.ts` });
   });
 });

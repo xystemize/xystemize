@@ -23,7 +23,6 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
     folderName: folderName,
     directory: normalizedDirectory ?? defaultDirectory,
     pascalCaseFiles: true,
-    tpl: '',
   };
   const projectRoot = `${resolvedOptions.directory}/${resolvedOptions.folderName}`;
 
