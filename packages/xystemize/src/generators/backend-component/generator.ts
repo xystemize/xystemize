@@ -1,7 +1,9 @@
 import { formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app-core';
-import { kebabCase, trim } from 'lodash';
+import { isArray, kebabCase, trim } from 'lodash';
 import * as path from 'path';
+
+import { appendNxGeneratedFile, AppendStategy, readNxGenerateFileContent } from '../../utility';
 
 import { BackendComponentGeneratorSchema } from './schema';
 
@@ -24,9 +26,65 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
     directory: normalizedDirectory ?? defaultDirectory,
     pascalCaseFiles: true,
   };
-  const projectRoot = `${resolvedOptions.directory}/${resolvedOptions.folderName}`;
+  const moduleName = `${formatedName}Module`;
+  const componentRoot = `${resolvedOptions.directory}/${resolvedOptions.folderName}`;
 
-  generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
+  generateFiles(tree, path.join(__dirname, 'files'), componentRoot, resolvedOptions);
+
+  const apiV1Path = `${resolvedOptions.directory}/@api-v1/ApiV1.ts`;
+  let content = readNxGenerateFileContent({
+    tree,
+    filePath: apiV1Path,
+    pattern: new RegExp(/@Module\((\{[^]*?\})\)/),
+  });
+
+  if (content) {
+    content = content.replace('@Module(', '').replace(')', '').trim().replace(/,\s*}/g, '}');
+    content = content
+      .replace(/([{,]\s*)([a-zA-Z0-9_]+?)\s*:/g, '$1"$2":')
+      .replace(/([[]\s*)([a-zA-Z0-9_]+?)\s*]/g, '$1"$2"');
+
+    const moduleObj = JSON.parse(content);
+
+    if (moduleObj?.imports) {
+      moduleObj.imports.push(moduleName);
+      moduleObj.imports = moduleObj.imports.sort();
+    }
+
+    const moduleValues: string[] = [];
+
+    Object.keys(moduleObj).forEach((key) => {
+      const value = moduleObj[key];
+
+      if (isArray(value)) {
+        moduleValues.push(`${key}: [${value.join(', ')}]`);
+      } else {
+        // don't set for now. we expect all values are array
+      }
+    });
+
+    const newModule = `
+    @Module({
+      ${moduleValues.join(',\n')}
+    })`;
+
+    appendNxGeneratedFile({
+      tree,
+      filePath: apiV1Path,
+      pattern: new RegExp(/@Module\((\{[^]*?\})\)/),
+      stategy: AppendStategy.Replace,
+      fileContent: newModule,
+    });
+
+    appendNxGeneratedFile({
+      tree,
+      filePath: apiV1Path,
+      pattern: 'export const ApiV1',
+      stategy: AppendStategy.AddAbovePattern,
+      fileContent: `import { ${moduleName} } from '../${resolvedOptions.folderName}/${moduleName}';\n`,
+    });
+  }
+
   await formatFiles(tree);
 }
 
