@@ -32,13 +32,17 @@ describe('backend-app generator', () => {
 
     const index = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/index.ts` });
     expect(index).toBeDefined();
-    expect(isCharExistsInString({ char: `import { Apiv1 } from './@api-v1/Apiv1';`, string: index })).toBeTruthy();
+    expect(isCharExistsInString({ char: `import { ApiV1 } from './@api-v1/ApiV1';`, string: index })).toBeTruthy();
     expect(
-      isCharExistsInString({ char: 'export const apiv1 = regularFunction.onRequest(Apiv1);', string: index })
+      isCharExistsInString({ char: 'export const apiv1 = regularFunction.onRequest(ApiV1);', string: index })
     ).toBeTruthy();
 
     const apiv1 = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@api-v1/ApiV1.ts` });
     expect(apiv1).toBeDefined();
+    expect(
+      isCharExistsInString({ char: `import { AccountsModule } from '../accounts/AccountsModule';`, string: apiv1 })
+    ).toBeTruthy();
+    expect(isCharExistsInString({ char: `imports: [AccountsModule],`, string: apiv1 })).toBeTruthy();
 
     const gitkeepInRenamedAssetsFolder = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep` });
     expect(gitkeepInRenamedAssetsFolder).toBe('');
