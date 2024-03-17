@@ -5,6 +5,7 @@ import * as path from 'path';
 
 import { deleteNxGeneratedFile, writeNxGeneratedFile } from '../../utility';
 import backendApiGenerator from '../backend-api/generator';
+import backendComponentGenerator from '../backend-component/generator';
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
 
 import { updateProjectJson } from './lib/Project';
@@ -29,8 +30,14 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
 
   // add backend-api
   await backendApiGenerator(tree, {
-    name: 'apiv1',
+    name: 'ApiV1',
     folderName: '@api-v1',
+    directory: `${projectRoot}/src`,
+  });
+
+  //add backend-component
+  await backendComponentGenerator(tree, {
+    name: 'accounts',
     directory: `${projectRoot}/src`,
   });
 
