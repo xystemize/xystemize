@@ -3,6 +3,7 @@ import { Linter } from '@nx/eslint';
 import * as path from 'path';
 
 import backendAppGenerator from '../backend-app/generator';
+import jsLibGenerator from '../js-lib/generator';
 import marketingAppGenerator from '../marketing-app/generator';
 import mobileAppGenerator from '../mobile-app/generator';
 import webAppGenerator from '../web-app/generator';
@@ -49,6 +50,9 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
       style: 'css',
     });
   }
+
+  // add local app-core to libs
+  jsLibGenerator(tree, { name: 'app-core' });
 
   generateFiles(tree, path.join(__dirname, 'files'), '.', options);
   await setUpPreset({ tree, options });
