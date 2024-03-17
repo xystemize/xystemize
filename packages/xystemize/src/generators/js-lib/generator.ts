@@ -1,6 +1,7 @@
 import { formatFiles, generateFiles, installPackagesTask, names, readJson, Tree } from '@nx/devkit';
 import { libraryGenerator } from '@nx/js';
 import { LibraryGeneratorSchema } from '@nx/js/src/utils/schema';
+import { replace } from 'lodash';
 import * as path from 'path';
 
 import { appendNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
@@ -10,7 +11,7 @@ import { JsLibGeneratorSchema } from './schema';
 export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) {
   const { name, directory } = options;
   const packageJson = readJson(tree, 'package.json');
-  const scopeName = packageJson.scopeName ?? packageJson.name;
+  const scopeName = replace(packageJson.projectName ?? packageJson.name ?? '', '/source', '');
   const libName = names(name).fileName;
   const resolvedOptions = {
     ...options,
