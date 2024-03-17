@@ -14,8 +14,9 @@ describe('backend-component generator', () => {
     tree = createTreeWithEmptyWorkspace();
   });
 
-  it('should run successfully', async () => {
-    const componentRoot = `apps/backend/src/${options.name}`;
+  test('backendComponentGenerator', async () => {
+    const projectRoot = `apps/backend`;
+    const componentRoot = `${projectRoot}/src/${options.name}`;
 
     await backendComponentGenerator(tree, options);
 

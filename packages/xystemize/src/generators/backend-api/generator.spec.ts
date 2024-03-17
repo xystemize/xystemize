@@ -15,7 +15,7 @@ describe('backend-api generator', () => {
     tree = createTreeWithEmptyWorkspace();
   });
 
-  it('should run successfully', async () => {
+  test('backendApiGenerator', async () => {
     const projectRoot = `apps/backend`;
     const componentRoot = `${projectRoot}/src/${options.name}`;
 
