@@ -81,7 +81,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
       filePath: apiV1Path,
       pattern: 'export const ApiV1',
       stategy: AppendStategy.AddAbovePattern,
-      fileContent: `import { ${moduleName} } from '../${resolvedOptions.folderName}/${moduleName}';\n`,
+      fileContent: `import { ${moduleName} } from '../${resolvedOptions.folderName}/${resolvedOptions.name}Api';\n`,
     });
   }
 

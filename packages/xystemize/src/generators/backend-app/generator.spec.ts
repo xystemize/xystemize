@@ -40,7 +40,7 @@ describe('backend-app generator', () => {
     const apiv1 = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@api-v1/ApiV1.ts` });
     expect(apiv1).toBeDefined();
     expect(
-      isCharExistsInString({ char: `import { AccountsModule } from '../accounts/AccountsModule';`, string: apiv1 })
+      isCharExistsInString({ char: `import { AccountsModule } from '../accounts/AccountsApi';`, string: apiv1 })
     ).toBeTruthy();
     expect(isCharExistsInString({ char: `imports: [AccountsModule],`, string: apiv1 })).toBeTruthy();
 
