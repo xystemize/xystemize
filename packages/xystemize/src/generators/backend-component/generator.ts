@@ -3,7 +3,7 @@ import { removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app
 import { isArray, kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
-import { appendNxGeneratedFile, AppendStategy, readNxGenerateFileContent } from '../../utility';
+import { appendNxGeneratedFile, readNxGenerateFileContent, WriteStategy } from '../../utility';
 
 import { BackendComponentGeneratorSchema } from './schema';
 
@@ -30,6 +30,14 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
   const componentRoot = `${resolvedOptions.directory}/${resolvedOptions.folderName}`;
 
   generateFiles(tree, path.join(__dirname, 'files'), componentRoot, resolvedOptions);
+
+  appendNxGeneratedFile({
+    tree,
+    filePath: `libs/app-core/src/constants/Name.ts`,
+    pattern: '// ### DataModel:End ###',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `${resolvedOptions.nameLowerCase} = '${resolvedOptions.nameLowerCase}',`,
+  });
 
   const apiV1Path = `${resolvedOptions.directory}/@api-v1/ApiV1.ts`;
   let content = readNxGenerateFileContent({
@@ -72,7 +80,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
       tree,
       filePath: apiV1Path,
       pattern: new RegExp(/@Module\((\{[^]*?\})\)/),
-      stategy: AppendStategy.Replace,
+      stategy: WriteStategy.Replace,
       fileContent: newModule,
     });
 
@@ -80,7 +88,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
       tree,
       filePath: apiV1Path,
       pattern: 'export const ApiV1',
-      stategy: AppendStategy.AddAbovePattern,
+      stategy: WriteStategy.AddAbovePattern,
       fileContent: `import { ${moduleName} } from '../${resolvedOptions.folderName}/${resolvedOptions.name}Api';\n`,
     });
   }

@@ -2,7 +2,7 @@
 import { Tree } from '@nx/devkit';
 import { first, isArray, isPlainObject } from 'lodash';
 
-export enum AppendStategy {
+export enum WriteStategy {
   AddAbovePattern,
   Replace,
 }
@@ -58,11 +58,15 @@ export const appendNxGeneratedFile = ({
   filePath: string;
   fileContent: any;
   pattern?: string | RegExp;
-  stategy: AppendStategy;
+  stategy: WriteStategy;
 }) => {
   let currentFileContent = readNxGeneratedFile({ tree, filePath }) ?? '';
 
-  if (stategy === AppendStategy.AddAbovePattern) {
+  if (!currentFileContent) {
+    return;
+  }
+
+  if (stategy === WriteStategy.AddAbovePattern) {
     const actualStringUsingPattern = pattern ? first(currentFileContent.match(pattern)) : null;
 
     if (pattern && actualStringUsingPattern) {
@@ -77,7 +81,7 @@ export const appendNxGeneratedFile = ({
     }
   }
 
-  if (stategy === AppendStategy.Replace) {
+  if (stategy === WriteStategy.Replace) {
     const actualStringUsingPattern = pattern ? first(currentFileContent.match(pattern)) : null;
 
     if (pattern && actualStringUsingPattern) {

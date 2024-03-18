@@ -5,11 +5,11 @@ import { libraryGenerator } from '@nx/js';
 import {
   appendNxGeneratedFile,
   appendNxGeneratedJsonFile,
-  AppendStategy,
   readNxGeneratedFile,
   readNxGeneratedJsonFile,
   readNxGenerateFileContent,
   writeNxGeneratedFile,
+  WriteStategy,
 } from './GeneratorUtility';
 
 describe('Generator Utility', () => {
@@ -149,7 +149,7 @@ describe('Generator Utility', () => {
         filePath,
         fileContent: `export const api = new Api();`,
         pattern: '// End',
-        stategy: AppendStategy.AddAbovePattern,
+        stategy: WriteStategy.AddAbovePattern,
       });
 
       const fileContent = readNxGeneratedFile({ tree, filePath });
