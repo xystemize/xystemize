@@ -57,8 +57,6 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   generateFiles(tree, path.join(__dirname, 'files'), '.', options);
   await setUpPreset({ tree, options });
   await formatFiles(tree);
-
-  // test
 }
 
 export default presetGenerator;
