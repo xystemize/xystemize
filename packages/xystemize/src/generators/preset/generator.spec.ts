@@ -1,5 +1,6 @@
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { isCharExistsInString } from '@xystemize/app-core';
 
 import {
   checkIfDependenciesExist,
@@ -90,5 +91,8 @@ describe('preset generator', () => {
 
     fileShouldNotExists({ tree, filePath: `${appCoreRoot}/src/lib/AppCore.spec.ts` });
     fileShouldNotExists({ tree, filePath: `${appCoreRoot}/src/lib/AppCore.ts` });
+
+    const name = readNxGeneratedFile({ tree, filePath: `${appCoreRoot}/src/constants/Name.ts` });
+    expect(isCharExistsInString({ char: `accounts = 'accounts',`, string: name })).toBeTruthy();
   });
 });
