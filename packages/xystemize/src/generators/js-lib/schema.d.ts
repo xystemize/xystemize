@@ -1,6 +1,6 @@
-import { Schema } from '@nx/node/src/generators/library/schema';
+import { LibraryGeneratorSchema } from '@nx/js/src/utils/schema';
 
-export interface JsLibGeneratorSchema extends Schema {
+export interface JsLibGeneratorSchema extends LibraryGeneratorSchema {
   name: string;
   directory?: string | null;
 }
