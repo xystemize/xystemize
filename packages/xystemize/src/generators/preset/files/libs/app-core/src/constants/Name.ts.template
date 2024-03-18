@@ -1,4 +1,5 @@
 export enum Name {
+  // ### General:Start ###
   id = 'id',
   _id = '_id',
   entityId = 'entityId',
@@ -22,11 +23,21 @@ export enum Name {
   visibilityId = 'visibilityId',
   customClaim = 'customClaim',
   value = 'value',
+  // ### General:End ###
 
+  // ### Api:Start ###
+  // ### Api:End ###
+
+  // ### Data:Start ###
+  // ### Data:End ###
+
+  // ### Language:Start ###
   en = 'en',
   es = 'es',
   zh = 'zh',
+  // ### Language:End ###
 
+  // ### Env:Start ###
   NODE_ENV = 'NODE_ENV',
   FIREBASE_AUTH_EMULATOR_URL = 'FIREBASE_AUTH_EMULATOR_URL',
   FBASE_EMULATOR_SUITE_URL = 'FBASE_EMULATOR_SUITE_URL',
@@ -36,4 +47,5 @@ export enum Name {
   FBASE_CLIENT_CREDENTIAL = 'FBASE_CLIENT_CREDENTIAL',
   FUNCTION_TARGET = 'FUNCTION_TARGET',
   K_SERVICE = 'K_SERVICE',
+  // ### Env:End ###
 }

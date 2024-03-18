@@ -17,6 +17,12 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
 
   await setUpDependencies({ tree });
 
+  // add local app-core to libs
+  await jsLibGenerator(tree, { name: 'app-core' });
+  deleteNxGeneratedFile({ tree, filePath: 'libs/app-core/src/lib' });
+
+  generateFiles(tree, path.join(__dirname, 'files'), '.', options);
+
   if (options.includeBackend) {
     await backendAppGenerator(tree, {
       name: 'backend',
@@ -52,11 +58,6 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
     });
   }
 
-  // add local app-core to libs
-  await jsLibGenerator(tree, { name: 'app-core' });
-  deleteNxGeneratedFile({ tree, filePath: 'libs/app-core/src/lib' });
-
-  generateFiles(tree, path.join(__dirname, 'files'), '.', options);
   await setUpPreset({ tree, options });
   await formatFiles(tree);
 }

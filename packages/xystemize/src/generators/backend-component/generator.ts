@@ -34,7 +34,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
   appendNxGeneratedFile({
     tree,
     filePath: `libs/app-core/src/constants/Name.ts`,
-    pattern: '// ### DataModel:End ###',
+    pattern: '// ### Data:End ###',
     stategy: WriteStategy.AddAbovePattern,
     fileContent: `${resolvedOptions.nameLowerCase} = '${resolvedOptions.nameLowerCase}',`,
   });
