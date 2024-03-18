@@ -46,7 +46,7 @@ describe('preset generator', () => {
     const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
     const scripts = packageJson.scripts;
 
-    expect(packageJson.projectName).toBe(options.name);
+    expect(packageJson.orgName).toBe('@proj');
     expect(packageJson.scripts).toBeDefined();
     expect(packageJson['lint-staged']).toBeDefined();
     expect(scripts.prepare).toBeDefined();

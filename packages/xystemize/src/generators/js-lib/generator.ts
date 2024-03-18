@@ -11,7 +11,7 @@ import { JsLibGeneratorSchema } from './schema';
 export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) {
   const { name, directory = 'libs' } = options;
   const packageJson = readJson(tree, 'package.json');
-  const scopeName = replace(packageJson.projectName ?? packageJson.name ?? '', '/source', '');
+  const scopeName = replace(packageJson.orgName ?? packageJson.name ?? '', '/source', '');
   const libName = names(name).fileName;
   const resolvedOptions: JsLibGeneratorSchema = {
     ...options,

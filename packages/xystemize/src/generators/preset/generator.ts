@@ -58,7 +58,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
     });
   }
 
-  await setUpPreset({ tree, options });
+  await setUpPreset({ tree });
   await formatFiles(tree);
 }
 

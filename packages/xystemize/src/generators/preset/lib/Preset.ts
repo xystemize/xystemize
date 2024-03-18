@@ -1,18 +1,8 @@
 import { Tree } from '@nx/devkit';
 
 import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '../../../utility/GeneratorUtility';
-import { PresetGeneratorSchema } from '../schema';
 
-export const setUpPreset = async ({ tree, options }: { tree: Tree; options: PresetGeneratorSchema }) => {
-  // update tsconfig.base.json
-  appendNxGeneratedJsonFile({
-    tree,
-    filePath: 'package.json',
-    fileContent: {
-      projectName: options.name.toLowerCase(),
-    },
-  });
-
+export const setUpPreset = async ({ tree }: { tree: Tree }) => {
   // update tsconfig.base.json
   appendNxGeneratedJsonFile({
     tree,

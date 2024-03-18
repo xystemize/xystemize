@@ -1,9 +1,13 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
+import { trim } from 'lodash';
 
-import { appendNxGeneratedJsonFile } from '../../../utility';
+import { appendNxGeneratedJsonFile, readNxGeneratedJsonFile } from '../../../utility';
 import { generalDependencies, generalDevDependencies } from '../../dependency/dependencies';
 
 export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
+  const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
+  const orgName = trim(packageJson.name).replace('/source', '');
+
   // add dependencies
   addDependenciesToPackageJson(tree, generalDependencies, generalDevDependencies);
 
@@ -12,6 +16,7 @@ export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
     tree,
     filePath: 'package.json',
     fileContent: {
+      orgName: orgName,
       scripts: {
         prepare: 'husky install && echo "npm run lint" > .husky/pre-push',
         lint: 'npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check --fix',

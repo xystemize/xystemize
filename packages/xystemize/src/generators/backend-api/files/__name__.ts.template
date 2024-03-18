@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { Name } from '<%= projectName %>/app-core';
+import { Name } from '<%= orgName %>/app-core';
 import express from 'express';
 
 import { initializeApiServer } from '@xystemize/backend';
