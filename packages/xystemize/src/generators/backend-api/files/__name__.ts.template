@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { Name } from '<%= projectName %>/app-core';
 import express from 'express';
 
 import { initializeApiServer } from '@xystemize/backend';
@@ -12,6 +13,6 @@ export class <%= name %>Module {}
 
 initializeApiServer({
   apiInstance: <%= name %>,
-  functionName: '<%= nameLowerCase %>',
+  functionName: Name.<%= nameLowerCase %>,
   module: <%= name %>Module,
 });
