@@ -52,7 +52,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   }
 
   // add local app-core to libs
-  jsLibGenerator(tree, { name: 'app-core' });
+  await jsLibGenerator(tree, { name: 'app-core' });
 
   generateFiles(tree, path.join(__dirname, 'files'), '.', options);
   await setUpPreset({ tree, options });

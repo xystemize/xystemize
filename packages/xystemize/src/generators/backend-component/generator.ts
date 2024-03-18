@@ -59,7 +59,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
       if (isArray(value)) {
         moduleValues.push(`${key}: [${value.join(', ')}]`);
       } else {
-        // don't set for now. we expect all values are array
+        // don't set for now. we expect all values to be array
       }
     });
 
