@@ -1,7 +1,8 @@
 import { Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { isCharExistsInString } from '@xystemize/app-core';
 
-import { fileShouldExists, readNxGeneratedFile } from '../../utility';
+import { readNxGeneratedFile } from '../../utility';
 
 import { backendApiGenerator } from './generator';
 import { BackendApiGeneratorSchema } from './schema';
@@ -23,6 +24,7 @@ describe('backend-api generator', () => {
     const index = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/index.ts` });
     expect(index).toBeDefined();
 
-    fileShouldExists({ tree, filePath: `${componentRoot}/Api.ts` });
+    const api = readNxGeneratedFile({ tree, filePath: `${componentRoot}/Api.ts` });
+    expect(isCharExistsInString({ char: `import { Name } from '@proj/app-core';`, string: api }));
   });
 });
