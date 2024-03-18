@@ -1,6 +1,6 @@
 import { formatFiles, generateFiles, installPackagesTask, names, readJson, Tree } from '@nx/devkit';
-import { libraryGenerator } from '@nx/js';
-import { LibraryGeneratorSchema } from '@nx/js/src/utils/schema';
+import { libraryGenerator } from '@nx/node';
+import { Schema } from '@nx/node/src/generators/library/schema';
 import { replace } from 'lodash';
 import * as path from 'path';
 
@@ -13,7 +13,7 @@ export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) 
   const packageJson = readJson(tree, 'package.json');
   const scopeName = replace(packageJson.projectName ?? packageJson.name ?? '', '/source', '');
   const libName = names(name).fileName;
-  const resolvedOptions = {
+  const resolvedOptions: JsLibGeneratorSchema = {
     ...options,
     name: libName,
     directory: directory,
@@ -22,14 +22,14 @@ export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) 
     importPath: `${scopeName}/${libName}`,
   };
 
-  const projectRoot = `${resolvedOptions.directory}/${libName}`;
+  const libRoot = `${resolvedOptions.directory}/${libName}`;
 
-  await libraryGenerator(tree, resolvedOptions as LibraryGeneratorSchema);
-  generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
+  await libraryGenerator(tree, resolvedOptions as Schema);
+  generateFiles(tree, path.join(__dirname, 'files'), libRoot, resolvedOptions);
 
   appendNxGeneratedJsonFile({
     tree,
-    filePath: `${libName}/package.json`,
+    filePath: `${libRoot}/package.json`,
     fileContent: {
       publishConfig: {
         access: 'public',
@@ -39,7 +39,7 @@ export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) 
 
   appendNxGeneratedJsonFile({
     tree,
-    filePath: `${libName}/project.json`,
+    filePath: `${libRoot}/project.json`,
     fileContent: {
       release: {
         executor: 'nx-release:build-update-publish',
