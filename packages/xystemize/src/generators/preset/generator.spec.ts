@@ -4,6 +4,7 @@ import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import {
   checkIfDependenciesExist,
   fileShouldExists,
+  fileShouldNotExists,
   readNxGeneratedFile,
   readNxGeneratedJsonFile,
 } from '../../utility/GeneratorUtility';
@@ -86,5 +87,8 @@ describe('preset generator', () => {
     fileShouldExists({ tree, filePath: `${appCoreRoot}/src/constants/Name.ts` });
     fileShouldExists({ tree, filePath: `${appCoreRoot}/src/string/@GeneralString.ts` });
     fileShouldExists({ tree, filePath: `${appCoreRoot}/src/string/ErrorString.ts` });
+
+    fileShouldNotExists({ tree, filePath: `${appCoreRoot}/src/lib/AppCore.spec.ts` });
+    fileShouldNotExists({ tree, filePath: `${appCoreRoot}/src/lib/AppCore.ts` });
   });
 });
