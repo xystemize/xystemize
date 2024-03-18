@@ -51,6 +51,14 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
     stategy: WriteStategy.AddAbovePattern,
   });
 
+  appendNxGeneratedFile({
+    tree,
+    filePath: `libs/app-core/src/constants/Name.ts`,
+    pattern: '// ### Api:End ###',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `${resolvedOptions.nameLowerCase} = '${resolvedOptions.nameLowerCase}',`,
+  });
+
   await formatFiles(tree);
 }
 
