@@ -1,0 +1,2 @@
+export * from './constants/index.ts.template';
+export * from './string/index.ts.template';

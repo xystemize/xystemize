@@ -76,6 +76,9 @@ describe('preset generator', () => {
     expect(eslint.plugins).toStrictEqual(['@nx', 'unused-imports', 'simple-import-sort']);
 
     const appCoreRoot = 'libs/app-core';
+    const appCorePackageJson = readNxGeneratedJsonFile({ tree, filePath: `${appCoreRoot}/package.json` });
+    expect(appCorePackageJson.name).toBe('@proj/app-core');
+
     const appCoreProjectJson = readNxGeneratedJsonFile({ tree, filePath: `${appCoreRoot}/project.json` });
     expect(appCoreProjectJson.name).toBe('app-core');
 

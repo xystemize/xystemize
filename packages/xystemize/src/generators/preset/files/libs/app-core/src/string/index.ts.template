@@ -1,0 +1,2 @@
+export * from './@GeneralString.ts.template';
+export * from './ErrorString.ts.template';
