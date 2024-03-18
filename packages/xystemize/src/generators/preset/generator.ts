@@ -2,6 +2,7 @@ import { formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { Linter } from '@nx/eslint';
 import * as path from 'path';
 
+import { deleteNxGeneratedFile } from '../../utility';
 import backendAppGenerator from '../backend-app/generator';
 import jsLibGenerator from '../js-lib/generator';
 import marketingAppGenerator from '../marketing-app/generator';
@@ -53,6 +54,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
 
   // add local app-core to libs
   await jsLibGenerator(tree, { name: 'app-core' });
+  deleteNxGeneratedFile({ tree, filePath: 'libs/app-core/src/lib' });
 
   generateFiles(tree, path.join(__dirname, 'files'), '.', options);
   await setUpPreset({ tree, options });
