@@ -1,2 +1,2 @@
-export * from './constants/index.ts.template';
-export * from './string/index.ts.template';
+export * from './constants';
+export * from './string';
