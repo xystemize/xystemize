@@ -24,7 +24,7 @@ export const updateProjectJson = ({
     killports: {
       executor: 'nx:run-commands',
       options: {
-        command: `kill-port --port kill-port --port 9001,9002,9003,9004,9005,9006`,
+        command: `kill-port --port 9001,9002,9003,9004,9005,9006`,
       },
     },
     deploy: {

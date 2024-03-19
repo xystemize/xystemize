@@ -21,7 +21,7 @@ export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
         prepare: 'husky install && echo "npm run lint" > .husky/pre-push',
         lint: 'npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check --fix',
         codeCheck: 'npx prettier --check .',
-        codeFormat: 'npx prettier --write . && npm run nxLintAndFix',
+        codeFormat: 'npx prettier --write . && npm run lint',
       },
       'lint-staged': {
         '*.{js,json,ts,tsx}': 'eslint --cache --fix',
