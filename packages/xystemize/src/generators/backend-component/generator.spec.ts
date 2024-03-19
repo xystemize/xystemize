@@ -1,7 +1,8 @@
 import { Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { isCharExistsInString } from '@xystemize/app-core';
 
-import { fileShouldExists } from '../../utility';
+import { fileShouldExists, readNxGeneratedFile } from '../../utility';
 
 import { backendComponentGenerator } from './generator';
 import { BackendComponentGeneratorSchema } from './schema';
@@ -24,5 +25,8 @@ describe('backend-component generator', () => {
     fileShouldExists({ tree, filePath: `${componentRoot}/AccountsApi.ts` });
     fileShouldExists({ tree, filePath: `${componentRoot}/AccountsController.ts` });
     fileShouldExists({ tree, filePath: `${componentRoot}/AccountsService.ts` });
+
+    const accountController = readNxGeneratedFile({ tree, filePath: `${componentRoot}/AccountsController.ts` });
+    expect(isCharExistsInString({ char: `import { Name } from '@proj/app-core';`, string: accountController }));
   });
 });
