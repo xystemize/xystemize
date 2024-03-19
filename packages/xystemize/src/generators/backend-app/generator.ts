@@ -3,7 +3,7 @@ import { applicationGenerator } from '@nx/nest';
 import { kebabCase } from 'lodash';
 import * as path from 'path';
 
-import { deleteNxGeneratedFile, writeNxGeneratedFile } from '../../utility';
+import { appendNxGeneratedFile, deleteNxGeneratedFile, writeNxGeneratedFile, WriteStategy } from '../../utility';
 import backendApiGenerator from '../backend-api/generator';
 import backendComponentGenerator from '../backend-component/generator';
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
@@ -43,6 +43,14 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   });
 
   writeNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep`, fileContent: '' });
+
+  appendNxGeneratedFile({
+    tree,
+    filePath: `${projectRoot}/jest.config.ts`,
+    stategy: WriteStategy.AddAbovePattern,
+    pattern: `moduleFileExtensions: ['ts', 'js', 'html'],`,
+    fileContent: `globalSetup: '<rootDir>/src/@test/JestGlobalSetup.ts',`,
+  });
 
   // delete files
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/app` });
