@@ -1,5 +1,5 @@
-import { FirestoreService } from '@xystemize/backend';
 import { Injectable } from '@nestjs/common';
+import { FirestoreService } from '@xystemize/backend';
 import { autoInjectable } from 'tsyringe';
 
 @autoInjectable()

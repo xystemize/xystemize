@@ -1,5 +1,5 @@
-import { Name } from '@xystemize/app-core';
 import { Controller } from '@nestjs/common';
+import { Name } from '@xystemize/app-core';
 
 import { <%= name %>Service } from './<%= name %>Service';
 
