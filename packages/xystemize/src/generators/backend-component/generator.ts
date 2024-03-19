@@ -3,11 +3,18 @@ import { removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app
 import { kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
-import { addComponentReferenceToApiModule, appendNxGeneratedFile, WriteStategy } from '../../utility';
+import {
+  addComponentReferenceToApiModule,
+  appendNxGeneratedFile,
+  readNxGeneratedJsonFile,
+  WriteStategy,
+} from '../../utility';
 
 import { BackendComponentGeneratorSchema } from './schema';
 
 export async function backendComponentGenerator(tree: Tree, options: BackendComponentGeneratorSchema) {
+  const packageJson = readNxGeneratedJsonFile({ tree, filePath: `package.json` });
+  const orgName = trim(packageJson.orgName ?? packageJson.name).replace('/source', '');
   const defaultRootDirectory = 'apps/backend';
   const defaultDirectory = `${defaultRootDirectory}/src`;
   const formatedName = toClassName(trim(options.name));
@@ -22,6 +29,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
     name: formatedName,
     nameLowerCase: formatedName.toLowerCase(),
     nameCamelCase: toPropertyName(formatedName),
+    orgName: orgName,
     folderName: folderName,
     directory: normalizedDirectory ?? defaultDirectory,
     pascalCaseFiles: true,
