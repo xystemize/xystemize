@@ -26,6 +26,7 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
 
   await applicationGenerator(tree, resolvedOptions);
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
+  generateFiles(tree, path.join(__dirname, 'rootFiles'), '.', resolvedOptions);
   updateProjectJson({ tree, projectRoot, options: resolvedOptions });
 
   // add backend-api
