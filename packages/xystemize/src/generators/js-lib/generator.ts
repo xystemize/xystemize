@@ -4,7 +4,7 @@ import { LibraryGeneratorSchema } from '@nx/js/src/utils/schema';
 import { replace } from 'lodash';
 import * as path from 'path';
 
-import { appendNxGeneratedJsonFile } from '../../utility/GeneratorUtility';
+import { appendNxGeneratedJsonFile, deleteNxGeneratedFile } from '../../utility/GeneratorUtility';
 
 import { JsLibGeneratorSchema } from './schema';
 
@@ -48,6 +48,10 @@ export async function jsLibGenerator(tree: Tree, options: JsLibGeneratorSchema) 
         },
       },
     },
+  });
+
+  resolvedOptions.excludeFiles?.forEach((filePath) => {
+    deleteNxGeneratedFile({ tree, filePath: `${libRoot}/${filePath}` });
   });
 
   await formatFiles(tree);
