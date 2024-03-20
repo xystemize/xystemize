@@ -3,7 +3,7 @@ import { Linter } from '@nx/eslint';
 import { trim } from 'lodash';
 import * as path from 'path';
 
-import { deleteNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility';
+import { readNxGeneratedJsonFile } from '../../utility';
 import backendAppGenerator from '../backend-app/generator';
 import jsLibGenerator from '../js-lib/generator';
 import marketingAppGenerator from '../marketing-app/generator';
@@ -21,8 +21,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   await setUpDependencies({ tree, orgName });
 
   // add local app-core to libs
-  await jsLibGenerator(tree, { name: 'app-core' });
-  deleteNxGeneratedFile({ tree, filePath: 'libs/app-core/src/lib' });
+  await jsLibGenerator(tree, { name: 'app-core', excludeFiles: ['src/lib'] });
 
   generateFiles(tree, path.join(__dirname, 'files'), '.', {
     ...options,
