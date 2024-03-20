@@ -1,0 +1,9 @@
+export enum EntityTypeId {
+  NoType,
+  Account,
+  CanvasMedia,
+  Media,
+  Post,
+  Poster,
+  Project,
+}

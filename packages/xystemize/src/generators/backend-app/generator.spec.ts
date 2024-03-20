@@ -47,6 +47,7 @@ describe('backend-app generator', () => {
     const gitkeepInRenamedAssetsFolder = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep` });
     expect(gitkeepInRenamedAssetsFolder).toBe('');
 
+    fileShouldExists({ tree, filePath: `${projectRoot}/src/@test/JestGlobalSetup.ts` });
     fileShouldExists({ tree, filePath: `.firebaserc` });
     fileShouldExists({ tree, filePath: `firebase.json` });
     fileShouldExists({ tree, filePath: `firestore.indexes.json` });

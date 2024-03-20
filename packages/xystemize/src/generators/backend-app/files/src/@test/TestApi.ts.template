@@ -1,0 +1,30 @@
+
+import { BackendTest, FirebaseAuthService } from '@xystemize/backend';
+
+import { ApiV1Module } from '../@api-v1/ApiV1';
+import { AccountsService } from '../accounts/AccountsService';
+
+class Api {
+  isInitialized = false;
+
+  backendTest = new BackendTest();
+
+  accountsService: AccountsService;
+
+  firebaseAuthService = new FirebaseAuthService();
+
+  initialize = async () => {
+    if (this.isInitialized) {
+      return this;
+    }
+
+    const appApi = await this.backendTest.initialize(ApiV1Module);
+    
+    this.accountsService = appApi.get(AccountsService);
+    this.isInitialized = true;
+
+    return this;
+  };
+}
+
+export const TestApi = new Api();

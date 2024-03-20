@@ -1,0 +1,23 @@
+import { UserCredential } from 'firebase/auth';
+
+export interface TestAccountInterface {
+  id: string;
+  email: string;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  officeName?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  zipCode?: string | null;
+  authProviderId: number;
+  accountTypeId: number;
+  createdTimestamp: number;
+  updatedTimestamp: number;
+  userCredential: UserCredential | null;
+  account?: object | null;
+  media?: object | null;
+  devicePlatformId?: number;
+  timezone?: string | null;
+}
