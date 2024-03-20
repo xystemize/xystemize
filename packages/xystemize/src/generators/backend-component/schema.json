@@ -13,12 +13,21 @@
       },
       "x-prompt": "What name would you like to use?"
     },
-    "directory": {
+    "nameSingular": {
       "type": "string",
       "description": "",
       "$default": {
         "$source": "argv",
         "index": 1
+      },
+      "x-prompt": "What name (in singular form) would you like to use?"
+    },
+    "directory": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 2
       },
       "x-prompt": "What directory would you like to use?"
     }

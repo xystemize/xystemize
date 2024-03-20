@@ -1,5 +1,5 @@
 import { formatFiles, generateFiles, Tree } from '@nx/devkit';
-import { removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app-core';
+import { removeTrailingCharacter, removeTrailingSlash, toClassName, toPropertyName } from '@xystemize/app-core';
 import { kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
@@ -37,6 +37,17 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
   const componentRoot = `${resolvedOptions.directory}/${resolvedOptions.folderName}`;
 
   generateFiles(tree, path.join(__dirname, 'files'), componentRoot, resolvedOptions);
+
+  const nameSingular =
+    resolvedOptions.nameSingular ?? removeTrailingCharacter({ string: resolvedOptions.nameLowerCase, char: 's' });
+
+  appendNxGeneratedFile({
+    tree,
+    filePath: `libs/app-core/src/constants/Name.ts`,
+    pattern: '// ### Data:End ###',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `${nameSingular} = '${nameSingular}',`,
+  });
 
   appendNxGeneratedFile({
     tree,
