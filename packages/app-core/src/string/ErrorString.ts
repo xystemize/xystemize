@@ -68,4 +68,7 @@ export const ErrorString = StringSheet.create({
   ErrorClickToTryAgain: {
     en: 'Error. Click to try again.',
   },
+  Invalid: {
+    en: 'Invalid',
+  },
 });
