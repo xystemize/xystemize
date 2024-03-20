@@ -20,6 +20,9 @@ describe('backend-app generator', () => {
     const config = readProjectConfiguration(tree, 'test');
     expect(config).toBeDefined();
 
+    const backendLib = readProjectConfiguration(tree, 'backend-lib');
+    expect(backendLib).toBeDefined();
+
     const projectRoot = `apps/${options.name}`;
 
     const projectJson = readNxGeneratedJsonFile({ tree, filePath: `${projectRoot}/project.json` });
@@ -48,6 +51,7 @@ describe('backend-app generator', () => {
     expect(gitkeepInRenamedAssetsFolder).toBe('');
 
     fileShouldExists({ tree, filePath: `${projectRoot}/src/@test/JestGlobalSetup.ts` });
+    fileShouldExists({ tree, filePath: `${projectRoot}/src/@services/Services.ts` });
     fileShouldExists({ tree, filePath: `.firebaserc` });
     fileShouldExists({ tree, filePath: `firebase.json` });
     fileShouldExists({ tree, filePath: `firestore.indexes.json` });
