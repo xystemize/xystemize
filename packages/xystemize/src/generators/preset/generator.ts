@@ -1,8 +1,9 @@
 import { formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { Linter } from '@nx/eslint';
+import { trim } from 'lodash';
 import * as path from 'path';
 
-import { deleteNxGeneratedFile } from '../../utility';
+import { deleteNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility';
 import backendAppGenerator from '../backend-app/generator';
 import jsLibGenerator from '../js-lib/generator';
 import marketingAppGenerator from '../marketing-app/generator';
@@ -14,14 +15,19 @@ import { PresetGeneratorSchema } from './schema';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
   const appDirectory = 'apps';
+  const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
+  const orgName = trim(packageJson.orgName ?? packageJson.name).replace('/source', '');
 
-  await setUpDependencies({ tree });
+  await setUpDependencies({ tree, orgName });
 
   // add local app-core to libs
   await jsLibGenerator(tree, { name: 'app-core' });
   deleteNxGeneratedFile({ tree, filePath: 'libs/app-core/src/lib' });
 
-  generateFiles(tree, path.join(__dirname, 'files'), '.', options);
+  generateFiles(tree, path.join(__dirname, 'files'), '.', {
+    ...options,
+    orgName,
+  });
 
   if (options.includeBackend) {
     await backendAppGenerator(tree, {

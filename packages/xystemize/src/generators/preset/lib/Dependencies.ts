@@ -1,13 +1,9 @@
 import { addDependenciesToPackageJson, Tree } from '@nx/devkit';
-import { trim } from 'lodash';
 
-import { appendNxGeneratedJsonFile, readNxGeneratedJsonFile } from '../../../utility';
+import { appendNxGeneratedJsonFile } from '../../../utility';
 import { generalDependencies, generalDevDependencies } from '../../dependency/dependencies';
 
-export const setUpDependencies = async ({ tree }: { tree: Tree }) => {
-  const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
-  const orgName = trim(packageJson.name).replace('/source', '');
-
+export const setUpDependencies = async ({ tree, orgName }: { tree: Tree; orgName: string }) => {
   // add dependencies
   addDependenciesToPackageJson(tree, generalDependencies, generalDevDependencies);
 
