@@ -1,0 +1,19 @@
+import { FirebaseAuthService, FirestoreService, PubSubService, StorageService } from '@xystemize/backend';
+import { container } from 'tsyringe';
+
+import { AccountsService } from '../accounts/AccountsService';
+
+class AppServices {
+  // ### FirebaseServices:Start
+  auth = new FirebaseAuthService();
+  storage = new StorageService();
+  firestore = new FirestoreService();
+  pubsub = new PubSubService();
+  // ### FirebaseServices:End
+
+  // ### BackendServices:Start
+  accounts = container.resolve(AccountsService);
+  // ### BackendServices:End
+}
+
+export const Services = new AppServices();

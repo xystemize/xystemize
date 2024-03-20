@@ -7,6 +7,7 @@ import { appendNxGeneratedFile, deleteNxGeneratedFile, writeNxGeneratedFile, Wri
 import backendApiGenerator from '../backend-api/generator';
 import backendComponentGenerator from '../backend-component/generator';
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
+import jsLibGenerator from '../js-lib/generator';
 
 import { updateProjectJson } from './lib/Project';
 import { BackendAppGeneratorSchema } from './schema';
@@ -20,6 +21,9 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
     directory: options.directory ?? defaultDirectory,
   };
   const projectRoot = `${resolvedOptions.directory}/${formatedName}`;
+
+  // add libs
+  await jsLibGenerator(tree, { name: 'backend-lib' });
 
   // add dependencies
   addDependenciesToPackageJson(tree, backendDependencies, backendDevDependencies);
