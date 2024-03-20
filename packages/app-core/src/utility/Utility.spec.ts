@@ -5,7 +5,14 @@ import { mapArrayWithConcurrency } from './Array';
 import { delayByMilliseconds, delayBySeconds } from './Delay';
 import { camelizeKeys } from './Object';
 import { createRef } from './React';
-import { extractFirstAndLastName, extractUsernameFromEmail, mask, maskBirthday, maskEmail } from './String';
+import {
+  extractFirstAndLastName,
+  extractUsernameFromEmail,
+  mask,
+  maskBirthday,
+  maskEmail,
+  removeTrailingCharacter,
+} from './String';
 import { toCapitalCase, toClassName, toPropertyName } from './StringFormat';
 import { getExtension, getExtensionFromFileType, removeProtocol } from './Url';
 import { generateUuid } from './Uuid';
@@ -158,5 +165,12 @@ describe('appUtils', () => {
     expect(createRef(1)).toStrictEqual({ current: 1 });
     expect(createRef(true)).toStrictEqual({ current: true });
     expect(createRef('value')).toStrictEqual({ current: 'value' });
+  });
+
+  test('removeTrailingCharacter', () => {
+    expect(removeTrailingCharacter({ string: 'accounts', char: 's' })).toBe('account');
+    expect(removeTrailingCharacter({ string: 'accounts', char: 'S' })).toBe('account');
+    expect(removeTrailingCharacter({ string: 'stacks', char: 'S' })).toBe('stack');
+    expect(removeTrailingCharacter({ string: 'stackS', char: 's' })).toBe('stack');
   });
 });
