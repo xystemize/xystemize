@@ -1,0 +1,392 @@
+import {
+  IdStringWithDefaultTransformer,
+  IsNotBlank,
+  NumberDateWithDefaultTransformer,
+  NumberWithDefaultTransformer,
+  OptionalStringWithTrimTransformer,
+  StringWithTrimTransformer,
+} from '@xystemize/app-core';
+import { AppBaseDataModel } from '@xystemize/app-core';
+import { Expose, Transform } from 'class-transformer';
+import { IsNumber } from 'class-validator';
+
+import { MediaDataInterface } from './MediaDataInterface.ts.template';
+
+import { EntityTypeId, MediaSizeVariant, MediaTypeId, Name,VisibilityId } from '<%= orgName %>/app-core';
+
+export class MediaDataModel extends AppBaseDataModel implements MediaDataInterface {
+  @Transform(IdStringWithDefaultTransformer)
+  @Expose()
+  id: string;
+
+  @IsNotBlank()
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  accountId: string;
+
+  @IsNotBlank()
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  entityId: string;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: EntityTypeId.NoType }))
+  @Expose()
+  entityTypeId: EntityTypeId;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: MediaTypeId.NoType }))
+  @Expose()
+  mediaTypeId: MediaTypeId;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  fileName: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  fileExtension: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  fileFolderName: string | null;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  width: number;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  height: number;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaUrlTokenSmall: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaUrlTokenMedium: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaUrlTokenLarge: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaUrlTokenOriginal: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  bucket: string | null;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  createdTimestamp: number;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  updatedTimestamp: number;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: VisibilityId.Private }))
+  @Expose()
+  visibilityId: VisibilityId;
+
+  // to Class Only
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose({ toClassOnly: true })
+  base64: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose({ toClassOnly: true })
+  rawFileUri?: string | null;
+
+  constructor(params?: MediaDataInterface) {
+    super();
+    this.transformAndAssign(MediaDataModel, params);
+  }
+
+  get modelName() {
+    return Name.media;
+  }
+
+  get firestoreCollectionName() {
+    return Name.mediaItems;
+  }
+
+  get createdDate() {
+    return new Date(this.createdTimestamp);
+  }
+
+  get updatedDate() {
+    return new Date(this.updatedTimestamp);
+  }
+
+  get isImage() {
+    return this.mediaTypeId === MediaTypeId.Image;
+  }
+
+  get isAccountPhoto() {
+    return this.isImage && this.entityTypeId === EntityTypeId.Account;
+  }
+
+  get fileNameSmallForPreUpload(): string | null {
+    if (!this.fileExtension) {
+      return null;
+    }
+
+    return `${this.id}-${MediaSizeVariant.Small}.${this.fileExtension}`;
+  }
+
+  get fileNameMediumForPreUpload(): string | null {
+    if (!this.fileExtension) {
+      return null;
+    }
+
+    return `${this.id}-${MediaSizeVariant.Medium}.${this.fileExtension}`;
+  }
+
+  get fileNameLargeForPreUpload(): string | null {
+    if (!this.fileExtension) {
+      return null;
+    }
+
+    return `${this.id}-${MediaSizeVariant.Large}.${this.fileExtension}`;
+  }
+
+  get fileNameOriginalForPreUpload(): string | null {
+    if (!this.fileExtension) {
+      return null;
+    }
+
+    return `${this.id}-${MediaSizeVariant.Original}.${this.fileExtension}`;
+  }
+
+  get fileNameForPostUpload(): string | null {
+    if (!this.fileExtension) {
+      return null;
+    }
+
+    return `${this.id}.${this.fileExtension}`;
+  }
+
+  get baseUrl(): string {
+    return `https://firebasestorage.googleapis.com/v0/b/${this.bucket}/o`;
+  }
+
+  get mediaUrlSmall(): string | null {
+    if (!this.mediaUrlTokenSmall) {
+      return null;
+    }
+
+    const path = this.getVariantPathWithFileName(MediaSizeVariant.Small);
+    const suffix = `?alt=media&token=${this.mediaUrlTokenSmall}`;
+
+    return `${this.baseUrl}/${path}${suffix}`;
+  }
+
+  get mediaUrlMedium(): string | null {
+    if (!this.mediaUrlTokenMedium) {
+      return null;
+    }
+
+    const path = this.getVariantPathWithFileName(MediaSizeVariant.Medium);
+    const suffix = `?alt=media&token=${this.mediaUrlTokenMedium}`;
+
+    return `${this.baseUrl}/${path}${suffix}`;
+  }
+
+  get mediaUrlLarge(): string | null {
+    if (!this.mediaUrlTokenLarge) {
+      return null;
+    }
+
+    const path = this.getVariantPathWithFileName(MediaSizeVariant.Large);
+    const suffix = `?alt=media&token=${this.mediaUrlTokenLarge}`;
+
+    return `${this.baseUrl}/${path}${suffix}`;
+  }
+
+  get mediaUrlOriginal(): string | null {
+    if (!this.mediaUrlTokenOriginal) {
+      return null;
+    }
+    const path = this.getVariantPathWithFileName(MediaSizeVariant.Original);
+    const suffix = `?alt=media&token=${this.mediaUrlTokenOriginal}`;
+
+    return `${this.baseUrl}/${path}${suffix}`;
+  }
+
+  get mediaSourceSmall() {
+    const uri = this.rawFileUri ? this.rawFileUri : this.mediaUrlSmall;
+    return { uri: uri || '' };
+  }
+
+  get mediaSourceMedium() {
+    const uri = this.rawFileUri ? this.rawFileUri : this.mediaUrlMedium;
+    return { uri: uri || '' };
+  }
+
+  get mediaSourceLarge() {
+    const uri = this.rawFileUri ? this.rawFileUri : this.mediaUrlLarge;
+    return { uri: uri || '' };
+  }
+
+  get mediaSourceOriginal() {
+    const uri = this.rawFileUri ? this.rawFileUri : this.mediaUrlOriginal;
+    return { uri: uri || '' };
+  }
+
+  get aspectRatio() {
+    return (this.width || 1) / (this.height || 1);
+  }
+
+  get filePath() {
+    let path = '';
+
+    if (this.isAccountPhoto) {
+      path = `${Name.accounts}/${this.accountId}`;
+    }
+
+    return path;
+  }
+
+  get fileNameWithExtension() {
+    return (this.fileName ?? '') + '.' + (this.fileExtension ?? '');
+  }
+
+  get smallPathWithFileNameForPreUpload(): string | null {
+    if (!this.fileNameSmallForPreUpload) {
+      return null;
+    }
+
+    if (this.filePath) {
+      return `${this.filePath}/${this.fileNameSmallForPreUpload}`;
+    }
+
+    return this.fileNameSmallForPreUpload;
+  }
+
+  get mediumPathWithFileNameForPreUpload(): string | null {
+    if (!this.fileNameMediumForPreUpload) {
+      return null;
+    }
+
+    if (this.filePath) {
+      return `${this.filePath}/${this.fileNameMediumForPreUpload}`;
+    }
+
+    return this.fileNameMediumForPreUpload;
+  }
+
+  get largePathWithFileNameForPreUpload(): string | null {
+    if (!this.fileNameLargeForPreUpload) {
+      return null;
+    }
+
+    if (this.filePath) {
+      return `${this.filePath}/${this.fileNameLargeForPreUpload}`;
+    }
+
+    return this.fileNameLargeForPreUpload;
+  }
+
+  get originalPathWithFileNameForPreUpload(): string | null {
+    if (!this.fileNameOriginalForPreUpload) {
+      return null;
+    }
+
+    if (this.filePath) {
+      return `${this.filePath}/${this.fileNameOriginalForPreUpload}`;
+    }
+
+    return this.fileNameOriginalForPreUpload;
+  }
+
+  get originalPathWithFileNameForPostUpload(): string | null {
+    if (!this.fileNameForPostUpload) {
+      return null;
+    }
+
+    if (this.filePath) {
+      return `${this.filePath}/${this.fileNameForPostUpload}`;
+    }
+
+    return this.fileNameForPostUpload;
+  }
+
+  get isResized() {
+    return !!(this.mediaUrlTokenSmall || this.mediaUrlTokenMedium || this.mediaUrlTokenLarge);
+  }
+
+  get isGif() {
+    return this.fileExtension === 'gif';
+  }
+
+  get contentType() {
+    if (this.isImage) {
+      return `image/${this.fileExtension}`.toLowerCase();
+    }
+
+    return null;
+  }
+
+  getVariantFileName = (variant: string) => {
+    return `${this.id}-${variant}.${this.fileExtension}`;
+  };
+
+  getVariantPathWithFileName(variant: string): string | null {
+    if (!this.fileNameOriginalForPreUpload) {
+      return null;
+    }
+
+    const fileName = this.getVariantFileName(variant);
+
+    let path = '';
+
+    if (this.isAccountPhoto) {
+      path = `${Name.accounts}/${this.accountId}`;
+    }
+
+    return encodeURIComponent(`${path}/${fileName}`);
+  }
+
+  get updateProps() {
+    return [
+      Name.posterId,
+      Name.canvasWidth,
+      Name.canvasHeight,
+      Name.templateId,
+      Name.fileName,
+      Name.fileExtension,
+      Name.fileFolderName,
+      Name.width,
+      Name.height,
+      Name.matrix4Values,
+      Name.originalPositionX,
+      Name.originalPositionY,
+      Name.scaleX,
+      Name.scaleY,
+      Name.fontSize,
+      Name.font,
+      Name.colorHex,
+      Name.mediaTypeId,
+      Name.mediaUrlTokenSmall,
+      Name.mediaUrlTokenMedium,
+      Name.mediaUrlTokenLarge,
+      Name.mediaUrlTokenOriginal,
+      Name.updatedTimestamp,
+      Name.base64,
+      Name.rawFileUri,
+      Name.bucket,
+    ];
+  }
+
+  get deleteProps() {
+    return [Name.visibilityId];
+  }
+}

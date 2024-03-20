@@ -1,3 +1,4 @@
 export * from './AccountTypeId';
 export * from './EntityTypeId';
 export * from './Name';
+export * from './VisibilityId.ts';

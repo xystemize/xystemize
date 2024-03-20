@@ -1,0 +1,24 @@
+
+import { AppBaseDataInterface } from '@xystemize/app-core';
+
+import { EntityTypeId, MediaTypeId, Name } from '<%= orgName %>/app-constant';
+
+
+export interface MediaDataInterface extends AppBaseDataInterface {
+  [Name.accountId]?: string;
+  [Name.entityId]?: string;
+  [Name.entityTypeId]?: EntityTypeId;
+  [Name.mediaTypeId]: MediaTypeId;
+  [Name.fileName]?: string | null;
+  [Name.fileExtension]?: string | null;
+  [Name.fileFolderName]?: string | null;
+  [Name.width]?: number | null;
+  [Name.height]?: number | null;
+  [Name.mediaUrlTokenSmall]?: string | null;
+  [Name.mediaUrlTokenMedium]?: string | null;
+  [Name.mediaUrlTokenLarge]?: string | null;
+  [Name.mediaUrlTokenOriginal]?: string | null;
+  [Name.bucket]?: string | null;
+  [Name.base64]?: string | null;
+  [Name.rawFileUri]?: string | null;
+}

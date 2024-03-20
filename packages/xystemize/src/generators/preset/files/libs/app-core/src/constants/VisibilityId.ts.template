@@ -1,0 +1,8 @@
+export enum VisibilityId {
+  Public = 1,
+  Private,
+  Hidden,
+  Blocked,
+  Deleted,
+  Reported,
+}

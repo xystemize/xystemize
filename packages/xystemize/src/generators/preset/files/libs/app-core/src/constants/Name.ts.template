@@ -5,6 +5,7 @@ export enum Name {
   entityId = 'entityId',
   entityTypeId = 'entityTypeId',
   accountId = 'accountId',
+  mediaTypeId = 'mediaTypeId',
   email = 'email',
   password = 'password',
   username = 'username',
@@ -23,12 +24,30 @@ export enum Name {
   visibilityId = 'visibilityId',
   customClaim = 'customClaim',
   value = 'value',
+  colorModeId = 'colorModeId',
+  mediaId = 'mediaId',
+  timezone = 'timezone',
+  devicePlatformId = 'devicePlatformId',
+  fileName = 'fileName',
+  fileExtension = 'fileExtension',
+  fileFolderName = 'fileFolderName',
+  width = 'width',
+  height = 'height',
+  mediaUrlTokenSmall = 'mediaUrlTokenSmall',
+  mediaUrlTokenMedium = 'mediaUrlTokenMedium',
+  mediaUrlTokenLarge = 'mediaUrlTokenLarge',
+  mediaUrlTokenOriginal = 'mediaUrlTokenOriginal',
+  bucket = 'bucket',
+  base64 = 'base64',
+  rawFileUri = 'rawFileUri',
   // ### General:End ###
 
   // ### Api:Start ###
   // ### Api:End ###
 
   // ### Data:Start ###
+  media = 'media',
+  mediaItems = 'mediaItems',
   // ### Data:End ###
 
   // ### Language:Start ###

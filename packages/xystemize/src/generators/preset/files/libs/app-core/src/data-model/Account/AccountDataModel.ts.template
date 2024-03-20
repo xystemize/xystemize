@@ -1,0 +1,180 @@
+
+
+import {
+  AppBaseDataModel,
+  AuthProviderId,
+  ColorModeId,
+  DevicePlatformId,
+  IsNotBlank,
+  IsValidUsernameChars,
+  NumberDateWithDefaultTransformer,
+  NumberWithDefaultTransformer,
+  OptionalMaxLength,
+  OptionalStringWithTrimTransformer,
+  StringWithTrimAndLowerCaseTransformer,
+  StringWithTrimTransformer,
+  ValidationRule,
+} from '@xystemize/app-core';
+import { Expose, Transform, Type } from 'class-transformer';
+import { IsEmail, IsNumber, MaxLength, MinLength, ValidateIf } from 'class-validator';
+
+import 'reflect-metadata';
+
+import { MediaDataModel } from '../Media/MediaDataModel.ts.template';
+
+import { AccountDataInterface } from './AccountDataInterface.ts.template';
+
+import { AccountTypeId, Name, VisibilityId } from '<%= orgName %>/app-core';
+
+export class AccountDataModel extends AppBaseDataModel implements AccountDataInterface {
+  @IsNotBlank()
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  id: string;
+
+  @MaxLength(ValidationRule.UsernameMaxLength)
+  @MinLength(ValidationRule.UsernameMinLength)
+  @IsValidUsernameChars()
+  @IsNotBlank()
+  @Transform(StringWithTrimAndLowerCaseTransformer)
+  @Expose()
+  username: string;
+
+  @IsNotBlank()
+  @IsEmail()
+  @Transform(StringWithTrimAndLowerCaseTransformer)
+  @Expose()
+  email: string;
+
+  @ValidateIf((item: AccountDataModel) => {
+    return !item.isRegistrationFromSocialAuth;
+  })
+  @IsNotBlank()
+  @MaxLength(ValidationRule.NameMaxLength)
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  firstName: string;
+
+  @ValidateIf((item: AccountDataModel) => {
+    return !item.isRegistrationFromSocialAuth;
+  })
+  @IsNotBlank()
+  @MaxLength(ValidationRule.NameMaxLength)
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  lastName: string;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: AuthProviderId.EmailAndPassword }))
+  @Expose()
+  authProviderId: AuthProviderId;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: AccountTypeId.User }))
+  @Expose()
+  accountTypeId: AccountTypeId;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: DevicePlatformId.NoId }))
+  @Expose()
+  devicePlatformId: DevicePlatformId;
+
+  @OptionalMaxLength(ValidationRule.TimezoneMaxLength)
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  timezone: string | null;
+
+  @OptionalMaxLength(ValidationRule.IdMaxLength)
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaId: string | null;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: ColorModeId.DarkMode }))
+  @Expose()
+  colorModeId: ColorModeId;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  createdTimestamp: number;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  updatedTimestamp: number;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: VisibilityId.Private }))
+  @Expose()
+  visibilityId: VisibilityId;
+
+  @Type(() => MediaDataModel)
+  @Expose({ toClassOnly: true })
+  media?: MediaDataModel | null;
+
+  constructor(obj?: AccountDataInterface) {
+    super();
+    this.transformAndAssign(AccountDataModel, obj);
+  }
+
+  get modelName(): string {
+    return Name.account;
+  }
+
+  get firestoreCollectionName() {
+    return Name.accounts;
+  }
+
+  get createdDate() {
+    return new Date(this.createdTimestamp);
+  }
+
+  get updatedDate() {
+    return new Date(this.updatedTimestamp);
+  }
+
+  get isDeleted() {
+    return this.visibilityId === VisibilityId.Deleted;
+  }
+
+  get isAppleAuth() {
+    return this.authProviderId === AuthProviderId.Apple;
+  }
+
+  get isGoogleAuth() {
+    return this.authProviderId === AuthProviderId.Google;
+  }
+
+  get isFacebookAuth() {
+    return this.authProviderId === AuthProviderId.Facebook;
+  }
+
+  get isEmailAndPasswordAuth() {
+    return this.authProviderId === AuthProviderId.EmailAndPassword;
+  }
+
+  get isRegistrationFromSocialAuth() {
+    return (
+      this.isAppleAuth || this.isGoogleAuth || this.isFacebookAuth || this.isEmailAndPasswordAuth
+    );
+  }
+
+  get updateProps() {
+    return [
+      Name.username,
+      Name.firstName,
+      Name.lastName,
+      Name.mediaId,
+      Name.media,
+      Name.updatedTimestamp,
+      Name.colorModeId,
+      Name.devicePlatformId,
+      Name.timezone,
+    ];
+  }
+
+  get deleteProps() {
+    return [Name.visibilityId];
+  }
+}

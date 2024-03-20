@@ -1,0 +1,35 @@
+import { AccountTypeId, AuthProviderId } from '@xystemize/app-core';
+
+import { AccountDataModel } from './AccountDataModel.ts.template';
+
+describe('AccountModel', () => {
+  test('AccountModel validation', async () => {
+    const account = new AccountDataModel({
+      id: '',
+      username: '',
+      email: 'firstlastexamplecom',
+      firstName: '',
+      lastName: '',
+      authProviderId: AuthProviderId.EmailAndPassword,
+      accountTypeId: AccountTypeId.User,
+      createdTimestamp: Date.now(),
+      updatedTimestamp: Date.now(),
+    });
+
+    expect(account.isValid).toBe(false);
+    expect(account.isNotValid).toBe(true);
+
+    account.firstName = 'Firstname';
+    expect(account.isValid).toBe(false);
+
+    account.lastName = 'Lastname';
+    expect(account.isValid).toBe(false);
+
+    account.email = 'firstlast@example.com';
+    expect(account.isValid).toBe(false);
+
+    account.id = 'sampleId123';
+    account.username = 'username';
+    expect(account.isValid).toBe(true);
+  });
+});
