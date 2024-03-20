@@ -57,6 +57,10 @@ export const removeTrailingSlash = (path: string): string => {
   return path.replace(/\/+$/, '');
 };
 
+export const removeTrailingCharacter = ({ string, char }: { char: string; string: string }): string => {
+  return string.replace(new RegExp(`[${char.toLowerCase()}${char.toUpperCase()}]$`), '');
+};
+
 export const isCharExistsInString = ({ string, char }: { string?: string | null; char: string }) => {
   return string?.includes(char);
 };
