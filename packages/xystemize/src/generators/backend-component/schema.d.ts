@@ -1,6 +1,6 @@
 export interface BackendComponentGeneratorSchema {
   name: string;
-  nameSingular: string;
+  nameSingular?: string;
   directory?: string;
   folderName?: string;
 }
