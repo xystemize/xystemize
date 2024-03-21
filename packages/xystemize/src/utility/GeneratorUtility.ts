@@ -210,9 +210,19 @@ export const checkIfDependenciesExist = ({
 };
 
 export const fileShouldExists = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
-  const file = readNxGeneratedFile({ tree, filePath });
+  const exists = tree.exists(filePath);
 
-  if (file === null || file === undefined) {
+  if (!exists) {
+    throw new Error('FILE_DOESNT_EXIST');
+  }
+
+  return true;
+};
+
+export const folderShouldExists = ({ tree, folderPath }: { tree: Tree; folderPath: string }) => {
+  const exists = tree.exists(folderPath);
+
+  if (!exists) {
     throw new Error('FILE_DOESNT_EXIST');
   }
 
@@ -220,9 +230,19 @@ export const fileShouldExists = ({ tree, filePath }: { tree: Tree; filePath: str
 };
 
 export const fileShouldNotExists = ({ tree, filePath }: { tree: Tree; filePath: string }) => {
-  const file = readNxGeneratedFile({ tree, filePath });
+  const exists = tree.exists(filePath);
 
-  if (file !== null) {
+  if (exists) {
+    throw new Error('FILE_EXIST');
+  }
+
+  return true;
+};
+
+export const folderShouldNotExists = ({ tree, folderPath }: { tree: Tree; folderPath: string }) => {
+  const exists = tree.exists(folderPath);
+
+  if (exists) {
     throw new Error('FILE_EXIST');
   }
 

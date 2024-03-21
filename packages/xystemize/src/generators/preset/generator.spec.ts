@@ -5,7 +5,8 @@ import { isCharExistsInString } from '@xystemize/app-core';
 import {
   checkIfDependenciesExist,
   fileShouldExists,
-  fileShouldNotExists,
+  folderShouldExists,
+  folderShouldNotExists,
   readNxGeneratedFile,
   readNxGeneratedJsonFile,
 } from '../../utility/GeneratorUtility';
@@ -85,12 +86,12 @@ describe('preset generator', () => {
     expect(appCoreProjectJson.name).toBe('app-core');
 
     fileShouldExists({ tree, filePath: `${appCoreRoot}/src/index.ts` });
-    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/constants/Name.ts` });
-    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/string/@GeneralString.ts` });
-    fileShouldExists({ tree, filePath: `${appCoreRoot}/src/string/ErrorString.ts` });
+    folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/constants` });
+    folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/data-model` });
+    folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/interface` });
+    folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/string` });
 
-    fileShouldNotExists({ tree, filePath: `${appCoreRoot}/src/lib/AppCore.spec.ts` });
-    fileShouldNotExists({ tree, filePath: `${appCoreRoot}/src/lib/AppCore.ts` });
+    folderShouldNotExists({ tree, folderPath: `${appCoreRoot}/src/lib` });
 
     const name = readNxGeneratedFile({ tree, filePath: `${appCoreRoot}/src/constants/Name.ts` });
     expect(isCharExistsInString({ char: `accounts = 'accounts',`, string: name })).toBeTruthy();

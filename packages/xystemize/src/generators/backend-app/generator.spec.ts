@@ -2,7 +2,13 @@ import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { isCharExistsInString } from '@xystemize/app-core';
 
-import { fileShouldExists, fileShouldNotExists, readNxGeneratedFile, readNxGeneratedJsonFile } from '../../utility';
+import {
+  fileShouldExists,
+  fileShouldNotExists,
+  folderShouldExists,
+  readNxGeneratedFile,
+  readNxGeneratedJsonFile,
+} from '../../utility';
 
 import { backendAppGenerator } from './generator';
 import { BackendAppGeneratorSchema } from './schema';
@@ -50,13 +56,15 @@ describe('backend-app generator', () => {
     const gitkeepInRenamedAssetsFolder = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep` });
     expect(gitkeepInRenamedAssetsFolder).toBe('');
 
-    fileShouldExists({ tree, filePath: `${projectRoot}/src/@test/JestGlobalSetup.ts` });
-    fileShouldExists({ tree, filePath: `${projectRoot}/src/@services/Services.ts` });
     fileShouldExists({ tree, filePath: `.firebaserc` });
     fileShouldExists({ tree, filePath: `firebase.json` });
     fileShouldExists({ tree, filePath: `firestore.indexes.json` });
     fileShouldExists({ tree, filePath: `firestore.rules` });
     fileShouldExists({ tree, filePath: `storage.rules` });
+
+    folderShouldExists({ tree, folderPath: `${projectRoot}/src/@test` });
+    folderShouldExists({ tree, folderPath: `${projectRoot}/src/@services` });
+    folderShouldExists({ tree, folderPath: `${projectRoot}/src/accounts` });
 
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/assets/.gitkeep` });
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/main.ts` });
