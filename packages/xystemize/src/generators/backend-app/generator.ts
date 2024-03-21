@@ -69,7 +69,7 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   });
 
   // replace files
-  generateFiles(tree, path.join(__dirname, 'fileReplacements'), projectRoot, resolvedOptions);
+  generateFiles(tree, path.join(__dirname, 'fileReplacements'), `${projectRoot}/src`, resolvedOptions);
 
   // delete files
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/app` });

@@ -80,5 +80,11 @@ describe('backend-app generator', () => {
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/assets/.gitkeep` });
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/main.ts` });
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/app/app.module.ts` });
+
+    const accountController = readNxGeneratedFile({
+      tree,
+      filePath: `${projectRoot}/src/accounts/AccountsController.ts`,
+    });
+    expect(isCharExistsInString({ char: 'async getAccountById(', string: accountController })).toBeTruthy();
   });
 });
