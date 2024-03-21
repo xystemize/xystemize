@@ -1,0 +1,18 @@
+import { AccountTypeId, AuthProviderId, DevicePlatformId, Name } from '../../constant';
+import { MediaDataModel } from '../Media/MediaDataModel';
+
+import { AppBaseDataInterface } from '<%= orgName %>/app-base';
+
+export interface SignUpDataInterface extends AppBaseDataInterface {
+  [Name.username]: string;
+  [Name.email]: string;
+  [Name.firstName]: string;
+  [Name.lastName]: string;
+  [Name.password]: string;
+  [Name.authProviderId]: AuthProviderId;
+  [Name.accountTypeId]: AccountTypeId;
+  [Name.mediaId]?: string | null;
+  [Name.media]?: MediaDataModel | null;
+  [Name.timezone]?: string | null;
+  [Name.devicePlatformId]?: DevicePlatformId;
+}

@@ -27,7 +27,7 @@ describe('backend-api generator', () => {
     const api = readNxGeneratedFile({ tree, filePath: `${componentRoot}/Api.ts` });
     expect(isCharExistsInString({ char: `import { Name } from '@proj/app-core';`, string: api }));
 
-    const name = readNxGeneratedFile({ tree, filePath: `libs/app-core/src/constants/Name.ts` });
+    const name = readNxGeneratedFile({ tree, filePath: `libs/app-core/src/constant/Name.ts` });
     expect(isCharExistsInString({ char: `api = 'api',`, string: name }));
   });
 });

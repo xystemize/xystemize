@@ -1,6 +1,6 @@
 import { ColorModeId } from "@xystemize/app-core";
 
-import { AccountState, Name } from "../../constants";
+import { AccountState, Name } from "../../constant";
 
 export interface CustomClaimDataInterface {
   [Name.accountState]?: AccountState;

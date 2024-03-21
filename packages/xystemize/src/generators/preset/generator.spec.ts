@@ -86,14 +86,14 @@ describe('preset generator', () => {
     expect(appCoreProjectJson.name).toBe('app-core');
 
     fileShouldExists({ tree, filePath: `${appCoreRoot}/src/index.ts` });
-    folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/constants` });
+    folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/constant` });
     folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/data-model` });
     folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/interface` });
     folderShouldExists({ tree, folderPath: `${appCoreRoot}/src/string` });
 
     folderShouldNotExists({ tree, folderPath: `${appCoreRoot}/src/lib` });
 
-    const name = readNxGeneratedFile({ tree, filePath: `${appCoreRoot}/src/constants/Name.ts` });
+    const name = readNxGeneratedFile({ tree, filePath: `${appCoreRoot}/src/constant/Name.ts` });
     expect(isCharExistsInString({ char: `accounts = 'accounts',`, string: name })).toBeTruthy();
   });
 });

@@ -53,7 +53,7 @@ export async function backendApiGenerator(tree: Tree, options: BackendApiGenerat
 
   appendNxGeneratedFile({
     tree,
-    filePath: `libs/app-core/src/constants/Name.ts`,
+    filePath: `libs/app-core/src/constant/Name.ts`,
     pattern: '// ### Api:End ###',
     stategy: WriteStategy.AddAbovePattern,
     fileContent: `${resolvedOptions.nameLowerCase} = '${resolvedOptions.nameLowerCase}',`,

@@ -13,8 +13,8 @@ import { IsNumber, MaxLength, MinLength } from 'class-validator';
 
 import 'reflect-metadata';
 
-import { AccountState, EntityTypeId, MediaTypeId, Name } from '../../constants';
-import { ValidationRule } from '../../constants/ValidationRule';
+import { AccountState, EntityTypeId, MediaTypeId, Name } from '../../constant';
+import { ValidationRule } from '../../constant/ValidationRule';
 import { MediaDataModel } from '../Media/MediaDataModel';
 
 import { CustomClaimDataInterface } from './CustomClaimDataInterface';

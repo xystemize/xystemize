@@ -1,0 +1,48 @@
+import { AuthProviderId } from '@xystemize/app-core';
+
+import { SignUpDataModel } from './SignUpDataModel';
+
+import { AccountTypeId } from '<%= orgName %>/app-core';
+
+describe('SignUpModel', () => {
+  test('SignUpModel(Employee) validation', async () => {
+    const signup = new SignUpDataModel({
+      id: '',
+      password: '',
+      username: 'username',
+      email: 'firstlastexamplecom',
+      firstName: 'First',
+      lastName: 'Last',
+      authProviderId: AuthProviderId.EmailAndPassword,
+      accountTypeId: AccountTypeId.User,
+      createdTimestamp: Date.now(),
+      updatedTimestamp: Date.now(),
+    });
+
+    expect(signup.isValid).toBe(false);
+    expect(signup.isNotValid).toBe(true);
+
+    signup.email = 'firstlast@examplecom';
+    expect(signup.isValid).toBe(false);
+
+    signup.email = 'firstlast@example.com';
+    signup.password = 'password';
+    expect(signup.isValid).toBe(false);
+
+    signup.email = 'firstlast@example.com';
+    signup.password = 'Password';
+    expect(signup.isValid).toBe(false);
+
+    signup.email = 'firstlast@example.com';
+    signup.password = 'Password1';
+    expect(signup.isValid).toBe(false);
+
+    signup.email = 'firstlastexample.com';
+    signup.password = 'Password1!!!';
+    expect(signup.isValid).toBe(false);
+
+    signup.email = 'firstlast@example.com';
+    signup.password = 'Password1!!!';
+    expect(signup.isValid).toBe(true);
+  });
+});

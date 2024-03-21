@@ -1,0 +1,111 @@
+import {
+  AppBaseDataModel,
+  HasCapitalLetter,
+  HasNumber,
+  HasSymbol,
+  IsNotBlank,
+  IsValidUsernameChars,
+  NumberDateWithDefaultTransformer,
+  NumberWithDefaultTransformer,
+  OptionalMaxLength,
+  OptionalStringWithTrimTransformer,
+  StringTransformer,
+  StringWithTrimAndLowerCaseTransformer,
+  StringWithTrimTransformer,
+} from '@xystemize/app-core';
+import { Expose, Transform, Type } from 'class-transformer';
+import { IsEmail, IsNumber, MaxLength, MinLength } from 'class-validator';
+
+import { AccountTypeId, AuthProviderId, DevicePlatformId, Name, ValidationRule } from '../../constant';
+import { MediaDataModel } from '../Media/MediaDataModel';
+
+import { SignUpDataInterface } from './SignUpDataInterface';
+
+export class SignUpDataModel extends AppBaseDataModel implements SignUpDataInterface {
+  @Expose()
+  id: string;
+
+  @MaxLength(ValidationRule.UsernameMaxLength)
+  @MinLength(ValidationRule.UsernameMinLength)
+  @IsValidUsernameChars()
+  @IsNotBlank()
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  username: string;
+
+  @IsNotBlank()
+  @IsEmail()
+  @Transform(StringWithTrimAndLowerCaseTransformer)
+  @Expose()
+  email: string;
+
+  @IsNotBlank()
+  @MaxLength(ValidationRule.NameMaxLength)
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  firstName: string;
+
+  @IsNotBlank()
+  @MaxLength(ValidationRule.NameMaxLength)
+  @Transform(StringWithTrimTransformer)
+  @Expose()
+  lastName: string;
+
+  @HasCapitalLetter()
+  @HasNumber()
+  @HasSymbol()
+  @MinLength(ValidationRule.PasswordMinLength)
+  @IsNotBlank()
+  @Transform(StringTransformer)
+  @Expose()
+  password: string;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: AuthProviderId.EmailAndPassword }))
+  @Expose()
+  authProviderId: AuthProviderId;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: AccountTypeId.User }))
+  @Expose()
+  accountTypeId: AccountTypeId;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: DevicePlatformId.NoId }))
+  @Expose()
+  devicePlatformId: DevicePlatformId;
+
+  @OptionalMaxLength(ValidationRule.TimezoneMaxLength)
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  timezone: string | null;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  createdTimestamp: number;
+
+  @IsNumber()
+  @Transform(NumberDateWithDefaultTransformer)
+  @Expose()
+  updatedTimestamp: number;
+
+  @OptionalMaxLength(ValidationRule.ShortTextLength)
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaId?: string | null;
+
+  @Type(() => MediaDataModel)
+  @Expose({ toClassOnly: true })
+  media?: MediaDataModel | null;
+
+  constructor(obj?: SignUpDataInterface) {
+    super();
+
+    this.transformAndAssign(SignUpDataModel, obj);
+  }
+
+  get modelName(): string {
+    return Name.signup;
+  }
+}

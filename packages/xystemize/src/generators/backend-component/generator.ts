@@ -43,7 +43,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
 
   appendNxGeneratedFile({
     tree,
-    filePath: `libs/app-core/src/constants/Name.ts`,
+    filePath: `libs/app-core/src/constant/Name.ts`,
     pattern: '// ### Data:End ###',
     stategy: WriteStategy.AddAbovePattern,
     fileContent: `${nameSingular} = '${nameSingular}',`,
@@ -51,7 +51,7 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
 
   appendNxGeneratedFile({
     tree,
-    filePath: `libs/app-core/src/constants/Name.ts`,
+    filePath: `libs/app-core/src/constant/Name.ts`,
     pattern: '// ### Data:End ###',
     stategy: WriteStategy.AddAbovePattern,
     fileContent: `${resolvedOptions.nameLowerCase} = '${resolvedOptions.nameLowerCase}',`,
