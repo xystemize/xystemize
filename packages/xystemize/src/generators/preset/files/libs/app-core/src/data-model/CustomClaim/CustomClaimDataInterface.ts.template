@@ -1,0 +1,12 @@
+import { ColorModeId } from "@xystemize/app-core";
+
+import { AccountState, Name } from "../../constants";
+
+export interface CustomClaimDataInterface {
+  [Name.accountState]?: AccountState;
+  [Name.username]?: string;
+  [Name.colorModeId]?: ColorModeId;
+  [Name.mediaUrlTokenSmall]?: string | null;
+  [Name.mediaUrlTokenOriginal]?: string | null;
+  [Name.mediaFileExtension]?: string | null;
+}

@@ -1,0 +1,123 @@
+import {
+  BooleanTransformer,
+  NumberWithDefaultTransformer,
+  OptionalStringWithTrimTransformer,
+  StringWithTrimAndLowerCaseTransformer,
+  StringWithTrimTransformer,
+  IsNotBlank,
+  IsValidUsernameChars
+} from '@xystemize/app-core';
+import { AppBaseDataModel, ColorModeId } from '@xystemize/app-core';
+import { Expose, Transform } from 'class-transformer';
+import { IsNumber, MaxLength, MinLength } from 'class-validator';
+
+import 'reflect-metadata';
+
+import { AccountState, EntityTypeId, MediaTypeId, Name } from '../../constants';
+import { ValidationRule } from '../../constants/ValidationRule';
+import { MediaDataModel } from '../Media/MediaDataModel';
+
+import { CustomClaimDataInterface } from './CustomClaimDataInterface';
+
+export class CustomClaimDataModel extends AppBaseDataModel implements CustomClaimDataInterface {
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: AccountState.NotRegistered }))
+  @Expose()
+  accountState: AccountState;
+
+  @MaxLength(ValidationRule.UsernameMaxLength)
+  @MinLength(ValidationRule.UsernameMinLength)
+  @IsValidUsernameChars()
+  @IsNotBlank()
+  @Transform(StringWithTrimAndLowerCaseTransformer)
+  @Expose()
+  username: string;
+
+  @IsNumber()
+  @Transform(NumberWithDefaultTransformer({ default: ColorModeId.DarkMode }))
+  @Expose()
+  colorModeId: ColorModeId;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaUrlTokenSmall: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaFileExtension: string | null;
+
+  @Transform(OptionalStringWithTrimTransformer)
+  @Expose()
+  mediaUrlTokenOriginal: string | null;
+
+  // toClassOnly\
+  @Transform(StringWithTrimTransformer)
+  @Expose({ toClassOnly: true, name: Name.user_id })
+  userId: string;
+
+  @IsNotBlank()
+  @Transform(StringWithTrimTransformer)
+  @Expose({ toClassOnly: true })
+  sub: string;
+
+  @IsNotBlank()
+  @Transform(StringWithTrimTransformer)
+  @Expose({ toClassOnly: true })
+  email: string;
+
+  @Transform(BooleanTransformer)
+  @Expose({ toClassOnly: true, name: Name.email_verified })
+  emailVerified: boolean;
+
+  constructor(obj?: CustomClaimDataInterface) {
+    super();
+    this.transformAndAssign(CustomClaimDataModel, obj);
+  }
+
+  get accountId() {
+    return this.userId ?? this.sub;
+  }
+
+  get isNotRegistered() {
+    return this.accountState === AccountState.NotRegistered;
+  }
+
+  get isRegistered() {
+    return this.accountState === AccountState.Registered;
+  }
+
+  get updateProps() {
+    return [
+      Name.accountState,
+      Name.username,
+      Name.colorModeId,
+      Name.mediaUrlTokenSmall,
+      Name.mediaUrlTokenOriginal,
+      Name.mediaFileExtension,
+    ];
+  }
+
+  getMediaUrl = ({ bucket }: { bucket?: string | null }) => {
+    if (!bucket) {
+      return null;
+    }
+
+    if (!this.mediaUrlTokenOriginal && !this.mediaUrlTokenSmall) {
+      return null;
+    }
+
+    const media = new MediaDataModel({
+      id: this.accountId,
+      accountId: this.accountId,
+      entityId: this.accountId,
+      entityTypeId: EntityTypeId.Account,
+      mediaTypeId: MediaTypeId.Image,
+      fileExtension: this.mediaFileExtension,
+      mediaUrlTokenSmall: this.mediaUrlTokenSmall,
+      mediaUrlTokenOriginal: this.mediaUrlTokenOriginal,
+      bucket: bucket,
+    });
+
+    return media.mediaUrlSmall || media.mediaUrlOriginal;
+  };
+}

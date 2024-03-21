@@ -1,0 +1,25 @@
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { CustomClaimDataModel, Name } from '@test-project/app-core';
+import { FirebaseAuthUserGuard, RequiredStringDataPipe } from '@xystemize/backend';
+
+import { AccountsService } from './AccountsService';
+
+@Controller(Name.accounts)
+export class AccountsController {
+  constructor(private readonly accountsService: AccountsService) {}
+
+  @Get(':id')
+  @UseGuards(FirebaseAuthUserGuard)
+  async getAccountById(
+    @Req()
+    { customClaim }: { customClaim: CustomClaimDataModel },
+
+    @Param(Name.id, RequiredStringDataPipe)
+    id: string,
+  ) {
+    return this.accountsService.getOneById({
+      id,
+      requesterAccountId: customClaim.accountId,
+    });
+  }
+}

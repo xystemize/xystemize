@@ -1,0 +1,13 @@
+import { Module } from '@nestjs/common';
+import { AppBackendModule } from '@xystemize/backend';
+
+import { AccountsController } from './AccountsController';
+import { AccountsService } from './AccountsService';
+
+@Module({
+  imports: [AppBackendModule],
+  controllers: [AccountsController],
+  providers: [AccountsService],
+  exports: [AccountsService],
+})
+export class AccountsModule {}

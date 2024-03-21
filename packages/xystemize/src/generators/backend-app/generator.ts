@@ -56,6 +56,9 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
     fileContent: `globalSetup: '<rootDir>/src/@test/JestGlobalSetup.ts',`,
   });
 
+  // replace files
+  generateFiles(tree, path.join(__dirname, 'fileReplacements'), projectRoot, resolvedOptions);
+
   // delete files
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/app` });
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/assets` });

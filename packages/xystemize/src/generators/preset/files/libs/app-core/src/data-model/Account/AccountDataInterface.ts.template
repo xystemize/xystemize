@@ -1,6 +1,6 @@
 import { AppBaseDataInterface } from '@xystemize/app-core';
 
-import { MediaDataModel } from '../Media/MediaDataModel.ts.template';
+import { MediaDataModel } from '../Media/MediaDataModel';
 
 import {
   AccountTypeId,

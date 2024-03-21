@@ -1,0 +1,7 @@
+export enum MediaTypeId {
+  NoType,
+  Image,
+  Text,
+  Pdf,
+  Video,
+}

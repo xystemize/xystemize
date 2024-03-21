@@ -20,9 +20,9 @@ import { IsEmail, IsNumber, MaxLength, MinLength, ValidateIf } from 'class-valid
 
 import 'reflect-metadata';
 
-import { MediaDataModel } from '../Media/MediaDataModel.ts.template';
+import { MediaDataModel } from '../Media/MediaDataModel';
 
-import { AccountDataInterface } from './AccountDataInterface.ts.template';
+import { AccountDataInterface } from './AccountDataInterface';
 
 import { AccountTypeId, Name, VisibilityId } from '<%= orgName %>/app-core';
 

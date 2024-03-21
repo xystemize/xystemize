@@ -1,0 +1,16 @@
+import { Module } from '@nestjs/common';
+import { initializeApiServer } from '@xystemize/backend';
+import express from 'express';
+
+export const Accounts = express();
+
+@Module({
+  imports: [],
+})
+export class AccountsModule {}
+
+initializeApiServer({
+  apiInstance: Accounts,
+  functionName: 'accounts',
+  module: AccountsModule,
+});

@@ -40,6 +40,10 @@ export enum Name {
   bucket = 'bucket',
   base64 = 'base64',
   rawFileUri = 'rawFileUri',
+  accountState = 'accountState',
+  mediaFileExtension = 'mediaFileExtension',
+  user_id = 'user_id',
+  email_verified = 'email_verified',
   // ### General:End ###
 
   // ### Api:Start ###

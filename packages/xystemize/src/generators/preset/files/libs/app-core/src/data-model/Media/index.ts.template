@@ -1,2 +1,2 @@
-export * from './MediaDataInterface.ts.template';
-export * from './MediaDataModel.ts.template';
+export * from './MediaDataInterface';
+export * from './MediaDataModel';

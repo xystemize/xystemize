@@ -10,7 +10,7 @@ import { AppBaseDataModel } from '@xystemize/app-core';
 import { Expose, Transform } from 'class-transformer';
 import { IsNumber } from 'class-validator';
 
-import { MediaDataInterface } from './MediaDataInterface.ts.template';
+import { MediaDataInterface } from './MediaDataInterface';
 
 import { EntityTypeId, MediaSizeVariant, MediaTypeId, Name,VisibilityId } from '<%= orgName %>/app-core';
 

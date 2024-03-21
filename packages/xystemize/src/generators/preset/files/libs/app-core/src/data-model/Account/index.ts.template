@@ -1,2 +1,2 @@
-export * from './AccountDataInterface.ts.template';
-export * from './AccountDataModel.ts.template';
+export * from './AccountDataInterface';
+export * from './AccountDataModel';

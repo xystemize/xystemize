@@ -1,0 +1,155 @@
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { AccountDataModel, AccountState, EntityTypeId, MediaDataModel, MediaTypeId, Name, VisibilityId } from '@test-project/app-core';
+import { FirebaseAuthService, FirestoreService } from '@xystemize/backend';
+import { isEmpty } from 'lodash';
+import { autoInjectable } from 'tsyringe';
+
+@autoInjectable()
+@Injectable()
+export class AccountsService {
+  constructor(
+    private readonly firestoreService: FirestoreService,
+    private readonly firebaseAuthService: FirebaseAuthService,
+  ) {}
+
+  async getManyByEmail(email: string) {
+    const data = await this.firestoreService.getManyByProperty({
+      value: email,
+      property: Name.email,
+      collectionName: Name.accounts,
+      classModel: AccountBackendModel,
+      visibilityId: VisibilityId.Private,
+    });
+
+    return data;
+  }
+
+  async getManyByUsername(username: string) {
+    return this.firestoreService.getOneByProperty({
+      value: username.toLowerCase(),
+      property: Name.username,
+      collectionName: Name.accounts,
+      classModel: AccountBackendModel,
+      visibilityId: VisibilityId.Private,
+    });
+  }
+
+  async getAvailabilityByEmail(email: string): Promise<{ isAvailable: boolean }> {
+    const accountsDocs = await this.getManyByEmail(email.toLowerCase());
+    const isNotExistingUsername = accountsDocs.length === 0;
+    const isAvailable = isNotExistingUsername;
+
+    return { isAvailable };
+  }
+
+  async getAvailabilityByUsername({
+    username,
+    requesterAccountId,
+  }: {
+    username: string;
+    requesterAccountId?: string | null;
+  }) {
+    const { data: account } = await this.getManyByUsername(username);
+    let isAvailable = !account;
+
+    if (account && requesterAccountId) {
+      isAvailable = account.id === requesterAccountId && username === account.username;
+    }
+
+    return { isAvailable, account };
+  }
+
+  async getOneById({ id: accountId }: { id: string; requesterAccountId: string }) {
+    if (isEmpty(accountId)) {
+      throw new BadRequestException();
+    }
+
+    const [{ data: account }, { data: media }] = await Promise.all([
+      this.firestoreService.getOneById({
+        id: accountId,
+        collectionName: Name.accounts,
+        classModel: AccountDataModel,
+      }),
+      this.firestoreService.getOneById({
+        id: accountId,
+        collectionName: Name.mediaItems,
+        classModel: MediaDataModel,
+      }),
+    ]);
+
+    if (!account) {
+      throw new NotFoundException();
+    }
+
+    if (account) {
+      account.media = media;
+    }
+
+    return account;
+  }
+
+  async signup(body: SignUpBackendModel) {
+    const { isAvailable } = await this.getAvailabilityByEmail(body.email);
+
+    if (!isAvailable) {
+      throw new ConflictException();
+    }
+
+    const response = await this.firebaseAuthService.signUp(body);
+    const account = new AccountBackendModel(body);
+    account.id = response?.uid || '';
+
+    await this.addOne(account);
+
+    return account;
+  }
+
+  async addOne(account: AccountBackendModel) {
+    const [{ data: accountFromDB }, { isAvailable: isUsernameAvailable }] = await Promise.all([
+      this.firestoreService.getOneById({
+        id: account.id,
+        collectionName: Name.accounts,
+        classModel: AccountBackendModel,
+      }),
+      this.getAvailabilityByUsername({
+        username: account.username,
+        requesterAccountId: account.id,
+      }),
+    ]);
+
+    if (accountFromDB?.isValid) {
+      return account;
+    }
+
+    if (!isUsernameAvailable) {
+      throw new ConflictException();
+    }
+
+    if (account.media) {
+      account.media.id = account.id;
+      account.mediaId = account.id;
+      account.media.accountId = account.id;
+      account.media.entityId = account.id;
+      account.media.entityTypeId = EntityTypeId.Account;
+      account.media.mediaTypeId = MediaTypeId.Image;
+    }
+
+    await this.firestoreService.runTransaction(async (transaction) => {
+      const media = account.media;
+
+      transaction.create(account.firestoreDocRef, account.toFirestoreDocument());
+
+      if (media?.isValid) {
+        transaction.create(media.firestoreDocRef, media.toFirestoreDocument());
+      }
+
+      const customClaim = new CustomClaimBackendModel({
+        accountState: AccountState.Registered,
+        username: account.username,
+      });
+      await this.firebaseAuthService.auth?.setCustomUserClaims(account.id, customClaim.toCustomClaim());
+    });
+
+    return account;
+  }
+}

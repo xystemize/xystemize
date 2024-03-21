@@ -1,6 +1,6 @@
 import { AccountTypeId, AuthProviderId } from '@xystemize/app-core';
 
-import { AccountDataModel } from './AccountDataModel.ts.template';
+import { AccountDataModel } from './AccountDataModel';
 
 describe('AccountModel', () => {
   test('AccountModel validation', async () => {
