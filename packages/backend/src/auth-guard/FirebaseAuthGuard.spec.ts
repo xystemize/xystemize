@@ -34,8 +34,6 @@ const baseUrl = Environment.firebaseApiBaseUrl + '/' + accounts;
 
 @Controller(accounts)
 class AccountsController {
-  constructor(private readonly accountsService: AccountsService) {}
-
   @Get(':id')
   @UseGuards(FirebaseAuthUserGuard)
   async getAccountById(
