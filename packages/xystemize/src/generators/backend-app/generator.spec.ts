@@ -86,5 +86,16 @@ describe('backend-app generator', () => {
       filePath: `${projectRoot}/src/accounts/AccountsController.ts`,
     });
     expect(isCharExistsInString({ char: 'async getAccountById(', string: accountController })).toBeTruthy();
+
+    const services = readNxGeneratedFile({
+      tree,
+      filePath: `${projectRoot}/src/@services/Services.ts`,
+    });
+    expect(
+      isCharExistsInString({ char: `import { AccountsService } from '../accounts/AccountsService';`, string: services })
+    ).toBeTruthy();
+    expect(
+      isCharExistsInString({ char: `accounts = container.resolve(AccountsService);`, string: services })
+    ).toBeTruthy();
   });
 });
