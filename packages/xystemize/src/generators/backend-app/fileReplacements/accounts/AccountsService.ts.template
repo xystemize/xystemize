@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { AccountDataModel, AccountState, EntityTypeId, MediaDataModel, MediaTypeId, Name, VisibilityId } from '@test-project/app-core';
+import { AccountDataModel, AccountState, EntityTypeId, MediaDataModel, MediaTypeId, Name, VisibilityId } from '<%= orgName %>/app-core';
 import { FirebaseAuthService, FirestoreService } from '@xystemize/backend';
 import { isEmpty } from 'lodash';
 import { autoInjectable } from 'tsyringe';

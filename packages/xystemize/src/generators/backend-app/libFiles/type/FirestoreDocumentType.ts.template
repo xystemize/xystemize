@@ -1,0 +1,3 @@
+import { AppBaseDataModel } from '@xystemize/app-core';
+
+export type FirestoreDocumentType = AppBaseDataModel & { id: string };

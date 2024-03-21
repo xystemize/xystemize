@@ -1,0 +1,8 @@
+export const RequestConfig = Object.freeze({
+  DefaultLimitPerPage: 10,
+  DefaultSubCommentLimitPerPage: 2,
+  DefaultStartPage: 0,
+  FirestoreInOperatorLimit: 10,
+  FirestoreTransactionLimit: 500,
+  DefaultWriteMaxConcurrency: 2,
+});

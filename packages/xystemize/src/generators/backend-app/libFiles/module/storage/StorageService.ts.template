@@ -1,0 +1,41 @@
+import { Injectable, OnModuleInit } from '@nestjs/common';
+
+import { Environment } from '../../utility';
+import { FirebaseService } from '../firebase/FirebaseService';
+
+import { MediaDataModel } from '<%= orgName %>/app-core';
+
+const env = Environment;
+
+@Injectable()
+export class StorageService implements OnModuleInit {
+  storage = FirebaseService.storage;
+
+  get bucket() {
+    return this.storage.bucket(Environment.firebaseStorageBucket);
+  }
+
+  async onModuleInit() {
+    //
+  }
+
+  async upload(path: string) {
+    return this.storage.bucket(env.firebaseStorageBucket).upload(path);
+  }
+
+  async simulateClientPreUpload(media: MediaDataModel) {
+    if (!env.isTestEnv) {
+      return;
+    }
+
+    const bucket = media.bucket || env.firebaseStorageBucket;
+
+    if (!media.rawFileUri || !media.originalPathWithFileNameForPreUpload) {
+      return;
+    }
+
+    return this.storage.bucket(bucket).upload(media.rawFileUri, {
+      destination: media.originalPathWithFileNameForPreUpload,
+    });
+  }
+}

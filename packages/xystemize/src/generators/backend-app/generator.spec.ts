@@ -30,6 +30,7 @@ describe('backend-app generator', () => {
     expect(backendLib).toBeDefined();
 
     const projectRoot = `apps/${options.name}`;
+    const libRoot = `libs/backend-lib`;
 
     const projectJson = readNxGeneratedJsonFile({ tree, filePath: `${projectRoot}/project.json` });
     expect(projectJson.targets.build.options.generatePackageJson).toBe(true);
@@ -65,6 +66,16 @@ describe('backend-app generator', () => {
     folderShouldExists({ tree, folderPath: `${projectRoot}/src/@test` });
     folderShouldExists({ tree, folderPath: `${projectRoot}/src/@services` });
     folderShouldExists({ tree, folderPath: `${projectRoot}/src/accounts` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/constant` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module/app-backend-module` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module/auth` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module/firebase` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module/firestore` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module/pubsub` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/module/storage` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/type` });
+    folderShouldExists({ tree, folderPath: `${libRoot}/src/utility` });
 
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/assets/.gitkeep` });
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/main.ts` });

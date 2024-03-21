@@ -1,9 +1,15 @@
 import { addDependenciesToPackageJson, formatFiles, generateFiles, Tree } from '@nx/devkit';
 import { applicationGenerator } from '@nx/nest';
-import { kebabCase } from 'lodash';
+import { kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
-import { appendNxGeneratedFile, deleteNxGeneratedFile, writeNxGeneratedFile, WriteStategy } from '../../utility';
+import {
+  appendNxGeneratedFile,
+  deleteNxGeneratedFile,
+  readNxGeneratedJsonFile,
+  writeNxGeneratedFile,
+  WriteStategy,
+} from '../../utility';
 import backendApiGenerator from '../backend-api/generator';
 import backendComponentGenerator from '../backend-component/generator';
 import { backendDependencies, backendDevDependencies } from '../dependency/dependencies';
@@ -13,17 +19,22 @@ import { updateProjectJson } from './lib/Project';
 import { BackendAppGeneratorSchema } from './schema';
 
 export async function backendAppGenerator(tree: Tree, options: BackendAppGeneratorSchema) {
+  const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
+  const orgName = trim(packageJson.orgName ?? packageJson.name).replace('/source', '');
+
   const formatedName = kebabCase(options.name);
   const defaultDirectory = 'apps';
   const resolvedOptions = {
     ...options,
     name: kebabCase(options.name),
+    orgName: orgName,
     directory: options.directory ?? defaultDirectory,
   };
   const projectRoot = `${resolvedOptions.directory}/${formatedName}`;
 
   // add libs
-  await jsLibGenerator(tree, { name: 'backend-lib' });
+  const backendLib = 'backend-lib';
+  await jsLibGenerator(tree, { name: backendLib });
 
   // add dependencies
   addDependenciesToPackageJson(tree, backendDependencies, backendDevDependencies);
@@ -31,6 +42,7 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   await applicationGenerator(tree, resolvedOptions);
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, resolvedOptions);
   generateFiles(tree, path.join(__dirname, 'rootFiles'), '.', resolvedOptions);
+  generateFiles(tree, path.join(__dirname, 'libFiles'), `libs/${backendLib}/src`, resolvedOptions);
   updateProjectJson({ tree, projectRoot, options: resolvedOptions });
 
   // add backend-api

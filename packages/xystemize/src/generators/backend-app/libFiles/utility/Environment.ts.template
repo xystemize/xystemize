@@ -1,0 +1,21 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
+import { Env } from '@xystemize/backend';
+import * as env from 'env-var';
+
+import { Name } from '<%= orgName %>/app-core';
+
+export class BackendEnv extends Env {
+  get gCloudProject(): string {
+    return env.get(Name.GCLOUD_PROJECT).asString() || '';
+  }
+
+  get firebaseStorageBucket(): string {
+    const defaultValue = this.gCloudProject ? `${this.gCloudProject}.appspot.com` : '';
+
+    return env.get(Name.FBASE_STORAGE_BUCKET).asString() || defaultValue;
+  }
+}
+
+export const Environment = new BackendEnv();
