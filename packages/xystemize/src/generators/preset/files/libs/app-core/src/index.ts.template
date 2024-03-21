@@ -1,2 +1,4 @@
 export * from './constant';
+export * from './data-model';
+export * from './interface';
 export * from './string';
