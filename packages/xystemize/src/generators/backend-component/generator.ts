@@ -43,6 +43,22 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
 
   appendNxGeneratedFile({
     tree,
+    filePath: `${resolvedOptions.directory}/@services`,
+    pattern: 'class AppServices {',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `import { ${formatedName}Service } from '../${folderName}/${formatedName}Service';\n`,
+  });
+
+  appendNxGeneratedFile({
+    tree,
+    filePath: `${resolvedOptions.directory}/@services`,
+    pattern: '// ### BackendServices:End',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `${resolvedOptions.nameCamelCase} = container.resolve(${formatedName}Service);`,
+  });
+
+  appendNxGeneratedFile({
+    tree,
     filePath: `libs/app-core/src/constant/Name.ts`,
     pattern: '// ### Data:End ###',
     stategy: WriteStategy.AddAbovePattern,
