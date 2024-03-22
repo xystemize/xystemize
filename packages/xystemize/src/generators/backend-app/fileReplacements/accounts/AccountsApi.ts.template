@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppBackendModule } from '@xystemize/backend';
+import { AppBackendModule } from '<%= orgName %>/backend-lib';
 
 import { AccountsController } from './AccountsController';
 import { AccountsService } from './AccountsService';

@@ -1,3 +1,4 @@
 export * from './Account';
-export * from './CustomClaim/index';
+export * from './CustomClaim';
 export * from './Media';
+export * from './SignUp';

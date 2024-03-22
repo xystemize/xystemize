@@ -6,6 +6,7 @@ import {
   fileShouldExists,
   fileShouldNotExists,
   folderShouldExists,
+  folderShouldNotExists,
   readNxGeneratedFile,
   readNxGeneratedJsonFile,
 } from '../../utility';
@@ -77,6 +78,8 @@ describe('backend-app generator', () => {
     folderShouldExists({ tree, folderPath: `${libRoot}/src/type` });
     folderShouldExists({ tree, folderPath: `${libRoot}/src/utility` });
 
+    folderShouldNotExists({ tree, folderPath: `${libRoot}/src/lib` });
+
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/assets/.gitkeep` });
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/main.ts` });
     fileShouldNotExists({ tree, filePath: `${projectRoot}/src/app/app.module.ts` });
@@ -97,5 +100,10 @@ describe('backend-app generator', () => {
     expect(
       isCharExistsInString({ char: `accounts = container.resolve(AccountsService);`, string: services })
     ).toBeTruthy();
+
+    const jestConfig = readNxGeneratedFile({ tree, filePath: `${projectRoot}/jest.config.ts` });
+    expect(
+      isCharExistsInString({ string: jestConfig, char: `globalSetup: '<rootDir>/src/@test/JestGlobalSetup.ts',` })
+    );
   });
 });

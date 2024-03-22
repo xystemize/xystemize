@@ -1,5 +1,7 @@
-
-import { BackendTest, FirebaseAuthService } from '@xystemize/backend';
+import { AccountsApi, AppGlobalState, SignUpDataModel, TestAccountInterface } from '@test-project/app-core';
+import { FirebaseAuthService, generateUserData } from '@test-project/backend-lib';
+import { FirebaseApiClient } from '@xystemize/app-core';
+import { BackendTest, FirebaseClient } from '@xystemize/backend';
 
 import { ApiV1Module } from '../@api-v1/ApiV1';
 import { AccountsService } from '../accounts/AccountsService';
@@ -18,12 +20,48 @@ class Api {
       return this;
     }
 
+    AccountsApi.auth = FirebaseClient.auth;
+
     const appApi = await this.backendTest.initialize(ApiV1Module);
-    
+
     this.accountsService = appApi.get(AccountsService);
     this.isInitialized = true;
 
     return this;
+  };
+
+  createVerifiedAccountAndSignUserIn = async (account?: TestAccountInterface) => {
+    account = account ?? generateUserData();
+
+    const signupRequestData = new SignUpDataModel(account);
+    const { data } = await AccountsApi.signup(signupRequestData);
+
+    const emailVerifyLink = await this.firebaseAuthService.auth.generateEmailVerificationLink(account.email);
+    await AccountsApi.verify(emailVerifyLink);
+
+    const res = await AccountsApi.signin(account);
+    const user = res.data?.user;
+
+    account.userCredential = res.data;
+    account.id = account.userCredential?.user.uid ?? '';
+    account.account = data;
+    
+
+    AppGlobalState.currentUser = user;
+    FirebaseApiClient.currentUser = user;
+
+    return account;
+  };
+
+  createUnverifiedAccount = async (account?: TestAccountInterface) => {
+    account = account ?? generateUserData();
+
+    const signupRequestData = new SignUpDataModel(account);
+    const { data } = await AccountsApi.signup(signupRequestData);
+
+    account.account = data;
+
+    return account;
   };
 }
 

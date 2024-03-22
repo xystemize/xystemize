@@ -1,1 +1,1 @@
-export * from './Environment.ts.template';
+export * from './Environment.';

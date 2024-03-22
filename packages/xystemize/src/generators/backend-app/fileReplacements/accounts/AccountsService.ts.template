@@ -1,6 +1,16 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { AccountDataModel, AccountState, EntityTypeId, MediaDataModel, MediaTypeId, Name, VisibilityId } from '<%= orgName %>/app-core';
-import { FirebaseAuthService, FirestoreService } from '@xystemize/backend';
+import {
+  AccountDataModel,
+  AccountState,
+  CustomClaimDataModel,
+  EntityTypeId,
+  MediaDataModel,
+  MediaTypeId,
+  Name,
+  SignUpDataModel,
+  VisibilityId,
+} from '@test-project/app-core';
+import { FirebaseAuthService, FirestoreService } from '@test-project/backend-lib';
 import { isEmpty } from 'lodash';
 import { autoInjectable } from 'tsyringe';
 
@@ -9,7 +19,7 @@ import { autoInjectable } from 'tsyringe';
 export class AccountsService {
   constructor(
     private readonly firestoreService: FirestoreService,
-    private readonly firebaseAuthService: FirebaseAuthService,
+    private readonly firebaseAuthService: FirebaseAuthService
   ) {}
 
   async getManyByEmail(email: string) {
@@ -17,7 +27,7 @@ export class AccountsService {
       value: email,
       property: Name.email,
       collectionName: Name.accounts,
-      classModel: AccountBackendModel,
+      classModel: AccountDataModel,
       visibilityId: VisibilityId.Private,
     });
 
@@ -29,7 +39,7 @@ export class AccountsService {
       value: username.toLowerCase(),
       property: Name.username,
       collectionName: Name.accounts,
-      classModel: AccountBackendModel,
+      classModel: AccountDataModel,
       visibilityId: VisibilityId.Private,
     });
   }
@@ -88,7 +98,7 @@ export class AccountsService {
     return account;
   }
 
-  async signup(body: SignUpBackendModel) {
+  async signup(body: SignUpDataModel) {
     const { isAvailable } = await this.getAvailabilityByEmail(body.email);
 
     if (!isAvailable) {
@@ -96,7 +106,7 @@ export class AccountsService {
     }
 
     const response = await this.firebaseAuthService.signUp(body);
-    const account = new AccountBackendModel(body);
+    const account = new AccountDataModel(body);
     account.id = response?.uid || '';
 
     await this.addOne(account);
@@ -104,12 +114,12 @@ export class AccountsService {
     return account;
   }
 
-  async addOne(account: AccountBackendModel) {
+  async addOne(account: AccountDataModel) {
     const [{ data: accountFromDB }, { isAvailable: isUsernameAvailable }] = await Promise.all([
       this.firestoreService.getOneById({
         id: account.id,
         collectionName: Name.accounts,
-        classModel: AccountBackendModel,
+        classModel: AccountDataModel,
       }),
       this.getAvailabilityByUsername({
         username: account.username,
@@ -136,14 +146,16 @@ export class AccountsService {
 
     await this.firestoreService.runTransaction(async (transaction) => {
       const media = account.media;
+      const accountDocRef = this.firestoreService.accounts.doc(account.id);
 
-      transaction.create(account.firestoreDocRef, account.toFirestoreDocument());
+      transaction.create(accountDocRef, account.toFirestoreDocument());
 
       if (media?.isValid) {
-        transaction.create(media.firestoreDocRef, media.toFirestoreDocument());
+        const mediaDocRef = this.firestoreService.mediaItems.doc(media.id);
+        transaction.create(mediaDocRef, media.toFirestoreDocument());
       }
 
-      const customClaim = new CustomClaimBackendModel({
+      const customClaim = new CustomClaimDataModel({
         accountState: AccountState.Registered,
         username: account.username,
       });

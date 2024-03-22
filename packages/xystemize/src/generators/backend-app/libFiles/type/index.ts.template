@@ -1,1 +1,1 @@
-export * from './FirestoreDocumentType.ts.template';
+export * from './FirestoreDocumentType.';

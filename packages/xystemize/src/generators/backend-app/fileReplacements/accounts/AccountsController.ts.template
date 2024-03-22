@@ -1,12 +1,47 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
-import { CustomClaimDataModel, Name } from '<%= orgName %>/app-core';
-import { FirebaseAuthUserGuard, RequiredStringDataPipe } from '@xystemize/backend';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { AccountDataModel, CustomClaimDataModel, Name, SignUpDataModel } from '@test-project/app-core';
+import { AccountDataPipe, OptionalFirebaseAuthUserGuard, OptionalUsernameDataPipe, SignUpDataPipe } from '@test-project/backend-lib';
+import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, RequiredStringDataPipe } from '@xystemize/backend';
 
 import { AccountsService } from './AccountsService';
 
 @Controller(Name.accounts)
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
+
+  @Get(Name.availability)
+  @UseGuards(OptionalFirebaseAuthUserGuard)
+  async checkAvailability(
+    @Req()
+    { customClaim }: { customClaim?: CustomClaimDataModel | null },
+
+    @Query(Name.username, OptionalUsernameDataPipe)
+    username?: string | null,
+
+    @Query(Name.email, OptionalEmailDataPipe)
+    email?: string | null,
+  ) {
+    let isAvailable = false;
+
+    if (!username && !email) {
+      throw new BadRequestException();
+    }
+
+    if (username) {
+      const response = await this.accountsService.getAvailabilityByUsername({
+        username: username,
+        requesterAccountId: customClaim?.accountId,
+      });
+      isAvailable = response.isAvailable;
+    }
+
+    if (email) {
+      const response = await this.accountsService.getAvailabilityByEmail(email);
+      isAvailable = response.isAvailable;
+    }
+
+    return { isAvailable };
+  }
 
   @Get(':id')
   @UseGuards(FirebaseAuthUserGuard)
@@ -15,11 +50,28 @@ export class AccountsController {
     { customClaim }: { customClaim: CustomClaimDataModel },
 
     @Param(Name.id, RequiredStringDataPipe)
-    id: string,
+    id: string
   ) {
     return this.accountsService.getOneById({
       id,
-      requesterAccountId: customClaim.accountId,
+      requesterAccountId: customClaim?.accountId,
     });
+  }
+
+  @Post(Name.signup)
+  async signup(
+    @Body(SignUpDataPipe)
+    body: SignUpDataModel,
+  ) {
+    return this.accountsService.signup(body);
+  }
+
+  @Post()
+  @UseGuards(FirebaseAuthOwnerGuard)
+  async addOne(
+    @Body(AccountDataPipe)
+    body: AccountDataModel,
+  ) {
+    return this.accountsService.addOne(body);
   }
 }

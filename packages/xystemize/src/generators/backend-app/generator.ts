@@ -64,7 +64,7 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
     tree,
     filePath: `${projectRoot}/jest.config.ts`,
     stategy: WriteStategy.AddAbovePattern,
-    pattern: `moduleFileExtensions: ['ts', 'js', 'html'],`,
+    pattern: `};`,
     fileContent: `globalSetup: '<rootDir>/src/@test/JestGlobalSetup.ts',`,
   });
 
@@ -72,6 +72,7 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   generateFiles(tree, path.join(__dirname, 'fileReplacements'), `${projectRoot}/src`, resolvedOptions);
 
   // delete files
+  deleteNxGeneratedFile({ tree, filePath: `libs/${backendLib}/src/lib` });
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/app` });
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/assets` });
   deleteNxGeneratedFile({ tree, filePath: `${projectRoot}/src/main.ts` });
