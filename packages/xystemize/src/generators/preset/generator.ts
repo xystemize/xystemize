@@ -10,7 +10,7 @@ import marketingAppGenerator from '../marketing-app/generator';
 import mobileAppGenerator from '../mobile-app/generator';
 import webAppGenerator from '../web-app/generator';
 
-import { setUpDependencies, setUpPreset } from './lib';
+import { appendGitIgnore, setUpDependencies, setUpPreset } from './lib';
 import { PresetGeneratorSchema } from './schema';
 
 export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema) {
@@ -64,6 +64,7 @@ export async function presetGenerator(tree: Tree, options: PresetGeneratorSchema
   }
 
   await setUpPreset({ tree });
+  await appendGitIgnore({ tree });
   await formatFiles(tree);
 }
 

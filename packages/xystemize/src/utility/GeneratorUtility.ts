@@ -248,3 +248,18 @@ export const folderShouldNotExists = ({ tree, folderPath }: { tree: Tree; folder
 
   return true;
 };
+
+export const appendFileAtTheBottom = ({
+  tree,
+  filePath,
+  entries,
+}: {
+  tree: Tree;
+  filePath: string;
+  entries: string[];
+}) => {
+  const file = readNxGeneratedFile({ tree, filePath });
+  const stringEntries = '\n' + entries.join('\n');
+
+  tree.write(filePath, file + stringEntries);
+};
