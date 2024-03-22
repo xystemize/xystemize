@@ -95,5 +95,8 @@ describe('preset generator', () => {
 
     const name = readNxGeneratedFile({ tree, filePath: `${appCoreRoot}/src/constant/Name.ts` });
     expect(isCharExistsInString({ char: `accounts = 'accounts',`, string: name })).toBeTruthy();
+
+    const gitIgnore = readNxGeneratedFile({ tree, filePath: '.gitignore' });
+    expect(isCharExistsInString({ char: 'firebase-debug.log', string: gitIgnore }));
   });
 });
