@@ -44,14 +44,20 @@ export enum Name {
   mediaFileExtension = 'mediaFileExtension',
   user_id = 'user_id',
   email_verified = 'email_verified',
+  availability = 'availability',
+  signup = 'signup',
+  NO_AUTH = 'NO_AUTH',
   // ### General:End ###
 
   // ### Api:Start ###
+  apiv1 = 'apiv1',
   // ### Api:End ###
 
   // ### Data:Start ###
   media = 'media',
   mediaItems = 'mediaItems',
+  account = 'account',
+  accounts = 'accounts',
   // ### Data:End ###
 
   // ### Language:Start ###

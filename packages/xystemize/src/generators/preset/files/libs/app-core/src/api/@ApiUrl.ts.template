@@ -1,0 +1,20 @@
+import { AppGlobalState } from '../app-global-state/AppGlobalState';
+import { Name } from '../constant';
+
+const { accounts, apiv1, mediaItems } = Name;
+
+class Url {
+  private get baseUrl() {
+    return `${AppGlobalState.firebaseApiBaseUrl}/${apiv1}`;
+  }
+
+  get accountsApiUrl() {
+    return `${this.baseUrl}/${accounts}`;
+  }
+
+  get mediaItemsApiUrl() {
+    return `${this.baseUrl}/${mediaItems}`;
+  }
+}
+
+export const ApiUrl = new Url();

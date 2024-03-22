@@ -1,0 +1,96 @@
+import { FirebaseApiClient } from '@xystemize/app-core';
+import axios from 'axios';
+import { Auth, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
+import { AppGlobalState } from '../app-global-state/AppGlobalState';
+import { Name } from '../constant';
+import {
+  AccountDataModel,
+  CustomClaimDataInterface,
+  CustomClaimDataModel,
+  SignUpDataInterface,
+} from '../data-model';
+
+import { ApiUrl } from './@ApiUrl';
+
+class Api {
+  auth?: Auth | null = null;
+
+  async checkEmailOrUsernameAvailability(params?: { username?: string; email?: string }) {
+    return FirebaseApiClient.get<{ isAvailable: boolean }>({
+      baseUrl: ApiUrl.accountsApiUrl,
+      endpoint: Name.availability,
+      params: params,
+    });
+  }
+
+  async checkEmailAvailability(params?: { email?: string }) {
+    return this.checkEmailOrUsernameAvailability(params);
+  }
+
+  async checkUsernameAvailability(params?: { username?: string }) {
+    return this.checkEmailOrUsernameAvailability(params);
+  }
+
+  async getOne(params: { id: string }) {
+    return FirebaseApiClient.getOne({
+      baseUrl: ApiUrl.accountsApiUrl,
+      endpoint: params.id,
+      params: params,
+      classModel: AccountDataModel,
+    });
+  }
+
+  async getCustomClaim(forceRefresh?: boolean) {
+    if (!AppGlobalState.currentUser) {
+      return null;
+    }
+
+    const { claims } = await AppGlobalState.currentUser.getIdTokenResult(forceRefresh);
+    return new CustomClaimDataModel(claims as CustomClaimDataInterface);
+  }
+
+  async getAndForceRefreshCustomClaim() {
+    return this.getCustomClaim(true);
+  }
+
+  async signup(params: SignUpDataInterface) {
+    return FirebaseApiClient.postOne({
+      baseUrl: ApiUrl.accountsApiUrl,
+      endpoint: Name.signup,
+      params: params,
+      classModel: AccountDataModel,
+    });
+  }
+
+  async signin({ auth, email, password }: { auth?: Auth | null; email: string; password: string }) {
+    const firebaseAuth = auth ?? this.auth ?? getAuth();
+
+    if (!firebaseAuth) {
+      throw new Error(Name.NO_AUTH);
+    }
+
+    return FirebaseApiClient.handleFirebaseResponse(
+      signInWithEmailAndPassword(firebaseAuth, email, password),
+    );
+  }
+
+  async verify(link?: string) {
+    if (!link) {
+      return;
+    }
+
+    return axios.get(link);
+  }
+
+  async addOne(params: AccountDataModel) {
+    return FirebaseApiClient.postOne({
+      baseUrl: ApiUrl.accountsApiUrl,
+      endpoint: '',
+      params: params,
+      classModel: AccountDataModel,
+    });
+  }
+}
+
+export const AccountsApi = new Api();

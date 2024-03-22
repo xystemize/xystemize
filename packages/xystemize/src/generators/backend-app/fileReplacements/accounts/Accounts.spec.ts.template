@@ -1,6 +1,6 @@
-import { AccountDataModel, AccountState, AppGlobalState, Timezone } from '@test-project/app-core';
-import { AccountsApi } from '@test-project/app-core';
-import { generateUserData } from '@test-project/backend-lib';
+import { AccountDataModel, AccountState, AppGlobalState, Timezone } from '<%= orgName %>/app-core';
+import { AccountsApi } from '<%= orgName %>/app-core';
+import { generateUserData } from '<%= orgName %>/backend-lib';
 import { ColorModeId, DevicePlatformId, } from '@xystemize/app-core';
 import { resetAllDatabases } from '@xystemize/backend';
 

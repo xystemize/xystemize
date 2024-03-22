@@ -10,9 +10,9 @@ import { AppBaseDataModel } from '@xystemize/app-core';
 import { Expose, Transform } from 'class-transformer';
 import { IsNumber } from 'class-validator';
 
-import { MediaDataInterface } from './MediaDataInterface';
+import { EntityTypeId, MediaSizeVariant, MediaTypeId, Name, VisibilityId } from '../../constant';
 
-import { EntityTypeId, MediaSizeVariant, MediaTypeId, Name,VisibilityId } from '<%= orgName %>/app-core';
+import { MediaDataInterface } from './MediaDataInterface';
 
 export class MediaDataModel extends AppBaseDataModel implements MediaDataInterface {
   @Transform(IdStringWithDefaultTransformer)
@@ -357,23 +357,11 @@ export class MediaDataModel extends AppBaseDataModel implements MediaDataInterfa
 
   get updateProps() {
     return [
-      Name.posterId,
-      Name.canvasWidth,
-      Name.canvasHeight,
-      Name.templateId,
       Name.fileName,
       Name.fileExtension,
       Name.fileFolderName,
       Name.width,
       Name.height,
-      Name.matrix4Values,
-      Name.originalPositionX,
-      Name.originalPositionY,
-      Name.scaleX,
-      Name.scaleY,
-      Name.fontSize,
-      Name.font,
-      Name.colorHex,
       Name.mediaTypeId,
       Name.mediaUrlTokenSmall,
       Name.mediaUrlTokenMedium,

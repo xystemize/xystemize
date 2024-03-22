@@ -1,5 +1,7 @@
 import { UserCredential } from 'firebase/auth';
 
+import { AccountDataModel, MediaDataModel } from '../data-model';
+
 export interface TestAccountInterface {
   id: string;
   email: string;
@@ -16,8 +18,8 @@ export interface TestAccountInterface {
   createdTimestamp: number;
   updatedTimestamp: number;
   userCredential: UserCredential | null;
-  account?: object | null;
-  media?: object | null;
+  account?: AccountDataModel | null;
+  media?: MediaDataModel | null;
   devicePlatformId?: number;
   timezone?: string | null;
 }

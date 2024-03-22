@@ -1,7 +1,7 @@
-import { AccountTypeId, AuthProviderId, DevicePlatformId, Name } from '../../constant';
-import { MediaDataModel } from '../Media/MediaDataModel';
+import { AppBaseDataInterface, AuthProviderId, DevicePlatformId } from '@xystemize/app-core';
 
-import { AppBaseDataInterface } from '<%= orgName %>/app-base';
+import { AccountTypeId, Name } from '../../constant';
+import { MediaDataModel } from '../Media/MediaDataModel';
 
 export interface SignUpDataInterface extends AppBaseDataInterface {
   [Name.username]: string;

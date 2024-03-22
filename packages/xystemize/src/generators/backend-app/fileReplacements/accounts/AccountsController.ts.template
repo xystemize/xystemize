@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { AccountDataModel, CustomClaimDataModel, Name, SignUpDataModel } from '@test-project/app-core';
-import { AccountDataPipe, OptionalFirebaseAuthUserGuard, OptionalUsernameDataPipe, SignUpDataPipe } from '@test-project/backend-lib';
+import { AccountDataModel, CustomClaimDataModel, Name, SignUpDataModel } from '<%= orgName %>/app-core';
+import { AccountDataPipe, OptionalFirebaseAuthUserGuard, OptionalUsernameDataPipe, SignUpDataPipe } from '<%= orgName %>/backend-lib';
 import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, RequiredStringDataPipe } from '@xystemize/backend';
 
 import { AccountsService } from './AccountsService';

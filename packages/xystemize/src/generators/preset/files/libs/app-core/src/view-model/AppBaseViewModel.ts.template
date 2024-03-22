@@ -1,0 +1,50 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
+import { AppBaseModel } from '@xystemize/app-core';
+import { validateSync } from 'class-validator';
+import { isEmpty, omitBy } from 'lodash';
+import { action, computed, makeObservable, observable } from 'mobx';
+
+import { State, States } from '../constant';
+
+export class AppBaseViewModel extends AppBaseModel {
+  @observable
+  state: State = States.NoState;
+
+  constructor(obj: any) {
+    super();
+
+    this.state = obj?.state ?? States.NoState;
+  }
+
+  @computed
+  get isValid(): boolean {
+    const errors = validateSync(this);
+    return isEmpty(errors);
+  }
+
+  @action
+  setState = (state: State) => {
+    this.state = state;
+  };
+
+  useVM = <Type extends this>(): { vm: Type } => {
+    const [vm] = useState(this as unknown as Type);
+    return { vm };
+  };
+
+  sanitizeAndAssignProperties<T, V>({ instance, params }: { instance: T; params: V }) {
+    const objParams = omitBy(params || {}, (v) => v === undefined);
+    Object.assign(instance as object, objParams);
+  }
+
+  transformAndMakeObservable<T, V>({ instance, params }: { instance: T; params: V }) {
+    makeObservable(instance as object);
+
+    this.sanitizeAndAssignProperties({ instance, params });
+  }
+
+  toDataModel = <T extends { new (...args: any[]): InstanceType<T> }>({ dataModel: DataModel }: { dataModel: T }) => {
+    return new DataModel(this);
+  };
+}

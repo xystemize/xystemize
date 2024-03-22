@@ -1,5 +1,5 @@
-import { AccountsApi, AppGlobalState, SignUpDataModel, TestAccountInterface } from '@test-project/app-core';
-import { FirebaseAuthService, generateUserData } from '@test-project/backend-lib';
+import { AccountsApi, AppGlobalState, SignUpDataModel, TestAccountInterface } from '<%= orgName %>/app-core';
+import { FirebaseAuthService, generateUserData } from '<%= orgName %>/backend-lib';
 import { FirebaseApiClient } from '@xystemize/app-core';
 import { BackendTest, FirebaseClient } from '@xystemize/backend';
 

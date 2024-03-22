@@ -1,0 +1,249 @@
+export enum StateId {
+  NoState,
+  Loading,
+  LoadingMoreItems,
+  Reloading,
+  DoneLoading,
+  Empty,
+  Error,
+  NotClickable,
+  Enabled,
+  Disabled,
+  Visible,
+  Hidden,
+  Dirty,
+  Valid,
+  Focused,
+  Active,
+  InActive,
+  Completed,
+  Open,
+  Closed,
+  TagActive,
+  TagInactive,
+  ReadOnly,
+  ReachedLastItem,
+  Normal,
+  FullScreen,
+  Editing,
+  Reported,
+  ClickOnly,
+  Selected,
+  Deselected,
+  LoadingNewItems,
+  LoadingSubData,
+  Unsaved,
+  LoadingInitialItems,
+  Pending,
+  Approved,
+  Updated,
+}
+
+export class State {
+  stateId: number = StateId.NoState;
+
+  constructor(stateId: StateId) {
+    this.stateId = stateId ?? StateId.NoState;
+  }
+
+  get isNoState() {
+    return this.stateId === StateId.NoState;
+  }
+
+  get isSet() {
+    return this.stateId !== StateId.NoState;
+  }
+
+  get isLoading() {
+    return this.stateId === StateId.Loading;
+  }
+
+  get isLoadingMoreItems() {
+    return this.stateId === StateId.LoadingMoreItems;
+  }
+
+  get isReloading() {
+    return this.stateId === StateId.Reloading;
+  }
+
+  get isDoneLoading() {
+    return this.stateId === StateId.DoneLoading;
+  }
+
+  get isEmpty() {
+    return this.stateId === StateId.Empty;
+  }
+
+  get isError() {
+    return this.stateId === StateId.Error;
+  }
+
+  get notClickable() {
+    return this.stateId === StateId.NotClickable;
+  }
+
+  get isEnabled() {
+    return this.stateId === StateId.Enabled;
+  }
+
+  get isDisabled() {
+    return this.stateId === StateId.Disabled;
+  }
+
+  get isVisible() {
+    return this.stateId === StateId.Visible;
+  }
+
+  get isHidden() {
+    return this.stateId === StateId.Hidden;
+  }
+
+  get isDirty() {
+    return this.stateId === StateId.Dirty;
+  }
+
+  get isValid() {
+    return this.stateId === StateId.Valid;
+  }
+
+  get isFocused() {
+    return this.stateId === StateId.Focused;
+  }
+
+  get isActive() {
+    return this.stateId === StateId.Active;
+  }
+
+  get isInActive() {
+    return this.stateId === StateId.InActive;
+  }
+
+  get isCompleted() {
+    return this.stateId === StateId.Completed;
+  }
+
+  get isOpen() {
+    return this.stateId === StateId.Open;
+  }
+
+  get isClosed() {
+    return this.stateId === StateId.Closed;
+  }
+
+  get isTagActive() {
+    return this.stateId === StateId.TagActive;
+  }
+
+  get isTagInactive() {
+    return this.stateId === StateId.TagInactive;
+  }
+
+  get isReadOnly() {
+    return this.stateId === StateId.ReadOnly;
+  }
+
+  get isReachedLastItem() {
+    return this.stateId === StateId.ReachedLastItem;
+  }
+
+  get isNormal() {
+    return this.stateId === StateId.Normal;
+  }
+
+  get isFullScreen() {
+    return this.stateId === StateId.FullScreen;
+  }
+
+  get isEditing() {
+    return this.stateId === StateId.Editing;
+  }
+
+  get isReported() {
+    return this.stateId === StateId.Reported;
+  }
+
+  get isClickOnly() {
+    return this.stateId === StateId.ClickOnly;
+  }
+
+  get isSelected() {
+    return this.stateId === StateId.Selected;
+  }
+
+  get isDeselected() {
+    return this.stateId === StateId.Deselected;
+  }
+
+  get isLoadingNewItems() {
+    return this.stateId === StateId.LoadingNewItems;
+  }
+
+  get isLoadingInitialItems() {
+    return this.stateId === StateId.LoadingInitialItems;
+  }
+
+  get isLoadingSubData() {
+    return this.stateId === StateId.LoadingSubData;
+  }
+
+  get isUnsaved() {
+    return this.stateId === StateId.Unsaved;
+  }
+
+  get isPending() {
+    return this.stateId === StateId.Pending;
+  }
+
+  get isApproved() {
+    return this.stateId === StateId.Approved;
+  }
+
+  get isUpdated() {
+    return this.stateId === StateId.Updated;
+  }
+
+  get isNotClickable() {
+    return this.stateId === StateId.NotClickable;
+  }
+}
+
+export const States = Object.freeze({
+  NoState: new State(StateId.NoState),
+  Loading: new State(StateId.Loading),
+  LoadingMoreItems: new State(StateId.LoadingMoreItems),
+  Reloading: new State(StateId.Reloading),
+  DoneLoading: new State(StateId.DoneLoading),
+  Empty: new State(StateId.Empty),
+  Error: new State(StateId.Error),
+  NotClickable: new State(StateId.NotClickable),
+  Enabled: new State(StateId.Enabled),
+  Disabled: new State(StateId.Disabled),
+  Visible: new State(StateId.Visible),
+  Hidden: new State(StateId.Hidden),
+  Dirty: new State(StateId.Dirty),
+  Valid: new State(StateId.Valid),
+  Focused: new State(StateId.Focused),
+  Active: new State(StateId.Active),
+  InActive: new State(StateId.InActive),
+  Completed: new State(StateId.Completed),
+  Open: new State(StateId.Open),
+  Closed: new State(StateId.Closed),
+  TagActive: new State(StateId.TagActive),
+  TagInactive: new State(StateId.TagInactive),
+  ReadOnly: new State(StateId.ReadOnly),
+  ReachedLastItem: new State(StateId.ReachedLastItem),
+  Normal: new State(StateId.Normal),
+  FullScreen: new State(StateId.FullScreen),
+  Editing: new State(StateId.Editing),
+  Reported: new State(StateId.Reported),
+  ClickOnly: new State(StateId.ClickOnly),
+  Selected: new State(StateId.Selected),
+  Deselected: new State(StateId.Deselected),
+  LoadingNewItems: new State(StateId.LoadingNewItems),
+  LoadingSubData: new State(StateId.LoadingSubData),
+  LoadingInitialItems: new State(StateId.LoadingInitialItems),
+  Unsaved: new State(StateId.Unsaved),
+  Pending: new State(StateId.Pending),
+  Approved: new State(StateId.Approved),
+  Updated: new State(StateId.Updated),
+});

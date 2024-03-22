@@ -1,0 +1,22 @@
+type DimensionType = Readonly<{ [key: string]: { width: number; height: number; size: number } }>;
+
+export enum MediaSizeVariant {
+  Small = '150x150',
+  Medium = '300x300',
+  Large = '600x600',
+  Original = 'original',
+}
+
+export const MediaDimension = Object.freeze({
+  Small: { width: 150, height: 150, size: 150 },
+  Medium: { width: 300, height: 300, size: 300 },
+  Large: { width: 600, height: 600, size: 600 },
+  Original: { width: 1000, height: 1000, size: 1000 },
+});
+
+export const MediaDimensionVariants: DimensionType = Object.freeze({
+  [MediaSizeVariant.Small]: MediaDimension.Small,
+  [MediaSizeVariant.Medium]: MediaDimension.Medium,
+  [MediaSizeVariant.Large]: MediaDimension.Large,
+  [MediaSizeVariant.Original]: MediaDimension.Original,
+});

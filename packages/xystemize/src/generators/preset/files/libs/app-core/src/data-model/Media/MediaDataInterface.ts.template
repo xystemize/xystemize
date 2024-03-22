@@ -1,8 +1,6 @@
+import { AppBaseDataInterface } from "@xystemize/app-core";
 
-import { AppBaseDataInterface } from '@xystemize/app-core';
-
-import { EntityTypeId, MediaTypeId, Name } from '<%= orgName %>/app-constant';
-
+import { EntityTypeId, MediaTypeId, Name } from "../../constant";
 
 export interface MediaDataInterface extends AppBaseDataInterface {
   [Name.accountId]?: string;

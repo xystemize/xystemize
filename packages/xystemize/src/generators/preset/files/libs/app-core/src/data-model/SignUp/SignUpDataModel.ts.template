@@ -1,5 +1,7 @@
 import {
   AppBaseDataModel,
+  AuthProviderId,
+  DevicePlatformId,
   HasCapitalLetter,
   HasNumber,
   HasSymbol,
@@ -16,7 +18,8 @@ import {
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsEmail, IsNumber, MaxLength, MinLength } from 'class-validator';
 
-import { AccountTypeId, AuthProviderId, DevicePlatformId, Name, ValidationRule } from '../../constant';
+import { AccountTypeId,  Name } from '../../constant';
+import { ValidationRule } from '../../constant/ValidationRule';
 import { MediaDataModel } from '../Media/MediaDataModel';
 
 import { SignUpDataInterface } from './SignUpDataInterface';

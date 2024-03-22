@@ -1,5 +1,3 @@
-
-
 import {
   AppBaseDataModel,
   AuthProviderId,
@@ -20,11 +18,10 @@ import { IsEmail, IsNumber, MaxLength, MinLength, ValidateIf } from 'class-valid
 
 import 'reflect-metadata';
 
+import { AccountTypeId, Name, VisibilityId } from '../../constant';
 import { MediaDataModel } from '../Media/MediaDataModel';
 
 import { AccountDataInterface } from './AccountDataInterface';
-
-import { AccountTypeId, Name, VisibilityId } from '<%= orgName %>/app-core';
 
 export class AccountDataModel extends AppBaseDataModel implements AccountDataInterface {
   @IsNotBlank()
@@ -155,9 +152,7 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
   }
 
   get isRegistrationFromSocialAuth() {
-    return (
-      this.isAppleAuth || this.isGoogleAuth || this.isFacebookAuth || this.isEmailAndPasswordAuth
-    );
+    return this.isAppleAuth || this.isGoogleAuth || this.isFacebookAuth || this.isEmailAndPasswordAuth;
   }
 
   get updateProps() {

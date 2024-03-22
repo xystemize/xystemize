@@ -1,0 +1,91 @@
+import { ColorModeId, colorModeMap } from '@xystemize/app-core';
+import { FirebaseUser } from '@xystemize/app-core/src/interface';
+import { User } from 'firebase/auth';
+import { isNil } from 'lodash';
+import { action, computed, makeObservable, observable } from 'mobx';
+
+import { AccountDataModel, CustomClaimDataModel } from '../data-model';
+import { AppBaseViewModel } from '../view-model';
+
+export class GlobalState extends AppBaseViewModel {
+  @observable
+  currentUser?: (FirebaseUser | User) | null = null;
+
+  @observable
+  customClaim?: CustomClaimDataModel | null = null;
+
+  @observable
+  account?: AccountDataModel | null = null;
+
+  @observable
+  colorModeId = ColorModeId.DarkMode;
+
+  @observable
+  statusBarHidden = false;
+
+  firebaseConfig: { [key: string]: string } | null = null;
+  firebaseApiBaseUrl = '';
+  firebaseBucket = '';
+  
+  constructor() {
+    super({});
+    makeObservable(this);
+  }
+
+  @computed
+  get isDarkMode() {
+    return this.colorModeId === ColorModeId.DarkMode;
+  }
+
+  @computed
+  get isLightMode() {
+    return this.colorModeId === ColorModeId.LightMode;
+  }
+
+  @computed
+  get colorMode() {
+    return colorModeMap[this.colorModeId];
+  }
+
+  @computed
+  get accountId() {
+    return this.currentUser?.uid ?? this.customClaim?.accountId ?? '';
+  }
+
+  @computed
+  get isSignedInAndRegistered() {
+    return (
+      !isNil(this.currentUser) &&
+      !isNil(this.customClaim) &&
+      this.customClaim?.isRegistered &&
+      this.customClaim?.emailVerified
+    );
+  }
+
+  @computed
+  get accountMediaUrl() {
+    return this.customClaim?.getMediaUrl({
+      bucket: this.firebaseBucket,
+    });
+  }
+
+  @action
+  toggleColorMode = () => {
+    this.colorModeId = this.isLightMode ? ColorModeId.DarkMode : ColorModeId.LightMode;
+  };
+
+  @action
+  setCustomClaim = (customClaim?: CustomClaimDataModel | null) => {
+    this.customClaim = customClaim;
+    this.colorModeId = customClaim?.colorModeId ?? ColorModeId.DarkMode;
+  };
+
+  @action
+  reset = () => {
+    this.currentUser = null;
+    this.customClaim = null;
+    this.colorModeId = ColorModeId.DarkMode;
+  };
+}
+
+export const AppGlobalState = new GlobalState();

@@ -9,8 +9,8 @@ import {
   Name,
   SignUpDataModel,
   VisibilityId,
-} from '@test-project/app-core';
-import { FirebaseAuthService, FirestoreService } from '@test-project/backend-lib';
+} from '<%= orgName %>/app-core';
+import { FirebaseAuthService, FirestoreService } from '<%= orgName %>/backend-lib';
 import { isEmpty } from 'lodash';
 import { autoInjectable } from 'tsyringe';
 

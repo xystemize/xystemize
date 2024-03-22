@@ -1,14 +1,7 @@
-import { AppBaseDataInterface } from '@xystemize/app-core';
+import { AppBaseDataInterface, AuthProviderId, DevicePlatformId } from '@xystemize/app-core';
 
+import { AccountTypeId, Name } from '../../constant';
 import { MediaDataModel } from '../Media/MediaDataModel';
-
-import {
-  AccountTypeId,
-  AuthProviderId,
-  DevicePlatformId,
-  Name,
-} from '<%= orgName %>/app-constant';
-import { OptionalString } from '<%= orgName %>/app-data-type';
 
 export interface AccountDataInterface extends AppBaseDataInterface {
   [Name.username]: string;
@@ -17,8 +10,8 @@ export interface AccountDataInterface extends AppBaseDataInterface {
   [Name.lastName]: string;
   [Name.authProviderId]: AuthProviderId;
   [Name.accountTypeId]?: AccountTypeId | null;
-  [Name.mediaId]?: OptionalString;
+  [Name.mediaId]?: string | null;
   [Name.media]?: MediaDataModel | null;
-  [Name.timezone]?: OptionalString;
+  [Name.timezone]?: string | null;
   [Name.devicePlatformId]?: DevicePlatformId;
 }
