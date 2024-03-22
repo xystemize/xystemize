@@ -5,8 +5,6 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 
 import { FirebaseService } from '../firebase/FirebaseService';
 
-import { Name } from '<%= orgName %>/app-core';
-
 @Injectable()
 export class PubSubService implements OnModuleInit {
   pubSub: PubSub = FirebaseService.pubsub;
@@ -24,7 +22,7 @@ export class PubSubService implements OnModuleInit {
   }
 
   async addTopics() {
-    const topics = [Name.mediaCreateOnPublish];
+    const topics = [];
 
     await Promise.all(
       topics.map((topic) => {

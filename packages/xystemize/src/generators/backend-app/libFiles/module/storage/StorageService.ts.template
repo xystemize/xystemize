@@ -1,11 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
+import { MediaDataModel } from '<%= orgName %>/app-core';
 
 import { Environment } from '../../utility';
 import { FirebaseService } from '../firebase/FirebaseService';
 
-import { MediaDataModel } from '<%= orgName %>/app-core';
-
-const env = Environment;
 
 @Injectable()
 export class StorageService implements OnModuleInit {
@@ -20,15 +18,15 @@ export class StorageService implements OnModuleInit {
   }
 
   async upload(path: string) {
-    return this.storage.bucket(env.firebaseStorageBucket).upload(path);
+    return this.storage.bucket(Environment.firebaseStorageBucket).upload(path);
   }
 
   async simulateClientPreUpload(media: MediaDataModel) {
-    if (!env.isTestEnv) {
+    if (!Environment.isTestEnv) {
       return;
     }
 
-    const bucket = media.bucket || env.firebaseStorageBucket;
+    const bucket = media.bucket || Environment.firebaseStorageBucket;
 
     if (!media.rawFileUri || !media.originalPathWithFileNameForPreUpload) {
       return;

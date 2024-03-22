@@ -1,1 +1,1 @@
-export * from './FirestoreDocumentType.';
+export * from './FirestoreDocumentType';

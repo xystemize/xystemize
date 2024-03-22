@@ -2,7 +2,7 @@
 
 import { PubSub } from '@google-cloud/pubsub';
 import { auth, firestore, messaging, storage } from 'firebase-admin';
-import { App, initializeApp } from 'firebase-admin/app';
+import { App,initializeApp } from 'firebase-admin/app';
 
 import { Environment } from '../../utility';
 
@@ -15,7 +15,7 @@ class Firebase {
     if (!Firebase.app && Environment.isTestEnv) {
       Firebase.app = initializeApp({
         projectId: Environment.firebaseProjectId,
-      });
+      }, Environment.firebaseProjectId);
 
       return;
     }

@@ -1,4 +1,7 @@
+export * from './auth-guard';
 export * from './constant';
+export * from './data-pipe';
 export * from './module';
+export * from './test';
 export * from './type';
 export * from './utility';

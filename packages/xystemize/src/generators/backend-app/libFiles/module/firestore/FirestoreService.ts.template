@@ -2,15 +2,14 @@
 /* eslint-disable no-undef */
 
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { Name, VisibilityId } from '<%= orgName %>/app-core';
 import { mapArrayWithConcurrency } from '@xystemize/app-core';
 import { firestore } from 'firebase-admin';
-import { chunk,filter, first, isEmpty, uniq, without } from 'lodash';
+import { chunk, filter, first, isEmpty, uniq, without } from 'lodash';
 
 import { RequestConfig } from '../../constant';
 import { FirestoreDocumentType } from '../../type';
 import { FirebaseService } from '../firebase/FirebaseService';
-
-import { Name, VisibilityId } from '<%= orgName %>/app-core';
 
 @Injectable()
 export class FirestoreService implements OnModuleInit {
