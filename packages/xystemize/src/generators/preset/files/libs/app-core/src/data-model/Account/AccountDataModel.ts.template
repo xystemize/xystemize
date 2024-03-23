@@ -152,7 +152,7 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
   }
 
   get isRegistrationFromSocialAuth() {
-    return this.isAppleAuth || this.isGoogleAuth || this.isFacebookAuth || this.isEmailAndPasswordAuth;
+    return this.isAppleAuth || this.isGoogleAuth || this.isFacebookAuth;
   }
 
   get updateProps() {

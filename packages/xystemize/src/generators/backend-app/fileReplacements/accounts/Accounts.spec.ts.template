@@ -1,7 +1,6 @@
-import { AccountDataModel, AccountState, AppGlobalState, Timezone } from '<%= orgName %>/app-core';
-import { AccountsApi } from '<%= orgName %>/app-core';
+import { AccountDataModel, AccountsApi,AccountState, Timezone } from '<%= orgName %>/app-core';
 import { generateUserData } from '<%= orgName %>/backend-lib';
-import { ColorModeId, DevicePlatformId, } from '@xystemize/app-core';
+import { ColorModeId, DevicePlatformId, FirebaseApiClient } from '@xystemize/app-core';
 import { resetAllDatabases } from '@xystemize/backend';
 
 import { TestApi as api } from '../@test/TestApi';
@@ -81,7 +80,7 @@ describe('Accounts', () => {
         api.createVerifiedAccountAndSignUserIn(),
       ]);
 
-      AppGlobalState.currentUser = null;
+      FirebaseApiClient.currentUser = null;
 
       let res = await AccountsApi.checkUsernameAvailability({ username: unverifiedAccount.username });
       expect(res.statusCode).toBe(200);
@@ -115,19 +114,19 @@ describe('Accounts', () => {
         api.createVerifiedAccountAndSignUserIn(),
       ]);
 
-      AppGlobalState.currentUser = null;
+      FirebaseApiClient.currentUser = null;
 
       let res = await AccountsApi.getOne({ id: verifiedAccount.account?.id ?? '' });
       expect(res.statusCode).toBe(403);
 
-      AppGlobalState.currentUser = unverifiedAccount.userCredential?.user;
+      FirebaseApiClient.currentUser = unverifiedAccount.userCredential?.user;
       res = await AccountsApi.getOne({ id: verifiedAccount.account?.id ?? '' });
       expect(res.statusCode).toBe(403);
     });
 
     test('Error 404: Not found', async () => {
       const verifiedAccount = await api.createVerifiedAccountAndSignUserIn();
-      AppGlobalState.currentUser = verifiedAccount.userCredential?.user;
+      FirebaseApiClient.currentUser = verifiedAccount.userCredential?.user;
 
       let res = await AccountsApi.getOne({ id: 'd' });
       expect(res.statusCode).toBe(404);
@@ -138,7 +137,7 @@ describe('Accounts', () => {
 
     test('Success 200', async () => {
       const verifiedAccount = await api.createVerifiedAccountAndSignUserIn();
-      AppGlobalState.currentUser = verifiedAccount.userCredential?.user;
+      FirebaseApiClient.currentUser = verifiedAccount.userCredential?.user;
 
       const res = await AccountsApi.getOne({ id: verifiedAccount.account?.id ?? '' });
       expect(res.statusCode).toBe(200);
@@ -152,13 +151,13 @@ describe('Accounts', () => {
       let res = await AccountsApi.addOne(unverifiedUser.account as AccountDataModel);
       expect(res.statusCode).toBe(403);
 
-      AppGlobalState.currentUser = unverifiedUser.userCredential?.user;
+      FirebaseApiClient.currentUser = unverifiedUser.userCredential?.user;
       res = await AccountsApi.addOne(unverifiedUser.account as AccountDataModel);
       expect(res.statusCode).toBe(403);
 
       // other user tries to create account for other user
       const verifiedUser = await api.createVerifiedAccountAndSignUserIn();
-      AppGlobalState.currentUser = verifiedUser.userCredential?.user;
+      FirebaseApiClient.currentUser = verifiedUser.userCredential?.user;
       res = await AccountsApi.addOne(unverifiedUser.account as AccountDataModel);
       expect(res.statusCode).toBe(403);
     });
