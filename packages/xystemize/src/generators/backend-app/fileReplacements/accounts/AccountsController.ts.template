@@ -13,7 +13,7 @@ export class AccountsController {
   @UseGuards(OptionalFirebaseAuthUserGuard)
   async checkAvailability(
     @Req()
-    { customClaim }: { customClaim?: CustomClaimDataModel | null },
+    { customClaim }: { customClaim?: CustomClaimDataInterface | null },
 
     @Query(Name.username, OptionalUsernameDataPipe)
     username?: string | null,
@@ -28,9 +28,10 @@ export class AccountsController {
     }
 
     if (username) {
+      const claim = new CustomClaimDataModel(customClaim);
       const response = await this.accountsService.getAvailabilityByUsername({
         username: username,
-        requesterAccountId: customClaim?.accountId,
+        requesterAccountId: claim?.accountId,
       });
       isAvailable = response.isAvailable;
     }

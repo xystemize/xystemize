@@ -1,4 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Name } from '@xystemize/app-core';
 import { auth } from 'firebase-admin';
 
 import { OwnershipDataModel } from '../data-model/ownership';
@@ -16,6 +17,8 @@ export class FirebaseAuthOwnerGuard implements CanActivate {
 
       const decodedIdToken = await auth().verifyIdToken(token);
       const isEmailVerified = decodedIdToken.email_verified || false;
+
+      req[Name.customClaim] = decodedIdToken;
 
       if (isEmailVerified) {
         const isGetMethod = method === 'GET';

@@ -1,4 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Name } from '@xystemize/app-core';
 import { auth } from 'firebase-admin';
 
 @Injectable()
@@ -14,6 +15,8 @@ export class FirebaseAuthUserGuard implements CanActivate {
 
       const decodedIdToken = await auth().verifyIdToken(token);
       const isEmailVerified = decodedIdToken.email_verified || false;
+
+      req[Name.customClaim] = decodedIdToken;
 
       isAuthenticatedUser = isEmailVerified;
     } catch (error) {

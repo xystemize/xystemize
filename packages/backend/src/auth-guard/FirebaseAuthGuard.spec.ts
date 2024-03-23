@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Body, Controller, Get, Injectable, Module, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Injectable, Module, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { FirebaseApiClient, generateUuid, Name } from '@xystemize/app-core';
 import axios from 'axios';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -37,10 +37,13 @@ class AccountsController {
   @Get(':id')
   @UseGuards(FirebaseAuthUserGuard)
   async getAccountById(
+    @Req()
+    { customClaim }: { customClaim?: object | null },
+
     @Param(Name.id, RequiredStringDataPipe)
     id: string
   ) {
-    return { id };
+    return { id, customClaim };
   }
 
   @Post()
@@ -67,8 +70,8 @@ export class AccountsModule {}
 export class ApiV1Module {}
 
 class AccountsApi {
-  async getAccount(params?: { id?: string; username?: string; email?: string }) {
-    return FirebaseApiClient.get({
+  async getAccount<T>(params?: { id?: string; username?: string; email?: string }) {
+    return FirebaseApiClient.get<T>({
       baseUrl: baseUrl,
       endpoint: params?.id ?? '',
       params: params,
@@ -146,7 +149,11 @@ describe('FirebaseAuthGuard', () => {
 
     FirebaseApiClient.currentUser = null;
 
-    let res = await api.getAccount({ id: 'InvalidId', username: verifiedUser1.username, email: verifiedUser1.email });
+    let res = await api.getAccount<{ id: string; customClaim: object }>({
+      id: 'InvalidId',
+      username: verifiedUser1.username,
+      email: verifiedUser1.email,
+    });
     expect(res.statusCode).toBe(403);
 
     res = await api.getAccount({ id: generateUuid(), username: verifiedUser1.username, email: verifiedUser1.email });
@@ -156,6 +163,7 @@ describe('FirebaseAuthGuard', () => {
     FirebaseApiClient.currentUser = verifiedUser1.userCredential?.user;
     res = await api.getAccount({ id: verifiedUser1.id, username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(200);
+    expect(res.data?.customClaim).toBeDefined();
 
     // should allow non-owner valid user
     FirebaseApiClient.currentUser = verifiedUser2.userCredential?.user;
