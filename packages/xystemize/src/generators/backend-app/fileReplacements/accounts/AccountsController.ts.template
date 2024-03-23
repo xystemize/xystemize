@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { AccountDataModel, CustomClaimDataModel, Name, SignUpDataModel } from '<%= orgName %>/app-core';
+import { AccountDataModel, CustomClaimDataInterface, CustomClaimDataModel, Name, SignUpDataModel } from '<%= orgName %>/app-core';
 import { AccountDataPipe, OptionalUsernameDataPipe, SignUpDataPipe } from '<%= orgName %>/backend-lib';
 import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, OptionalFirebaseAuthUserGuard, RequiredStringDataPipe } from '@xystemize/backend';
 import { DecodedIdToken } from 'firebase-admin/auth';
@@ -29,7 +29,7 @@ export class AccountsController {
     }
 
     if (username) {
-      const claim = new CustomClaimDataModel(decodedIdToken);
+      const claim = new CustomClaimDataModel(decodedIdToken as CustomClaimDataInterface);
       const response = await this.accountsService.getAvailabilityByUsername({
         username: username,
         requesterAccountId: claim?.accountId,
