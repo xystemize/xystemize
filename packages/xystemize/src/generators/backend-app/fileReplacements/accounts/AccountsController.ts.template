@@ -1,49 +1,20 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { AccountDataModel, CustomClaimDataInterface, CustomClaimDataModel, Name, SignUpDataModel } from '<%= orgName %>/app-core';
-import { AccountDataPipe, OptionalUsernameDataPipe, SignUpDataPipe } from '<%= orgName %>/backend-lib';
-import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, OptionalFirebaseAuthUserGuard, RequiredStringDataPipe } from '@xystemize/backend';
-import { DecodedIdToken } from 'firebase-admin/auth';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  CustomClaimDataModel,
+  Name,
+  SignUpDataModel,
+} from '<%= orgName %>/app-core';
+import { SignUpDataPipe } from '<%= orgName %>/backend-lib';
+import {
+  FirebaseAuthUserGuard,
+  RequiredStringDataPipe,
+} from '@xystemize/backend';
 
 import { AccountsService } from './AccountsService';
 
 @Controller(Name.accounts)
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
-
-  @Get(Name.availability)
-  @UseGuards(OptionalFirebaseAuthUserGuard)
-  async checkAvailability(
-    @Req()
-    { decodedIdToken }: { decodedIdToken?: DecodedIdToken | null },
-
-    @Query(Name.username, OptionalUsernameDataPipe)
-    username?: string | null,
-
-    @Query(Name.email, OptionalEmailDataPipe)
-    email?: string | null,
-  ) {
-    let isAvailable = false;
-
-    if (!username && !email) {
-      throw new BadRequestException();
-    }
-
-    if (username) {
-      const claim = new CustomClaimDataModel(decodedIdToken as CustomClaimDataInterface);
-      const response = await this.accountsService.getAvailabilityByUsername({
-        username: username,
-        requesterAccountId: claim?.accountId,
-      });
-      isAvailable = response.isAvailable;
-    }
-
-    if (email) {
-      const response = await this.accountsService.getAvailabilityByEmail(email);
-      isAvailable = response.isAvailable;
-    }
-
-    return { isAvailable };
-  }
 
   @Get(':id')
   @UseGuards(FirebaseAuthUserGuard)
@@ -63,17 +34,8 @@ export class AccountsController {
   @Post(Name.signup)
   async signup(
     @Body(SignUpDataPipe)
-    body: SignUpDataModel,
+    body: SignUpDataModel
   ) {
     return this.accountsService.signup(body);
-  }
-
-  @Post()
-  @UseGuards(FirebaseAuthOwnerGuard)
-  async addOne(
-    @Body(AccountDataPipe)
-    body: AccountDataModel,
-  ) {
-    return this.accountsService.addOne(body);
   }
 }

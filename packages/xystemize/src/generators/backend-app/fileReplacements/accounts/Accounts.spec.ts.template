@@ -1,110 +1,11 @@
-import { AccountDataModel, AccountsApi,AccountState, Timezone } from '<%= orgName %>/app-core';
-import { generateUserData } from '<%= orgName %>/backend-lib';
-import { ColorModeId, DevicePlatformId, FirebaseApiClient } from '@xystemize/app-core';
-import { resetAllDatabases } from '@xystemize/backend';
+import { AccountsApi } from '<%= orgName %>/app-core';
+import { FirebaseApiClient } from '@xystemize/app-core';
 
 import { TestApi as api } from '../@test/TestApi';
 
 describe('Accounts', () => {
   beforeAll(async () => {
-    await Promise.all([api.initialize(), resetAllDatabases()]);
-  });
-
-  describe('GET /accounts/availability', () => {
-    test('Error 400: Email not valid', async () => {
-      let res = await AccountsApi.checkEmailAvailability({ email: '' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkEmailAvailability({ email: '    ' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkEmailAvailability({ email: '@example.com' });
-      expect(res.statusCode).toBe(400);
-    });
-
-    test('Error 400: Username not valid', async () => {
-      let res = await AccountsApi.checkUsernameAvailability({ username: '' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: '     ' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: 'firstname lastname' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: '@username' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: '😎' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: '😎😆🎉' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: 'ab' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: '约翰' });
-      expect(res.statusCode).toBe(400);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: 'test31test31test31test31test311' });
-      expect(res.statusCode).toBe(400);
-    });
-
-    test('Success 200: For email', async () => {
-      const [unverifiedAccount, verifiedAccount] = await Promise.all([
-        api.createUnverifiedAccount(),
-        api.createVerifiedAccountAndSignUserIn(),
-      ]);
-
-      let res = await AccountsApi.checkEmailAvailability({ email: unverifiedAccount.email });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(false);
-
-      res = await AccountsApi.checkEmailAvailability({ email: verifiedAccount.email });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(false);
-
-      res = await AccountsApi.checkEmailAvailability({ email: verifiedAccount.email.toUpperCase() });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(false);
-
-      res = await AccountsApi.checkEmailAvailability({ email: 'username+notexists@example.com' });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(true);
-    });
-
-    test('Success 200: For username', async () => {
-      const [unverifiedAccount, verifiedAccount] = await Promise.all([
-        api.createUnverifiedAccount(),
-        api.createVerifiedAccountAndSignUserIn(),
-      ]);
-
-      FirebaseApiClient.currentUser = null;
-
-      let res = await AccountsApi.checkUsernameAvailability({ username: unverifiedAccount.username });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(false);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: verifiedAccount.username });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(false);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: verifiedAccount.username.toUpperCase() });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(false);
-
-      res = await AccountsApi.checkUsernameAvailability({ username: 'availableusername' });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(true);
-    });
-
-    test('Success 200: If checking own username', async () => {
-      const verifiedAccount = await api.createVerifiedAccountAndSignUserIn();
-      const res = await AccountsApi.checkUsernameAvailability({ username: verifiedAccount.username });
-      expect(res.statusCode).toBe(200);
-      expect(res.data?.isAvailable).toBe(true);
-    });
+    await api.initialize();
   });
 
   describe('GET /accounts/:id', () => {
@@ -141,68 +42,6 @@ describe('Accounts', () => {
 
       const res = await AccountsApi.getOne({ id: verifiedAccount.account?.id ?? '' });
       expect(res.statusCode).toBe(200);
-    });
-  });
-
-  describe('POST /accounts', () => {
-    test('Error 403: Forbidden', async () => {
-      const unverifiedUser = await api.createUnverifiedAccount();
-
-      let res = await AccountsApi.addOne(unverifiedUser.account as AccountDataModel);
-      expect(res.statusCode).toBe(403);
-
-      FirebaseApiClient.currentUser = unverifiedUser.userCredential?.user;
-      res = await AccountsApi.addOne(unverifiedUser.account as AccountDataModel);
-      expect(res.statusCode).toBe(403);
-
-      // other user tries to create account for other user
-      const verifiedUser = await api.createVerifiedAccountAndSignUserIn();
-      FirebaseApiClient.currentUser = verifiedUser.userCredential?.user;
-      res = await AccountsApi.addOne(unverifiedUser.account as AccountDataModel);
-      expect(res.statusCode).toBe(403);
-    });
-
-    test('Error 400: Bad Request', async () => {
-      const verifiedUser = await api.createVerifiedAccountAndSignUserIn();
-
-      const accountWithNoUsername = { ...verifiedUser.account, username: '' };
-      let res = await AccountsApi.addOne(accountWithNoUsername as AccountDataModel);
-      expect(res.statusCode).toBe(400);
-
-      const accountWithNoFirstName = { ...verifiedUser.account, firstName: '' };
-      res = await AccountsApi.addOne(accountWithNoFirstName as AccountDataModel);
-      expect(res.statusCode).toBe(400);
-    });
-
-    test('Success 200', async () => {
-      const userData = generateUserData();
-      userData.devicePlatformId = DevicePlatformId.AppleIos;
-      userData.timezone = Timezone.AsiaManila;
-
-      const verifiedUser = await api.createVerifiedAccountAndSignUserIn(userData);
-      const account = verifiedUser.account as AccountDataModel;
-
-      const res = await AccountsApi.addOne(account);
-      const customClaim = await AccountsApi.getAndForceRefreshCustomClaim();
-
-      expect(res.statusCode).toBe(201);
-      expect(res.data?.isValid).toBeTruthy();
-      expect(res.data?.media?.isValid).toBeTruthy();
-      expect(customClaim?.isValid).toBeTruthy();
-      expect(customClaim?.accountState).toBe(AccountState.Registered);
-      expect(customClaim?.isRegistered).toBeTruthy();
-      expect(customClaim?.emailVerified).toBeTruthy();
-      expect(customClaim?.accountId).toBe(verifiedUser.account?.id);
-      expect(customClaim?.email).toBe(verifiedUser.account?.email);
-      expect(customClaim?.colorModeId).toBe(ColorModeId.DarkMode);
-
-      const accountFromDB = await AccountsApi.getOne(account);
-      expect(accountFromDB.statusCode).toBe(200);
-      expect(accountFromDB.data?.isValid).toBeTruthy();
-      expect(accountFromDB.data?.devicePlatformId).toBe(DevicePlatformId.AppleIos);
-      expect(accountFromDB.data?.timezone).toBe(Timezone.AsiaManila);
-      expect(accountFromDB.data?.isValid).toBeTruthy();
-      expect(accountFromDB.data?.media?.isValid).toBeTruthy();
     });
   });
 });
