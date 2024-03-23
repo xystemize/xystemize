@@ -50,14 +50,11 @@ export enum Name {
   // ### General:End ###
 
   // ### Api:Start ###
-  apiv1 = 'apiv1',
   // ### Api:End ###
 
   // ### Data:Start ###
   media = 'media',
   mediaItems = 'mediaItems',
-  account = 'account',
-  accounts = 'accounts',
   // ### Data:End ###
 
   // ### Language:Start ###
