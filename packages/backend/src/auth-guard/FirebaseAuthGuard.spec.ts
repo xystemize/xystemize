@@ -38,12 +38,12 @@ class AccountsController {
   @UseGuards(FirebaseAuthUserGuard)
   async getAccountById(
     @Req()
-    { customClaim }: { customClaim?: object | null },
+    { decodedIdToken }: { decodedIdToken?: object | null },
 
     @Param(Name.id, RequiredStringDataPipe)
     id: string
   ) {
-    return { id, customClaim };
+    return { id, decodedIdToken };
   }
 
   @Post()
@@ -149,7 +149,7 @@ describe('FirebaseAuthGuard', () => {
 
     FirebaseApiClient.currentUser = null;
 
-    let res = await api.getAccount<{ id: string; customClaim: object }>({
+    let res = await api.getAccount<{ id: string; decodedIdToken: object }>({
       id: 'InvalidId',
       username: verifiedUser1.username,
       email: verifiedUser1.email,
@@ -163,7 +163,7 @@ describe('FirebaseAuthGuard', () => {
     FirebaseApiClient.currentUser = verifiedUser1.userCredential?.user;
     res = await api.getAccount({ id: verifiedUser1.id, username: verifiedUser1.username, email: verifiedUser1.email });
     expect(res.statusCode).toBe(200);
-    expect(res.data?.customClaim).toBeDefined();
+    expect(res.data?.decodedIdToken).toBeDefined();
 
     // should allow non-owner valid user
     FirebaseApiClient.currentUser = verifiedUser2.userCredential?.user;

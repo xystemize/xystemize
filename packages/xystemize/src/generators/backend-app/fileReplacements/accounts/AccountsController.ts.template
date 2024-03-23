@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { AccountDataModel, CustomClaimDataModel, Name, SignUpDataModel } from '<%= orgName %>/app-core';
-import { AccountDataPipe, OptionalFirebaseAuthUserGuard, OptionalUsernameDataPipe, SignUpDataPipe } from '<%= orgName %>/backend-lib';
-import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, RequiredStringDataPipe } from '@xystemize/backend';
+import { AccountDataPipe, OptionalUsernameDataPipe, SignUpDataPipe } from '<%= orgName %>/backend-lib';
+import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, OptionalFirebaseAuthUserGuard, RequiredStringDataPipe } from '@xystemize/backend';
 
 import { AccountsService } from './AccountsService';
 
@@ -13,7 +13,7 @@ export class AccountsController {
   @UseGuards(OptionalFirebaseAuthUserGuard)
   async checkAvailability(
     @Req()
-    { customClaim }: { customClaim?: CustomClaimDataInterface | null },
+    { decodedIdToken }: { decodedIdToken?: object | null },
 
     @Query(Name.username, OptionalUsernameDataPipe)
     username?: string | null,
@@ -28,7 +28,7 @@ export class AccountsController {
     }
 
     if (username) {
-      const claim = new CustomClaimDataModel(customClaim);
+      const claim = new CustomClaimDataModel(decodedIdToken);
       const response = await this.accountsService.getAvailabilityByUsername({
         username: username,
         requesterAccountId: claim?.accountId,
