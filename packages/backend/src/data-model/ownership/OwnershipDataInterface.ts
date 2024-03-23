@@ -1,4 +1,4 @@
-import { DecodedIdToken } from '../../interface/DecodedIdTokenInterface';
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 export interface OwnerDataInterface {
   id?: string;

@@ -2,6 +2,7 @@ import { BadRequestException, Body, Controller, Get, Param, Post, Query, Req, Us
 import { AccountDataModel, CustomClaimDataModel, Name, SignUpDataModel } from '<%= orgName %>/app-core';
 import { AccountDataPipe, OptionalUsernameDataPipe, SignUpDataPipe } from '<%= orgName %>/backend-lib';
 import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard, OptionalEmailDataPipe, OptionalFirebaseAuthUserGuard, RequiredStringDataPipe } from '@xystemize/backend';
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 import { AccountsService } from './AccountsService';
 
@@ -13,7 +14,7 @@ export class AccountsController {
   @UseGuards(OptionalFirebaseAuthUserGuard)
   async checkAvailability(
     @Req()
-    { decodedIdToken }: { decodedIdToken?: object | null },
+    { decodedIdToken }: { decodedIdToken?: DecodedIdToken | null },
 
     @Query(Name.username, OptionalUsernameDataPipe)
     username?: string | null,

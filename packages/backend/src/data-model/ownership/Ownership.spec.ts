@@ -1,6 +1,5 @@
+import { DecodedIdToken } from 'firebase-admin/auth';
 import { v4 as uuidv4 } from 'uuid';
-
-import { DecodedIdToken } from '../../interface/DecodedIdTokenInterface';
 
 import { OwnershipDataModel } from './OwnershipDataModel';
 

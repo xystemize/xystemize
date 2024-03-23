@@ -4,6 +4,7 @@ import { Body, Controller, Get, Injectable, Module, Param, Post, Req, UseGuards 
 import { FirebaseApiClient, generateUuid, Name } from '@xystemize/app-core';
 import axios from 'axios';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { DecodedIdToken } from 'firebase-admin/auth';
 import { autoInjectable } from 'tsyringe';
 
 import { FirebaseAuthOwnerGuard, FirebaseAuthUserGuard } from '../auth-guard';
@@ -38,7 +39,7 @@ class AccountsController {
   @UseGuards(FirebaseAuthUserGuard)
   async getAccountById(
     @Req()
-    { decodedIdToken }: { decodedIdToken?: object | null },
+    { decodedIdToken }: { decodedIdToken?: DecodedIdToken | null },
 
     @Param(Name.id, RequiredStringDataPipe)
     id: string
@@ -149,7 +150,7 @@ describe('FirebaseAuthGuard', () => {
 
     FirebaseApiClient.currentUser = null;
 
-    let res = await api.getAccount<{ id: string; decodedIdToken: object }>({
+    let res = await api.getAccount<{ id: string; decodedIdToken: DecodedIdToken }>({
       id: 'InvalidId',
       username: verifiedUser1.username,
       email: verifiedUser1.email,

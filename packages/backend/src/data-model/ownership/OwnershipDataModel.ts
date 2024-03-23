@@ -1,8 +1,7 @@
 import { StringWithTrimTransformer } from '@xystemize/app-core';
 import { AppBaseDataModel } from '@xystemize/app-core';
 import { Expose, Transform } from 'class-transformer';
-
-import { DecodedIdToken } from '../../interface/DecodedIdTokenInterface';
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 import { OwnerDataInterface } from './OwnershipDataInterface';
 
