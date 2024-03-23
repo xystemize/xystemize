@@ -30,13 +30,15 @@ describe('Generator Utility', () => {
         filePath: `${libName}/package.json`,
         fileContent: {
           scripts: {
-            prepare: 'husky install && echo "npm run lint" > .husky/pre-push',
+            prepare: 'husky install && echo "npm run lintPrePush" > .husky/pre-push',
           },
         },
       });
 
       const packageJson = readNxGeneratedJsonFile({ tree, filePath: `${libName}/package.json` });
-      expect(packageJson.scripts).toStrictEqual({ prepare: 'husky install && echo "npm run lint" > .husky/pre-push' });
+      expect(packageJson.scripts).toStrictEqual({
+        prepare: 'husky install && echo "npm run lintPrePush" > .husky/pre-push',
+      });
     });
 
     test('overwrite object behavior', () => {
@@ -63,7 +65,7 @@ describe('Generator Utility', () => {
         filePath: `${libName}/package.json`,
         fileContent: {
           scripts: {
-            prepare: 'husky install && echo "npm run lint" > .husky/pre-push',
+            prepare: 'husky install && echo "npm run lintPrePush" > .husky/pre-push',
           },
         },
         overwrite: false,
@@ -73,7 +75,7 @@ describe('Generator Utility', () => {
 
       expect(packageJson.scripts).toStrictEqual({
         codeCheck: 'npx prettier --check .',
-        prepare: 'husky install && echo "npm run lint" > .husky/pre-push',
+        prepare: 'husky install && echo "npm run lintPrePush" > .husky/pre-push',
       });
     });
 
