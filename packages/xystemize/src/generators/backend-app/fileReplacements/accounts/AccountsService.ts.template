@@ -60,17 +60,13 @@ export class AccountsService {
 
     const response = await this.firebaseAuthService.signUp(body);
     const account = new AccountDataModel(body);
-    account.id = response?.uid || '';
+    account.id = response.uid;
 
     await this.firestoreService.runTransaction(async (transaction) => {
-      const media = account.media;
-      const accountDocRef = this.firestoreService.accounts.doc(account.id);
+      transaction.create(account);
 
-      transaction.create(accountDocRef, account.toFirestoreDocument());
-
-      if (media?.isValid) {
-        const mediaDocRef = this.firestoreService.mediaItems.doc(media.id);
-        transaction.create(mediaDocRef, media.toFirestoreDocument());
+      if (account.media?.isValid) {
+        transaction.create(account.media);
       }
     });
 

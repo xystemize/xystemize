@@ -1,11 +1,12 @@
 import { AccountsApi } from '<%= orgName %>/app-core';
 import { FirebaseApiClient } from '@xystemize/app-core';
+import { resetAllDatabases } from '@xystemize/backend';
 
 import { TestApi as api } from '../@test/TestApi';
 
 describe('Accounts', () => {
   beforeAll(async () => {
-    await api.initialize();
+    await Promise.all([api.initialize(), resetAllDatabases()]);
   });
 
   describe('GET /accounts/:id', () => {

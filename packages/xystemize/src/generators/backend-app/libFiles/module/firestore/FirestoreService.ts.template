@@ -2,8 +2,9 @@
 /* eslint-disable no-undef */
 
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
-import { Name, VisibilityId } from '<%= orgName %>/app-core';
+import { Name } from '<%= orgName %>/app-core';
 import { mapArrayWithConcurrency } from '@xystemize/app-core';
+import { FirestoreTransaction } from '@xystemize/backend';
 import { firestore } from 'firebase-admin';
 import { chunk, filter, first, isEmpty, uniq, without } from 'lodash';
 
@@ -37,7 +38,6 @@ export class FirestoreService implements OnModuleInit {
     classModel,
   }: {
     id: string;
-    visibilityId?: number;
     collectionName: string;
     classModel: T;
   }): Promise<{
@@ -74,14 +74,13 @@ export class FirestoreService implements OnModuleInit {
     document?: firestore.DocumentSnapshot | null;
     docRef?: firestore.DocumentReference | null;
   }> => {
-    const query = visibilityId
-      ? this.firestore
-          .collection(collectionName)
-          .where(property, '==', value)
-          .where(Name.visibilityId, '==', visibilityId)
-      : this.firestore.collection(collectionName).where(property, '==', value);
+    let query = this.firestore.collection(collectionName).where(property, '==', value);
 
-    query.limit(1);
+    if (visibilityId) {
+      query = query.where(Name.visibilityId, '==', visibilityId);
+    }
+
+    query = query.limit(1);
 
     const documents = await query.get();
     const document = first(documents.docs);
@@ -114,15 +113,17 @@ export class FirestoreService implements OnModuleInit {
     document?: firestore.DocumentSnapshot | null;
     docRef?: firestore.DocumentReference | null;
   }> => {
-    const query = visibilityId
-      ? this.firestore
-          .collection(collectionName)
-          .where(Name.id, '==', id)
-          .where(property, '==', value)
-          .where(Name.visibilityId, '==', visibilityId)
-      : this.firestore.collection(collectionName).where(Name.id, '==', id).where(property, '==', value);
+    let query = this.firestore
+      .collection(collectionName)
+      .where(Name.id, '==', id)
+      .where(property, '==', value)
+      .where(Name.visibilityId, '==', visibilityId);
 
-    query.limit(1);
+    if (query) {
+      query = query.where(Name.visibilityId, '==', visibilityId);
+    }
+
+    query = query.limit(1);
 
     const documents = await query.get();
     const document = first(documents.docs);
@@ -149,37 +150,15 @@ export class FirestoreService implements OnModuleInit {
     collectionName: string;
     classModel: T;
   }): Promise<Array<InstanceType<T>>> => {
-    const query = visibilityId
-      ? this.firestore
-          .collection(collectionName)
-          .where(property, '==', value)
-          .where(Name.visibilityId, '==', visibilityId)
-      : this.firestore.collection(collectionName).where(property, '==', value);
+    let query = this.firestore
+      .collection(collectionName)
+      .where(property, '==', value);
 
-    const snapshots = await query.get();
-
-    if (!snapshots.docs.length) {
-      return [];
+    if (visibilityId) {
+      query = query.where(Name.visibilityId, '==', visibilityId);
     }
 
-    return snapshots.docs.map((obj) => new classModel(obj.data()));
-  };
-
-  getManyByAccountId = async <T extends { new (...args: any[]): InstanceType<T> }>({
-    accountId,
-    collectionName,
-    classModel,
-  }: {
-    accountId: string;
-    visibilityId?: number;
-    collectionName: string;
-    classModel: T;
-  }): Promise<Array<InstanceType<T>>> => {
-    const snapshots = await this.firestore
-      .collection(collectionName)
-      .where(Name.accountId, '==', accountId)
-      .where(Name.visibilityId, '!=', VisibilityId.Deleted)
-      .get();
+    const snapshots = await query.get();
 
     if (!snapshots.docs.length) {
       return [];
@@ -217,142 +196,15 @@ export class FirestoreService implements OnModuleInit {
     return filter(items, { isValid: true }) as Array<InstanceType<T>>;
   };
 
-  getAll = async <T extends { new (...args: any[]): InstanceType<T> }>({
-    collectionName,
-    classModel,
-    visibilityId,
-  }: {
-    collectionName: string;
-    classModel: T;
-    visibilityId?: number;
-  }): Promise<Array<InstanceType<T>>> => {
-    const query = visibilityId
-      ? this.firestore.collection(collectionName).where(Name.visibilityId, '==', visibilityId)
-      : this.firestore.collection(collectionName);
-
-    const snapshots = await query.get();
-
-    if (!snapshots.docs.length) {
-      return [];
-    }
-
-    return snapshots.docs.map((obj) => new classModel(obj.data()));
-  };
-
-  getPaginatedData = async <T extends { new (...args: any[]): InstanceType<T> }>({
-    timestampName,
-    timestampValue,
-    limit,
-    visibilityId,
-    collectionName,
-    classModel,
-  }: {
-    timestampName: string;
-    timestampValue?: number;
-    limit?: number | null;
-    visibilityId?: number;
-    collectionName: string;
-    classModel: T;
-  }): Promise<Array<InstanceType<T>>> => {
-    visibilityId = visibilityId ?? VisibilityId.Public;
-    limit = limit ?? RequestConfig.DefaultLimitPerPage;
-    timestampValue = timestampValue ?? Date.now();
-
-    const snapshots = await this.firestore
-      .collection(collectionName)
-      .where(timestampName, '<', timestampValue)
-      .where(Name.visibilityId, '==', visibilityId)
-      .orderBy(timestampName, 'desc')
-      .limit(limit)
-      .get();
-
-    if (!snapshots.docs.length) {
-      return [];
-    }
-
-    return snapshots.docs.map((obj) => new classModel(obj.data()));
-  };
-
-  getPaginatedDataByProperty = async <T extends { new (...args: any[]): InstanceType<T> }>({
-    value,
-    property,
-    timestampName,
-    timestampValue,
-    limit,
-    visibilityId,
-    collectionName,
-    classModel,
-  }: {
-    value: string | number | boolean;
-    property: string;
-    timestampName: string;
-    timestampValue?: number;
-    limit?: number | null;
-    visibilityId?: number;
-    collectionName: string;
-    classModel: T;
-  }): Promise<Array<InstanceType<T>>> => {
-    visibilityId = visibilityId ?? VisibilityId.Public;
-    limit = limit ?? RequestConfig.DefaultLimitPerPage;
-    timestampValue = timestampValue ?? Date.now();
-
-    const snapshots = await this.firestore
-      .collection(collectionName)
-      .where(timestampName, '<', timestampValue)
-      .where(Name.visibilityId, '==', visibilityId)
-      .where(property, '==', value)
-      .orderBy(timestampName, 'desc')
-      .limit(limit)
-      .get();
-
-    if (!snapshots.docs.length) {
-      return [];
-    }
-
-    return snapshots.docs.map((obj) => new classModel(obj.data()));
-  };
-
-  softDeleteOneById = async <T extends { new (...args: any[]): InstanceType<T> }>({
-    id,
-    collectionName,
-  }: {
-    id: string;
-    collectionName: string;
-  }) => {
-    const docRef = this.firestore.collection(collectionName).doc(id);
-    const document = await docRef.get();
-
-    if (!document.exists) {
-      throw new BadRequestException();
-    }
-
-    await docRef.update(Name.visibilityId, VisibilityId.Deleted);
-  };
-
-  softDeleteManyByProperty = async <T extends { new (...args: any[]): InstanceType<T> }>({
-    value,
-    property,
-    collectionName,
-  }: {
-    value: string | number | boolean;
-    property: string;
-    collectionName: string;
-  }) => {
-    const query = this.firestore.collection(collectionName).where(property, '==', value);
-    const snapshots = await query.get();
-
-    if (!snapshots.docs.length) {
-      throw new BadRequestException();
-    }
-
-    snapshots.forEach(async (snapshot) => {
-      await snapshot.ref.update(Name.visibilityId, VisibilityId.Deleted);
+  runTransaction = async <T>(fn: (transaction: FirestoreTransaction) => Promise<T>) => {
+    const transaction = new FirestoreTransaction();
+    await fn(transaction);
+    
+    return this.firestore.runTransaction(async (trx) => {
+      transaction.transactions.forEach(({ type, documentRef, data }) => {
+        trx[type](documentRef, data);
+      });
     });
-  };
-
-  // Just recently added. We will use this moving forward
-  runTransaction = <T>(updateFunction: (transaction: firestore.Transaction) => Promise<T>) => {
-    return this.firestore.runTransaction(updateFunction);
   };
 
   runDocumentAddOrUpdateTransaction = async ({ item }: { item: FirestoreDocumentType }) => {
@@ -363,7 +215,7 @@ export class FirestoreService implements OnModuleInit {
     const docRef = this.firestore.collection(item.firestoreCollectionName).doc(item.id);
 
     await this.runTransaction(async (transaction) => {
-      transaction.set(docRef, item.toFirestoreDocument());
+      transaction.set(item);
     });
 
     return { docRef, data: item };
@@ -381,8 +233,7 @@ export class FirestoreService implements OnModuleInit {
     const handler = async (chunkedItems: Array<FirestoreDocumentType>) => {
       const transaction = await this.runTransaction(async (transaction) => {
         chunkedItems.forEach((item) => {
-          const docRef = this.firestore.collection(item.firestoreCollectionName).doc(item.id);
-          transaction.set(docRef, item.toFirestoreDocument());
+          transaction.set(item);
         });
       });
 
@@ -394,19 +245,5 @@ export class FirestoreService implements OnModuleInit {
     await mapArrayWithConcurrency(chunkedItems, RequestConfig.DefaultWriteMaxConcurrency, handler);
 
     return response;
-  };
-
-  runDocumentAddTransaction = async ({ item }: { item: FirestoreDocumentType }) => {
-    if (!item?.id) {
-      throw new BadRequestException();
-    }
-
-    const docRef = this.firestore.collection(item.firestoreCollectionName).doc(item.id);
-
-    await this.runTransaction(async (transaction) => {
-      transaction.create(docRef, item.toFirestoreDocument());
-    });
-
-    return { docRef, data: item };
   };
 }
