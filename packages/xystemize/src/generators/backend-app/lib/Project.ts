@@ -27,6 +27,12 @@ export const updateProjectJson = ({
         command: `kill-port --port 9001,9002,9003,9004,9005,9006`,
       },
     },
+    terminalTabEmulators: {
+      executor: 'nx:run-commands',
+      options: {
+        command: `npx ttab -t 'Firebase Emulators' npx firebase emulators:start --project test`,
+      },
+    },
     deploy: {
       executor: 'nx:run-commands',
       dependsOn: ['build'],

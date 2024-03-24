@@ -5,6 +5,7 @@ import * as path from 'path';
 
 import {
   appendNxGeneratedFile,
+  appendNxGeneratedJsonFile,
   deleteNxGeneratedFile,
   readNxGeneratedJsonFile,
   writeNxGeneratedFile,
@@ -56,6 +57,17 @@ export async function backendAppGenerator(tree: Tree, options: BackendAppGenerat
   await backendComponentGenerator(tree, {
     name: 'accounts',
     directory: `${projectRoot}/src`,
+  });
+
+  appendNxGeneratedJsonFile({
+    tree,
+    filePath: 'package.json',
+    fileContent: {
+      scripts: {
+        backendKillPorts: `npx nx run ${formatedName}:killports`,
+        backendTerminalTabEmulators: `npx nx run ${formatedName}:terminalTabEmulators`,
+      },
+    },
   });
 
   writeNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep`, fileContent: '' });
