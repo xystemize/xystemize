@@ -19,6 +19,7 @@ export const setUpDependencies = async ({ tree, orgName }: { tree: Tree; orgName
         lintPrePush: 'npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check',
         codeCheck: 'npx prettier --check .',
         codeFormat: 'npx prettier --write . && npm run lint',
+        test: 'npx nx run-many --all --target=test',
       },
       'lint-staged': {
         '*.{js,json,ts,tsx}': 'eslint --cache --fix',
