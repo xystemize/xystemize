@@ -1,6 +1,11 @@
 import { Tree } from '@nx/devkit';
 
-import { appendNxGeneratedJsonFile, writeNxGeneratedFile } from '../../../utility/GeneratorUtility';
+import {
+  appendNxGeneratedFile,
+  appendNxGeneratedJsonFile,
+  writeNxGeneratedFile,
+  WriteStategy,
+} from '../../../utility/GeneratorUtility';
 
 export const setUpPreset = async ({ tree }: { tree: Tree }) => {
   // update tsconfig.base.json
@@ -43,5 +48,14 @@ export const setUpPreset = async ({ tree }: { tree: Tree }) => {
       plugins: ['unused-imports', 'simple-import-sort'],
       extends: ['./.eslintrc.base.json'],
     },
+  });
+
+  // update app-core
+  appendNxGeneratedFile({
+    tree,
+    filePath: `libs/app-core/jest.config.ts`,
+    stategy: WriteStategy.AddAbovePattern,
+    pattern: `};`,
+    fileContent: `setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],`,
   });
 };

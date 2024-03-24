@@ -1,4 +1,6 @@
-import { AccountTypeId, AuthProviderId } from '@xystemize/app-core';
+import { AuthProviderId } from '@xystemize/app-core';
+
+import { AccountTypeId } from '../../constant';
 
 import { AccountDataModel } from './AccountDataModel';
 
