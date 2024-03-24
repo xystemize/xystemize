@@ -92,12 +92,10 @@ const initializeFirebaseEmulators = async () => {
   }
 
   console.info('⚙️ Killing Firebase ports...');
-  await execAsync('npx kill-port --port 9001,9002,9003,9004,9005,9006');
+  await execAsync('npm run backendKillPorts');
 
   console.info('⚙️ Running emulators...');
-  await execAsync(
-    `npx ttab -t 'Firebase Emulators' npx firebase emulators:start --project ${process.env.FBASE_PROJECT_ID}`
-  );
+  await execAsync('npm run backendTerminalTabEmulators');
 
   // console.info('⚙️ Making sure pubsub topics are added...');
   // const pubsub = new PubSubService();

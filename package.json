@@ -8,7 +8,9 @@
     "lintPrePush": "npx nx run-many --all --skip-nx-cache --parallel --targets=lint,type-check",
     "nxReleaseSetup": "npx nx generate nx-release:configure",
     "codeCheck": "npx prettier --check .",
-    "codeFormat": "npx prettier --write . && npm run nxLintAndFix"
+    "codeFormat": "npx prettier --write . && npm run nxLintAndFix",
+    "backendKillPorts": "npx nx run backend:killports",
+    "backendTerminalTabEmulators": "npx nx run backend:terminalTabEmulators"
   },
   "private": true,
   "dependencies": {
