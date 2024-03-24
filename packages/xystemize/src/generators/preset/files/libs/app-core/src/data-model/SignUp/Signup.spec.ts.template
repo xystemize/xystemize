@@ -1,8 +1,9 @@
+
 import { AuthProviderId } from '@xystemize/app-core';
 
-import { SignUpDataModel } from './SignUpDataModel';
+import { AccountTypeId } from '../../constant';
 
-import { AccountTypeId } from '<%= orgName %>/app-core';
+import { SignUpDataModel } from './SignUpDataModel';
 
 describe('SignUpModel', () => {
   test('SignUpModel(Employee) validation', async () => {
