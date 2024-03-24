@@ -39,6 +39,7 @@ describe('backend-app generator', () => {
     expect(projectJson.targets.build.options.assets).toStrictEqual([`${projectRoot}/src/@assets`]);
 
     expect(projectJson.targets.killports).toBeDefined();
+    expect(projectJson.targets.terminalTabEmulators).toBeDefined();
     expect(projectJson.targets.deploy).toBeDefined();
 
     const index = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/index.ts` });
