@@ -98,5 +98,11 @@ describe('preset generator', () => {
 
     const gitIgnore = readNxGeneratedFile({ tree, filePath: '.gitignore' });
     expect(isCharExistsInString({ char: 'firebase-debug.log', string: gitIgnore }));
+
+    const appCoreJestConfig = readNxGeneratedFile({ tree, filePath: 'libs/app-core/jest.config.ts' });
+    expect(
+      isCharExistsInString({ char: `setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],`, string: appCoreJestConfig })
+    );
+    fileShouldExists({ tree, filePath: 'libs/app-core/jest.setup.ts' });
   });
 });
