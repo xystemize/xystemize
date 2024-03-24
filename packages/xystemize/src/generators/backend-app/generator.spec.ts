@@ -33,6 +33,10 @@ describe('backend-app generator', () => {
     const projectRoot = `apps/${options.name}`;
     const libRoot = `libs/backend-lib`;
 
+    const packageJson = readNxGeneratedJsonFile({ tree, filePath: 'package.json' });
+    expect(packageJson.scripts.backendKillPorts).toBeDefined();
+    expect(packageJson.scripts.backendTerminalTabEmulators).toBeDefined();
+
     const projectJson = readNxGeneratedJsonFile({ tree, filePath: `${projectRoot}/project.json` });
     expect(projectJson.targets.build.options.generatePackageJson).toBe(true);
     expect(projectJson.targets.build.options.main).toBe(`${projectRoot}/src/index.ts`);
