@@ -14,7 +14,7 @@ export class FirebaseAuthService implements OnModuleInit {
   }
 
   async signUp(params: SignUpDataModel) {
-    return this.auth?.createUser(params.toObjectWithoutBlankProps());
+    return this.auth?.createUser(params.toObject());
   }
 
   async getEmailVerificationLink(email: string) {
