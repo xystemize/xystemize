@@ -1,6 +1,7 @@
 export * from './base-model';
 export * from './constant';
 export * from './data-transformer';
+export * from './decorator';
 export * from './firebase';
 export * from './interface';
 export * from './string';
