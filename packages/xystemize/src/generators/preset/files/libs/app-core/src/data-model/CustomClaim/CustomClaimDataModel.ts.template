@@ -1,11 +1,12 @@
 import {
   BooleanTransformer,
+  DataTransactionType,
+  IsNotBlank,
+  IsValidUsernameChars,
   NumberWithDefaultTransformer,
   OptionalStringWithTrimTransformer,
   StringWithTrimAndLowerCaseTransformer,
   StringWithTrimTransformer,
-  IsNotBlank,
-  IsValidUsernameChars
 } from '@xystemize/app-core';
 import { AppBaseDataModel, ColorModeId } from '@xystemize/app-core';
 import { Expose, Transform } from 'class-transformer';
@@ -22,7 +23,7 @@ import { CustomClaimDataInterface } from './CustomClaimDataInterface';
 export class CustomClaimDataModel extends AppBaseDataModel implements CustomClaimDataInterface {
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: AccountState.NotRegistered }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update ]})
   accountState: AccountState;
 
   @MaxLength(ValidationRule.UsernameMaxLength)
@@ -30,24 +31,24 @@ export class CustomClaimDataModel extends AppBaseDataModel implements CustomClai
   @IsValidUsernameChars()
   @IsNotBlank()
   @Transform(StringWithTrimAndLowerCaseTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update ]})
   username: string;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: ColorModeId.DarkMode }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update ]})
   colorModeId: ColorModeId;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update ]})
   mediaUrlTokenSmall: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update ]})
   mediaFileExtension: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update ]})
   mediaUrlTokenOriginal: string | null;
 
   // toClassOnly\

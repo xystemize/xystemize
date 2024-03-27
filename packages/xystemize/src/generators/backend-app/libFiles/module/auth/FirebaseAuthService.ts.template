@@ -56,6 +56,6 @@ export class FirebaseAuthService implements OnModuleInit {
       return;
     }
 
-    return this.auth?.setCustomUserClaims(customClaim.accountId, customClaim.toCustomClaim());
+    return this.auth?.setCustomUserClaims(customClaim.accountId, customClaim.toCreateObject());
   }
 }

@@ -47,6 +47,7 @@ export enum Name {
   availability = 'availability',
   signup = 'signup',
   NO_AUTH = 'NO_AUTH',
+  collectionName = 'collectionName',
   // ### General:End ###
 
   // ### Api:Start ###
