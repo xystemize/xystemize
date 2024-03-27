@@ -1,5 +1,6 @@
 import {
   CollectionName,
+  DataTransactionType,
   IdStringWithDefaultTransformer,
   IsNotBlank,
   NumberDateWithDefaultTransformer,
@@ -18,84 +19,84 @@ import { MediaDataInterface } from './MediaDataInterface';
 @CollectionName(Name.mediaItems)
 export class MediaDataModel extends AppBaseDataModel implements MediaDataInterface {
   @Transform(IdStringWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create] })
   id: string;
 
   @IsNotBlank()
   @Transform(StringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   accountId: string;
 
   @IsNotBlank()
   @Transform(StringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   entityId: string;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: EntityTypeId.NoType }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   entityTypeId: EntityTypeId;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: MediaTypeId.NoType }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   mediaTypeId: MediaTypeId;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   fileName: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   fileExtension: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   fileFolderName: string | null;
 
   @IsNumber()
   @Transform(NumberDateWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   width: number;
 
   @IsNumber()
   @Transform(NumberDateWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   height: number;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   mediaUrlTokenSmall: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   mediaUrlTokenMedium: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   mediaUrlTokenLarge: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   mediaUrlTokenOriginal: string | null;
 
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   bucket: string | null;
 
   @IsNumber()
   @Transform(NumberDateWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create] })
   createdTimestamp: number;
 
   @IsNumber()
   @Transform(NumberDateWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   updatedTimestamp: number;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: VisibilityId.Private }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   visibilityId: VisibilityId;
 
   // to Class Only

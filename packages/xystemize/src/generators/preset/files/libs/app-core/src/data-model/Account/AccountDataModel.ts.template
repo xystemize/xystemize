@@ -3,6 +3,7 @@ import {
   AuthProviderId,
   CollectionName,
   ColorModeId,
+  DataTransactionType,
   DevicePlatformId,
   IsNotBlank,
   IsValidUsernameChars,
@@ -28,7 +29,7 @@ import { AccountDataInterface } from './AccountDataInterface';
 export class AccountDataModel extends AppBaseDataModel implements AccountDataInterface {
   @IsNotBlank()
   @Transform(StringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create] })
   id: string;
 
   @MaxLength(ValidationRule.UsernameMaxLength)
@@ -36,13 +37,13 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
   @IsValidUsernameChars()
   @IsNotBlank()
   @Transform(StringWithTrimAndLowerCaseTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   username: string;
 
   @IsNotBlank()
   @IsEmail()
   @Transform(StringWithTrimAndLowerCaseTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create] })
   email: string;
 
   @ValidateIf((item: AccountDataModel) => {
@@ -51,7 +52,7 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
   @IsNotBlank()
   @MaxLength(ValidationRule.NameMaxLength)
   @Transform(StringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   firstName: string;
 
   @ValidateIf((item: AccountDataModel) => {
@@ -60,52 +61,52 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
   @IsNotBlank()
   @MaxLength(ValidationRule.NameMaxLength)
   @Transform(StringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   lastName: string;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: AuthProviderId.EmailAndPassword }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   authProviderId: AuthProviderId;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: AccountTypeId.User }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   accountTypeId: AccountTypeId;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: DevicePlatformId.NoId }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   devicePlatformId: DevicePlatformId;
 
   @OptionalMaxLength(ValidationRule.TimezoneMaxLength)
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   timezone: string | null;
 
   @OptionalMaxLength(ValidationRule.IdMaxLength)
   @Transform(OptionalStringWithTrimTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   mediaId: string | null;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: ColorModeId.DarkMode }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   colorModeId: ColorModeId;
 
   @IsNumber()
   @Transform(NumberDateWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create] })
   createdTimestamp: number;
 
   @IsNumber()
   @Transform(NumberDateWithDefaultTransformer)
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   updatedTimestamp: number;
 
   @IsNumber()
   @Transform(NumberWithDefaultTransformer({ default: VisibilityId.Private }))
-  @Expose()
+  @Expose({ groups: [DataTransactionType.Create, DataTransactionType.Update] })
   visibilityId: VisibilityId;
 
   @Type(() => MediaDataModel)
