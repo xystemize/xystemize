@@ -86,17 +86,6 @@ export class CustomClaimDataModel extends AppBaseDataModel implements CustomClai
     return this.accountState === AccountState.Registered;
   }
 
-  get updateProps() {
-    return [
-      Name.accountState,
-      Name.username,
-      Name.colorModeId,
-      Name.mediaUrlTokenSmall,
-      Name.mediaUrlTokenOriginal,
-      Name.mediaFileExtension,
-    ];
-  }
-
   getMediaUrl = ({ bucket }: { bucket?: string | null }) => {
     if (!bucket) {
       return null;

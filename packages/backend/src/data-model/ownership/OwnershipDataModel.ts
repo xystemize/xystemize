@@ -26,14 +26,6 @@ export class OwnershipDataModel extends AppBaseDataModel implements OwnerDataInt
     this.transformAndAssign(OwnershipDataModel, obj);
   }
 
-  get modelName(): string {
-    return '';
-  }
-
-  get firestoreCollectionName() {
-    return '';
-  }
-
   get uid(): string {
     return this.decodedIdToken?.uid || this.decodedIdToken?.sub || '';
   }

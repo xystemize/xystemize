@@ -107,8 +107,4 @@ export class SignUpDataModel extends AppBaseDataModel implements SignUpDataInter
 
     this.transformAndAssign(SignUpDataModel, obj);
   }
-
-  get modelName(): string {
-    return Name.signup;
-  }
 }

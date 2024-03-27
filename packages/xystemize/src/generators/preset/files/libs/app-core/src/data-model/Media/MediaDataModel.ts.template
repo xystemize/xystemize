@@ -1,4 +1,5 @@
 import {
+  CollectionName,
   IdStringWithDefaultTransformer,
   IsNotBlank,
   NumberDateWithDefaultTransformer,
@@ -14,6 +15,7 @@ import { EntityTypeId, MediaSizeVariant, MediaTypeId, Name, VisibilityId } from 
 
 import { MediaDataInterface } from './MediaDataInterface';
 
+@CollectionName(Name.mediaItems)
 export class MediaDataModel extends AppBaseDataModel implements MediaDataInterface {
   @Transform(IdStringWithDefaultTransformer)
   @Expose()
@@ -108,14 +110,6 @@ export class MediaDataModel extends AppBaseDataModel implements MediaDataInterfa
   constructor(params?: MediaDataInterface) {
     super();
     this.transformAndAssign(MediaDataModel, params);
-  }
-
-  get modelName() {
-    return Name.media;
-  }
-
-  get firestoreCollectionName() {
-    return Name.mediaItems;
   }
 
   get createdDate() {
@@ -353,28 +347,5 @@ export class MediaDataModel extends AppBaseDataModel implements MediaDataInterfa
     }
 
     return encodeURIComponent(`${path}/${fileName}`);
-  }
-
-  get updateProps() {
-    return [
-      Name.fileName,
-      Name.fileExtension,
-      Name.fileFolderName,
-      Name.width,
-      Name.height,
-      Name.mediaTypeId,
-      Name.mediaUrlTokenSmall,
-      Name.mediaUrlTokenMedium,
-      Name.mediaUrlTokenLarge,
-      Name.mediaUrlTokenOriginal,
-      Name.updatedTimestamp,
-      Name.base64,
-      Name.rawFileUri,
-      Name.bucket,
-    ];
-  }
-
-  get deleteProps() {
-    return [Name.visibilityId];
   }
 }

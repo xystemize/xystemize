@@ -212,7 +212,7 @@ export class FirestoreService implements OnModuleInit {
       throw new BadRequestException();
     }
 
-    const docRef = this.firestore.collection(item.firestoreCollectionName).doc(item.id);
+    const docRef = this.firestore.collection(item[Name.collectionName]).doc(item.id);
 
     await this.runTransaction(async (transaction) => {
       transaction.set(item);

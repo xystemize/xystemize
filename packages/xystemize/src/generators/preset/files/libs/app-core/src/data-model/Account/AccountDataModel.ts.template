@@ -1,6 +1,7 @@
 import {
   AppBaseDataModel,
   AuthProviderId,
+  CollectionName,
   ColorModeId,
   DevicePlatformId,
   IsNotBlank,
@@ -23,6 +24,7 @@ import { MediaDataModel } from '../Media/MediaDataModel';
 
 import { AccountDataInterface } from './AccountDataInterface';
 
+@CollectionName(Name.accounts)
 export class AccountDataModel extends AppBaseDataModel implements AccountDataInterface {
   @IsNotBlank()
   @Transform(StringWithTrimTransformer)
@@ -115,14 +117,6 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
     this.transformAndAssign(AccountDataModel, obj);
   }
 
-  get modelName(): string {
-    return Name.account;
-  }
-
-  get firestoreCollectionName() {
-    return Name.accounts;
-  }
-
   get createdDate() {
     return new Date(this.createdTimestamp);
   }
@@ -153,23 +147,5 @@ export class AccountDataModel extends AppBaseDataModel implements AccountDataInt
 
   get isRegistrationFromSocialAuth() {
     return this.isAppleAuth || this.isGoogleAuth || this.isFacebookAuth;
-  }
-
-  get updateProps() {
-    return [
-      Name.username,
-      Name.firstName,
-      Name.lastName,
-      Name.mediaId,
-      Name.media,
-      Name.updatedTimestamp,
-      Name.colorModeId,
-      Name.devicePlatformId,
-      Name.timezone,
-    ];
-  }
-
-  get deleteProps() {
-    return [Name.visibilityId];
   }
 }
