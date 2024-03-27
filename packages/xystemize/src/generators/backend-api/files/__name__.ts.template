@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { Name } from '<%= orgName %>/app-core';
-import express from 'express';
-
 import { initializeApiServer } from '@xystemize/backend';
+import express from 'express';
 
 export const <%= name %> = express();
 

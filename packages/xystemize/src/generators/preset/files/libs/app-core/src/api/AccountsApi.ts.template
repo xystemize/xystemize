@@ -16,22 +16,6 @@ import { ApiUrl } from './@ApiUrl';
 class Api {
   auth?: Auth | null = null;
 
-  async checkEmailOrUsernameAvailability(params?: { username?: string; email?: string }) {
-    return FirebaseApiClient.get<{ isAvailable: boolean }>({
-      baseUrl: ApiUrl.accountsApiUrl,
-      endpoint: Name.availability,
-      params: params,
-    });
-  }
-
-  async checkEmailAvailability(params?: { email?: string }) {
-    return this.checkEmailOrUsernameAvailability(params);
-  }
-
-  async checkUsernameAvailability(params?: { username?: string }) {
-    return this.checkEmailOrUsernameAvailability(params);
-  }
-
   async getOne(params: { id: string }) {
     return FirebaseApiClient.getOne({
       baseUrl: ApiUrl.accountsApiUrl,
@@ -81,15 +65,6 @@ class Api {
     }
 
     return axios.get(link);
-  }
-
-  async addOne(params: AccountDataModel) {
-    return FirebaseApiClient.postOne({
-      baseUrl: ApiUrl.accountsApiUrl,
-      endpoint: '',
-      params: params,
-      classModel: AccountDataModel,
-    });
   }
 }
 
