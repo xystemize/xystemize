@@ -6,7 +6,10 @@ import express from 'express';
 export const <%= name %> = express();
 
 @Module({
-  imports: [],
+  imports: [
+    // Imports:Start
+    // Imports:End
+  ],
 })
 export class <%= name %>Module {}
 

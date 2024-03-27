@@ -58,7 +58,7 @@ describe('backend-app generator', () => {
     expect(
       isCharExistsInString({ char: `import { AccountsModule } from '../accounts/AccountsApi';`, string: apiv1 })
     ).toBeTruthy();
-    expect(isCharExistsInString({ char: `imports: [AccountsModule],`, string: apiv1 })).toBeTruthy();
+    expect(isCharExistsInString({ char: `AccountsModule,`, string: apiv1 })).toBeTruthy();
 
     const gitkeepInRenamedAssetsFolder = readNxGeneratedFile({ tree, filePath: `${projectRoot}/src/@assets/.gitkeep` });
     expect(gitkeepInRenamedAssetsFolder).toBe('');

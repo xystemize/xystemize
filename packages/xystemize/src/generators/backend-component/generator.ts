@@ -3,12 +3,7 @@ import { removeTrailingCharacter, removeTrailingSlash, toClassName, toPropertyNa
 import { kebabCase, trim } from 'lodash';
 import * as path from 'path';
 
-import {
-  addComponentReferenceToApiModule,
-  appendNxGeneratedFile,
-  readNxGeneratedJsonFile,
-  WriteStategy,
-} from '../../utility';
+import { appendNxGeneratedFile, readNxGeneratedJsonFile, WriteStategy } from '../../utility';
 
 import { BackendComponentGeneratorSchema } from './schema';
 
@@ -73,11 +68,21 @@ export async function backendComponentGenerator(tree: Tree, options: BackendComp
     fileContent: `${resolvedOptions.nameLowerCase} = '${resolvedOptions.nameLowerCase}',`,
   });
 
-  addComponentReferenceToApiModule({
+  const moduleName = `${resolvedOptions.name}Module`;
+  appendNxGeneratedFile({
     tree,
     filePath: `${resolvedOptions.directory}/@api-v1/ApiV1.ts`,
-    name: resolvedOptions.name,
-    folderName: resolvedOptions.folderName,
+    pattern: 'export const ApiV1',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `import { ${moduleName} } from '../${folderName}/${resolvedOptions.name}Api';\n`,
+  });
+
+  appendNxGeneratedFile({
+    tree,
+    filePath: `${resolvedOptions.directory}/@api-v1/ApiV1.ts`,
+    pattern: '// Imports:End',
+    stategy: WriteStategy.AddAbovePattern,
+    fileContent: `${moduleName},`,
   });
 
   await formatFiles(tree);
