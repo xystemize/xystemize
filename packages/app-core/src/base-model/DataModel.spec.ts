@@ -43,4 +43,17 @@ describe('DataModel', () => {
     expect(Object.keys(data.toCreateObject())).toStrictEqual(['id', 'createdTimestamp', 'updatedTimestamp']);
     expect(Object.keys(data.toUpdateObject())).toStrictEqual(['updatedTimestamp']);
   });
+
+  test('update()', () => {
+    const now = Date.now();
+    const now2 = now + 1;
+    const data = new DataModel({ id: 'id1', createdTimestamp: now, updatedTimestamp: now });
+    const data2 = new DataModel({ id: 'id2', createdTimestamp: now2, updatedTimestamp: now2 });
+
+    data.update(data2);
+
+    expect(data.id).toBe('id1');
+    expect(data.createdTimestamp).toBe(now);
+    expect(data.updatedTimestamp).toBe(now2);
+  });
 });
