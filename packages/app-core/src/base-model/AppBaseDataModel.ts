@@ -1,4 +1,5 @@
 import { instanceToPlain } from 'class-transformer';
+import { omitBy } from 'lodash';
 
 import { DataTransactionType } from '../constant';
 
@@ -23,5 +24,12 @@ export class AppBaseDataModel extends AppBaseModel {
 
   toUpdateObject() {
     return instanceToPlain(this, { excludeExtraneousValues: true, groups: [DataTransactionType.Update] });
+  }
+
+  update<Type extends this>(instance: Type) {
+    const updateProps = Object.keys(this.toUpdateObject());
+    const sanitizedObj = omitBy(instance, (value, key) => !updateProps.includes(key) || value === undefined);
+
+    return Object.assign(this, sanitizedObj);
   }
 }
