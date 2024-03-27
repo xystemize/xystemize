@@ -1,5 +1,6 @@
 export * from './AuthProviderId';
 export * from './ColorModeId';
+export * from './DataTransactionTypeId';
 export * from './DateUnitId';
 export * from './DevicePlatformId';
 export * from './EnvironmentType';

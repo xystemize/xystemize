@@ -22,6 +22,7 @@ export enum Name {
   visibilityId = 'visibilityId',
   customClaim = 'customClaim',
   value = 'value',
+  collectionName = 'collectionName',
 
   en = 'en',
   es = 'es',

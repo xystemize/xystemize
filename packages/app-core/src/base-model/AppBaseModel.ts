@@ -2,6 +2,7 @@ import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate, validateSync } from 'class-validator';
 import { capitalize, first, forEach, isEmpty, map } from 'lodash';
 
+import { DataTransactionType } from '../constant';
 import { Name } from '../constant/Name';
 
 export interface ValidationInterface {
@@ -28,6 +29,7 @@ export class AppBaseModel {
       this,
       plainToInstance(classRef, plain, {
         excludeExtraneousValues: true,
+        groups: [DataTransactionType.Create],
       })
     );
   };
