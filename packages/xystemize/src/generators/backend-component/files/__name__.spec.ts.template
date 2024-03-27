@@ -1,17 +1,23 @@
-import { Module } from '@nestjs/common';
-import express from 'express';
+import { resetAllDatabases } from '@xystemize/backend';
 
-import { initializeApiServer } from '@xystemize/backend';
+import { TestApi as api } from '../@test/TestApi';
 
-export const <%= name %> = express();
+describe('<%= name %>', () => {
+  beforeAll(async () => {
+    await Promise.all([api.initialize(), resetAllDatabases()]);
+  });
 
-@Module({
-  imports: [],
-})
-export class <%= name %>Module {}
+  describe('GET /<%= nameLowerCase %>/:id', () => {
+    test('Error 403: Forbidden', async () => {
+      // add tests here
+    });
 
-initializeApiServer({
-  apiInstance: <%= name %>,
-  functionName: '<%= nameLowerCase %>',
-  module: <%= name %>Module,
+    test('Error 404: Not found', async () => {
+      // add tests here
+    });
+
+    test('Success 200', async () => {
+      // add tests here
+    });
+  });
 });

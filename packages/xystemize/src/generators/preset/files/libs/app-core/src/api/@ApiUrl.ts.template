@@ -11,10 +11,6 @@ class Url {
   get accountsApiUrl() {
     return `${this.baseUrl}/${accounts}`;
   }
-
-  get mediaItemsApiUrl() {
-    return `${this.baseUrl}/${mediaItems}`;
-  }
 }
 
 export const ApiUrl = new Url();
